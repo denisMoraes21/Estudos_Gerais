@@ -1,4 +1,4 @@
-- Fazer código de teste com ESP-IDF + Free RTOS
+- Fazer código de teste com ESP-IDF + Free RTOS- ok
 - Fazer estudo de ponteiros em C (Com CMAKE e Git)
 - Fazer pequeno código em C++ (Com CMAKE e Git)
 - Fazer pequeno código em C#.
