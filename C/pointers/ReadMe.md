@@ -129,3 +129,5 @@ int main(void) {
     *ptr = 7; // error: *ptr is const; cannot assign new value
     ptr = &y; // error: ptr is const; cannot assign new address
 }
+
+
