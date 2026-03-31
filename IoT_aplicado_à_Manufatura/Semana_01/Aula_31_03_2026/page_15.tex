@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Revisão: Programação Orientada a Objetos com C++}
+    \begin{itemize}
+        \item Como utilizar POO no C++?
+    \end{itemize}
+
+\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize]
+    #include <iostream>
+    using namespace std;
+    class Pessoa {
+    private:
+        string nome;
+        int idade;
+    public:
+        void setDados(string n, int i) {
+            nome = n;
+            idade = i;
+        }
+    };
+    int main() {
+        Pessoa p1;
+        p1.setDados("Denis", 25);
+        return 0;
+    }
+\end{lstlisting}
+\end{frame}

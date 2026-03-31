@@ -1,0 +1,24 @@
+\begin{frame}[fragile]{Revisão: Linguagem C}
+    Juntando tudo:
+
+\begin{lstlisting}[language=C,basicstyle=\ttfamily\scriptsize]
+#include <stdio.h>
+
+int nova_funcao();
+
+int main() {
+    char nome[50];
+    int numero = nova_funcao();
+
+    printf("%d\n", numero);
+
+    printf("Digite seu nome: ");
+    scanf("%49s", nome);
+
+    printf("Hello, %s!\n", nome);
+
+    return 0;
+}
+\end{lstlisting}
+
+\end{frame}

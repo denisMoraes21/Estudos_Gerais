@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Revisão: Arduino Framework}
+    \begin{itemize}
+        \item Exemplo: programação estruturada
+    \end{itemize}
+
+\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize]
+#define LED 13
+
+void setup() {
+    pinMode(LED, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(LED, HIGH);
+    delay(1000);
+
+    digitalWrite(LED, LOW);
+    delay(1000);
+}
+\end{lstlisting}
+\end{frame}

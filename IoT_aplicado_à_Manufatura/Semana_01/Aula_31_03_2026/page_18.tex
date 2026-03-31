@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Revisão: Arduino Framework}
+    \begin{itemize}
+        \item Exemplo: programação orientada a objetos
+    \end{itemize}
+
+\begin{lstlisting}[language=C++,basicstyle=\ttfamily\scriptsize]
+class LED {
+    private:
+        int pin;
+    public:
+        LED(int p) {
+            pin = p;
+        }
+        void iniciar() {
+            pinMode(pin, OUTPUT);
+        }
+        void ligar() {
+            digitalWrite(pin, HIGH);
+        }
+        void desligar() {
+            digitalWrite(pin, LOW);
+        }
+};
+\end{lstlisting}
+\end{frame}
