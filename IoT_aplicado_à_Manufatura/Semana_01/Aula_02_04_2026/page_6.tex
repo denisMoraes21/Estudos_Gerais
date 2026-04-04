@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Segurança utilizando criptografia}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+void exemplo_rsa() {
+    RSA *rsa = RSA_generate_key(2048, RSA_F4, NULL, NULL);
+
+    unsigned char mensagem[] = "Mensagem RSA";
+    unsigned char criptografado[256];
+    unsigned char descriptografado[256];
+
+    int len = RSA_public_encrypt(strlen((char*)mensagem), mensagem, criptografado, rsa, RSA_PKCS1_PADDING);
+
+    std::cout << "RSA Criptografado: ";
+    for(int i = 0; i < len; i++)
+        printf("%02x", criptografado[i]);
+    std::cout << "\n";
+
+    int decrypted_len = RSA_private_decrypt(len, criptografado, descriptografado, rsa, RSA_PKCS1_PADDING);
+
+    descriptografado[decrypted_len] = '\0';
+    std::cout << "RSA Decriptado: " << descriptografado << "\n\n";
+
+    RSA_free(rsa);
+}
+\end{lstlisting}
+\end{frame}

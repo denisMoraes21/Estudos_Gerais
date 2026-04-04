@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Segurança utilizando criptografia}
+\begin{lstlisting}[language=C]
+    // Descriptografar
+    EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
+    EVP_DecryptUpdate(ctx, decrypted, &len, ciphertext, ciphertext_len);
+    decrypted_len = len;
+    EVP_DecryptFinal_ex(ctx, decrypted + len, &len);
+    decrypted_len += len;
+
+    decrypted[decrypted_len] = '\0';
+    std::cout << "AES Decriptado: " << decrypted << "\n\n";
+
+    EVP_CIPHER_CTX_free(ctx);
+}
+
+\end{lstlisting}
+\end{frame}

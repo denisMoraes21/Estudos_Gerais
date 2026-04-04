@@ -1,0 +1,24 @@
+\begin{frame}[fragile]{Nuvem e aplicação}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+#include <curl/curl.h>
+#include <iostream>
+#include <string>
+
+size_t write_callback(void* contents, size_t size, size_t nmemb, void* userp) {
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
+int main() {
+    std::cout << "Enviando para Firebase..." << std::endl;
+
+    CURL* curl = curl_easy_init();
+    if (!curl) {
+        std::cerr << "Erro ao iniciar CURL" << std::endl;
+        return 1;
+    }
+
+    std::string json = R"({"termometro":"29.9"})";
+    std::string response;
+\end{lstlisting}
+\end{frame}

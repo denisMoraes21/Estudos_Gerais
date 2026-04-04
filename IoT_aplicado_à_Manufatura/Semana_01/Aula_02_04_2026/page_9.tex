@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Privacidade de dados}
+\begin{lstlisting}[language=C]
+std::string mask_cpf(const std::string& cpf) {
+    return "***.***." + cpf.substr(6, 3) + "-**";
+}
+int randomize(int valor) {
+    return valor + (rand() % 200 - 100);
+}
+int main() {
+    std::string cpf = "12345678900";
+    std::cout << "CPF anonimizado HASH: " << hash_sha256(cpf) << std::endl;
+    std::cout << "CPF anonimizado Mask " << mask_cpf(cpf) << std::endl;
+    std::cout << "Numero randomico: " << randomize(500) << std::endl;
+}
+\end{lstlisting}
+\end{frame}

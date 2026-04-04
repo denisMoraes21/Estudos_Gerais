@@ -1,0 +1,31 @@
+\begin{frame}[fragile]{Bancos de dados a aplicação}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+#include <iostream>
+#include <sqlite3.h>
+
+int main() {
+    sqlite3 *db;
+    char *errMsg = nullptr;
+
+    if (sqlite3_open("sensors.db", &db)) {
+        std::cerr << "Erro ao abrir banco: " << sqlite3_errmsg(db) << "\n";
+        return 1;
+    }
+
+    std::cout << "Banco pronto!\n";
+
+    const char *create_table_sql =
+        "CREATE TABLE IF NOT EXISTS sensors ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "name TEXT NOT NULL,"
+        "value REAL,"
+        "unit TEXT,"
+        "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP"
+        ");";
+
+    if (sqlite3_exec(db, create_table_sql, 0, 0, &errMsg) != SQLITE_OK) {
+        std::cerr << "Erro ao criar tabela: " << errMsg << "\n";
+        sqlite3_free(errMsg);
+    }
+\end{lstlisting}
+\end{frame}

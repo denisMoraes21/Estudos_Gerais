@@ -1,0 +1,26 @@
+\begin{frame}[fragile]{Segurança utilizando criptografia}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+    void exemplo_aes() {
+        EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    
+        unsigned char key[33] = "01234567890123456789012345678901";
+        unsigned char iv[17]  = "0123456789012345";
+    
+        unsigned char plaintext[] = "Mensagem secreta";
+        unsigned char ciphertext[128];
+        unsigned char decrypted[128];
+    
+        int len, ciphertext_len, decrypted_len;
+    
+        // Criptografar
+        EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
+        EVP_EncryptUpdate(ctx, ciphertext, &len, plaintext, strlen((char*)plaintext));
+        ciphertext_len = len;
+        EVP_EncryptFinal_ex(ctx, ciphertext + len, &len);
+        ciphertext_len += len;
+    
+        std::cout << "AES Criptografado: ";
+        for(int i = 0; i < ciphertext_len; i++)
+            printf("%02x", ciphertext[i]);
+\end{lstlisting}
+\end{frame}

@@ -1,0 +1,30 @@
+\begin{frame}[fragile]{Bancos de dados a aplicação}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+    const char *insert_sql =
+        "INSERT INTO sensors (name, value, unit) VALUES "
+        "('Temperatura', 25.3, 'C'),"
+        "('Umidade', 60.2, '%'),"
+        "('Pressao', 101.5, 'kPa');";
+
+    if (sqlite3_exec(db, insert_sql, 0, 0, &errMsg) != SQLITE_OK) {
+        std::cerr << "Erro ao inserir: " << errMsg << "\n";
+        sqlite3_free(errMsg);
+    }
+    const char *select_sql = "SELECT * FROM sensors;";
+    auto callback = [](void*, int argc, char **argv, char **colName) -> int {
+        for (int i = 0; i < argc; i++) {
+            std::cout << colName[i] << ": "
+                      << (argv[i] ? argv[i] : "NULL") << " | ";
+        }
+        std::cout << "\n";
+        return 0;
+    };
+    if (sqlite3_exec(db, select_sql, callback, 0, &errMsg) != SQLITE_OK) {
+        std::cerr << "Erro ao consultar: " << errMsg << "\n";
+        sqlite3_free(errMsg);
+    }
+    sqlite3_close(db);
+    return 0;
+}
+\end{lstlisting}
+\end{frame}

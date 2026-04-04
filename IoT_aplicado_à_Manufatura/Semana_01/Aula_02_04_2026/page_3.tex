@@ -1,0 +1,24 @@
+\begin{frame}[fragile]{Segurança utilizando criptografia}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+#include <iostream>
+#include <cstring>
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/sha.h>
+
+void exemplo_hash(std::string senha) {
+    std::string texto = senha;
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+
+    SHA256((unsigned char*)texto.c_str(), texto.size(), hash);
+
+    std::cout << "SHA-256: ";
+
+    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        printf("%02x", hash[i]);
+        
+    std::cout << "\n\n";
+}
+\end{lstlisting}
+\end{frame}

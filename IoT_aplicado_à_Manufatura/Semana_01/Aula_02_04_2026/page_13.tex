@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Nuvem e aplicação}
+\begin{lstlisting}[language=C, basicstyle=\tiny]
+    curl_easy_setopt(curl, CURLOPT_URL, "https://aula-33497-default-rtdb.firebaseio.com/teste.json");
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json.c_str());
+
+    // Capturar resposta
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+
+    // Certificado (IMPORTANTE)
+    curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
+
+    CURLcode res = curl_easy_perform(curl);
+
+    if (res != CURLE_OK) {
+        std::cerr << "Erro CURL: " << curl_easy_strerror(res) << std::endl;
+    } else {
+        std::cout << "Sucesso! Resposta do Firebase:\n" << response << std::endl;
+    }
+
+    curl_easy_cleanup(curl);
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
