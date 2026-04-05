@@ -1,0 +1,30 @@
+\begin{frame}[fragile]{Conectar no Wi-Fi}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+#include <WiFi.h>
+
+const char* ssid = "SEU_WIFI";
+const char* password = "SUA_SENHA";
+
+void setup() {
+    Serial.begin(115200);
+
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+
+    Serial.print("Conectando ao Wi-Fi");
+
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    Serial.println("\nConectado!");
+    Serial.print("IP: ");
+    Serial.println(WiFi.localIP());
+}
+    
+void loop() {
+}
+\end{lstlisting}
+\end{frame}
+

@@ -1,0 +1,24 @@
+\begin{frame}[fragile]{Envio HTTP com autenticação}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+void loop() {
+    if (WiFi.status() == WL_CONNECTED) {
+        HTTPClient http;
+        http.begin(serverURL);
+        http.addHeader("Content-Type", "application/json");
+        http.setAuthorization("usuario", "senha");
+        String json = "{\"valor\": 42}";
+        int httpResponseCode = http.POST(json);
+        Serial.print("Código HTTP: ");
+        Serial.println(httpResponseCode);
+        if (httpResponseCode > 0) {
+            String response = http.getString();
+            Serial.println(response);
+        }
+        http.end();
+    }
+    delay(5000);    
+}
+\end{lstlisting}
+    \end{frame}
+        
+        

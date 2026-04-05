@@ -1,0 +1,29 @@
+\begin{frame}[fragile]{Envio MQTT}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+const char* mqtt_server = "broker.hivemq.com"; // broker público
+const int mqtt_port = 1883;
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+void reconnect() {
+    while (!client.connected()) {
+    Serial.print("Conectando MQTT...");
+
+    if (client.connect("ESP32Client")) {
+        Serial.println("Conectado!");
+    } else {
+        Serial.print("Falhou, rc=");
+        Serial.print(client.state());
+        Serial.println(" tentando novamente...");
+        delay(2000);
+    }
+    }
+}
+\end{lstlisting}
+\end{frame}
+        
+        

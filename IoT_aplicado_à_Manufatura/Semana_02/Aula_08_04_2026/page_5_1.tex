@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Envio MQTT}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]        
+void setup() {
+    Serial.begin(115200);
+    client.setServer(mqtt_server, mqtt_port);
+}
+
+void loop() {
+    if (!client.connected()) {
+    reconnect();
+    }
+
+    client.loop();
+
+    String mensagem = "Hello MQTT!";
+    client.publish("esp32/teste", mensagem.c_str());
+
+    Serial.println("Mensagem enviada");
+
+    delay(5000);
+}
+\end{lstlisting}
+\end{frame}
+            
+            
