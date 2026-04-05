@@ -1,0 +1,31 @@
+\begin{frame}[fragile]{Comunicação peer to peer com Esp-Now}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]    
+void setup() {
+    Serial.begin(115200);
+
+    WiFi.mode(WIFI_STA);
+
+    Serial.print("Meu MAC: ");
+    Serial.println(WiFi.macAddress());
+
+    if (esp_now_init() != ESP_OK) {
+    Serial.println("Erro ESP-NOW");
+    return;
+    }
+
+    esp_now_register_send_cb(onDataSent);
+    esp_now_register_recv_cb(onDataRecv);
+
+    memcpy(peerInfo.peer_addr, peerMAC, 6);
+    peerInfo.channel = 0;
+    peerInfo.encrypt = false;
+
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+        Serial.println("Erro ao adicionar peer");
+        return;
+    }
+}
+\end{lstlisting}
+\end{frame}
+            
+                

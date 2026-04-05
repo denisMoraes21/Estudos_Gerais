@@ -1,0 +1,22 @@
+\begin{frame}[fragile]{Comunicação peer to peer com Esp-Now}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+// Callback de recebimento
+void onDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+    struct_message recebido;
+
+    memcpy(&recebido, incomingData, sizeof(recebido));
+
+    Serial.print("Recebido de: ");
+
+    for (int i = 0; i < 6; i++) {
+        Serial.printf("%02X", mac[i]);
+        if (i < 5) Serial.print(":");
+    }
+
+    Serial.print(" | valor: ");
+    Serial.println(recebido.valor);
+}
+\end{lstlisting}
+\end{frame}
+            
+            
