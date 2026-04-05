@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Leitura botão}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+#define BOTAO_PIN 4
+
+void setup() {
+    Serial.begin(115200);
+    pinMode(BOTAO_PIN, INPUT_PULLUP);
+}
+
+void loop() {
+    int estado = digitalRead(BOTAO_PIN);
+
+    if (estado == LOW) {
+        Serial.println("Botao pressionado");
+    } 
+    else {
+        Serial.println("Botao solto");
+    }
+
+    delay(200);
+}
+\end{lstlisting}
+\end{frame}
+            
+            

@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{PWM Led}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+#define LED_PIN 4
+
+void setup(){}
+
+void loop() {
+    for (int valor = 0; valor <= 255; valor++) {
+        analogWrite(LED_PIN, valor);
+        delay(10);
+    }
+
+    for (int valor = 255; valor >= 0; valor--) {
+        analogWrite(LED_PIN, valor);
+        delay(10);
+    }
+}
+\end{lstlisting}
+\end{frame}
+    
+    

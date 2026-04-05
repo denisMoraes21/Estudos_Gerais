@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Comando Relé}
+\begin{lstlisting}[language=C, basicstyle=\tiny\ttfamily]
+#define RELE_PIN 4
+
+void setup() {
+    pinMode(RELE_PIN, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(RELE_PIN, HIGH);
+    delay(2000);
+
+    digitalWrite(RELE_PIN, LOW);
+    delay(2000);
+}
+\end{lstlisting}
+
+Obs: Efeito Bouncing
+\end{frame}
+        
+        
