@@ -11,19 +11,20 @@ PubSubClient client(espClient);
 
 void reconnect() {
     while (!client.connected()) {
-    Serial.print("Conectando MQTT...");
+        Serial.print("Conectando MQTT...");
 
-    if (client.connect("ESP32Client")) {
-        Serial.println("Conectado!");
-    } else {
-        Serial.print("Falhou, rc=");
-        Serial.print(client.state());
-        Serial.println(" tentando novamente...");
-        delay(2000);
-    }
+        if (client.connect("ESP32Client")) {
+            Serial.println("Conectado!");
+        } else {
+            Serial.print("Falhou, rc=");
+            Serial.print(client.state());
+            Serial.println(" tentando novamente...");
+            delay(2000);
+        }
     }
 }
 \end{lstlisting}
+
 \end{frame}
         
         
