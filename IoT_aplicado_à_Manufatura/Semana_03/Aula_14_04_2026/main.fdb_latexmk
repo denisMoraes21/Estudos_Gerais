@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1776028351 "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_03/Aula_14_04_2026/main.tex" "main.pdf" "main" 1776028352
+["pdflatex"] 1776028533 "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_03/Aula_14_04_2026/main.tex" "main.pdf" "main" 1776028534
   "/etc/texmf/web2c/texmf.cnf" 1724350189 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_03/Aula_14_04_2026/main.tex" 1776026621 635 2329fe6f63fd50cc500e6611e7c9bd53 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -223,13 +223,13 @@
   "images/manutencao.png" 1776026473 47961 0738ab060c1936e12245a04f818597c8 ""
   "images/prazos.png" 1776026408 5568 969e92bafe49b81bf1120edbea21081d ""
   "images/testes.png" 1776026337 3618 5ecf69142132f91451f097c251a06cb4 ""
-  "main.aux" 1776028352 2418 3ea7dc9c537c86849d59887c4fa560c2 "pdflatex"
-  "main.nav" 1776028352 1202 a971439ba5eedf62b158aa4c3f07763d "pdflatex"
-  "main.out" 1776028352 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "main.aux" 1776028534 2418 3ea7dc9c537c86849d59887c4fa560c2 "pdflatex"
+  "main.nav" 1776028534 1202 a971439ba5eedf62b158aa4c3f07763d "pdflatex"
+  "main.out" 1776028534 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "main.tex" 1776026621 635 2329fe6f63fd50cc500e6611e7c9bd53 ""
-  "page_1.tex" 1776021764 448 9b543c66b1e2147c785fc268bc54e1cc ""
+  "page_1.tex" 1776028534 448 a368be3fc7629aca89d24a6bf335c654 ""
   "page_10.tex" 1776026496 483 e3ec63c2bfe923f1535074024c25d409 ""
-  "page_11.tex" 1776028351 358 2de4c660792edf738d5e4532fd7704ba ""
+  "page_11.tex" 1776028354 358 2de4c660792edf738d5e4532fd7704ba ""
   "page_2.tex" 1776024610 370 61a76be9bf53082be3cfe7ee3f2a870c ""
   "page_3.tex" 1776026233 398 641a168a056bd8bd05d32a0967bad924 ""
   "page_4.tex" 1776026276 350 02c61139b021bd1204e7162be9daec0f ""
