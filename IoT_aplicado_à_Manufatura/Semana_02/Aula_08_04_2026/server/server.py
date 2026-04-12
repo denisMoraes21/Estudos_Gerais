@@ -37,11 +37,11 @@ def receber_dados():
     if not data:
         return jsonify({"erro": "Nenhum JSON enviado"}), 400
 
-    nome = data.get("nome", "desconhecido")
+    valor = data.get("valor", "desconhecido")
+    print(f"Valor recebido: {valor}")
 
     return jsonify({
         "mensagem": "Dados recebidos com sucesso",
-        "nome": nome,
         "dados": data
     }), 200
 
