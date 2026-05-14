@@ -1,0 +1,22 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\begin{frame}[fragile]{Técnicas de teste - Teste de instruções}
+    \begin{itemize}
+        \item Verifica se todas as instruções executáveis do código foram executadas pelo menos uma vez.
+        \item Garantir que cada linha executável do código seja exercitada durante os testes.
+        \item 100\% de cobertura
+    \end{itemize}
+
+\begin{lstlisting}[language=Python]
+def dividir(a, b):
+    if b != 0:
+        return a / b
+
+def test_case_1():
+    assert dividir(10, 2) == 5
+    assert dividir(20, 0) == 20
+
+\end{lstlisting}
+
+\end{frame}

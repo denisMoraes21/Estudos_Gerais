@@ -1,0 +1,25 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\begin{frame}[fragile]{Técnicas de teste - Teste de instruções}
+    \begin{itemize}
+        \item Verifica se todos os caminhos de decisão do código foram executados.
+        \item Garantir que cada possível desvio do fluxo do programa seja testado.
+    \end{itemize}
+
+\begin{lstlisting}[language=Python]
+def verificar(x):
+    if x > 0:
+        print("positivo")
+    else:
+        print("negativo")
+
+def test_case_1():
+    assert verificar(5) == "positivo"
+
+def test_case_2():
+    assert verificar(-3) == "negativo"
+
+\end{lstlisting}
+
+\end{frame}

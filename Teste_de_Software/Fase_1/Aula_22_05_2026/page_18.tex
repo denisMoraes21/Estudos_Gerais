@@ -1,0 +1,27 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\begin{frame}{Técnicas de teste - Teste de tabela de decisão}
+    \begin{itemize}
+        \item Diferentes combinações de condições produzem diferentes ações/resultados.
+        \item Muito útil quando o sistema possui muitas regraas, multiplas condições.
+        \item Exemplo: Login - usuário só acessa se senha correta e conta ativa.
+    \end{itemize}
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Regra} & \textbf{Senha correta} & \textbf{Conta ativa} & \textbf{Permitir acesso} \\
+    \hline
+    R1 & V & V & X \\
+    \hline
+    R2 & V & F & \\
+    \hline
+    R3 & F & V & \\
+    \hline
+    R4 & F & F & \\
+    \hline
+    \end{tabular}
+    \end{table}
+\end{frame}

@@ -1,0 +1,13 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\begin{frame}{Técnicas de teste - Particionamento de equivalência}
+    \begin{itemize}
+        \item Reduzir a quantidade de casos de teste sem perder cobertura importante.
+        \item Imagine um campo de idade, de 18 até 60
+        \item Muitos casos de teste possíveis, mas podemos dividir em classes de equivalência.
+        \item Exemplo: Campo idade - Partição válida: 18-60; Teste: 30.
+        \item Partição inválida: $x < 18$; Teste: 15.
+        \item Partição inválida: $x > 60$; Teste: 65.
+    \end{itemize}
+\end{frame}

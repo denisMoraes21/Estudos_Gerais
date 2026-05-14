@@ -1,0 +1,26 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\begin{frame}{Técnicas de teste - Análise de Valor Limite}
+    \begin{itemize}
+        \item O comportamento do sistema depende do estado atual em que ele está.
+        \item O sistema pode responder de forma diferente ao mesmo evento dependendo do estado atual.
+        \item Exemplo: Conta bancária
+        \item Transição inválida: Logout estando deslogado, Comprar sem login. 
+    \end{itemize}
+
+    \begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Estado Atual} & \textbf{Evento} & \textbf{Próximo Estado} \\
+    \hline
+    Deslogado & Login correto & Logado \\
+    \hline
+    Deslogado & 3 erros & Bloqueado \\
+    \hline
+    Logado & Logout & Deslogado \\
+    \hline
+    \end{tabular}
+    \end{table}
+\end{frame}
