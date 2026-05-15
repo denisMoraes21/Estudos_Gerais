@@ -1,19 +1,28 @@
 %! Author = Denis Moraes Guimarães
 %! Date = 21/05/2026
 
-\begin{frame}{Bugs que não conseguiram ser evitados}
-    \textbf{Falha do Ariane 5 Flight 501}
-    \begin{columns}
-        \column{0.5\textwidth}
-        \begin{itemize}
-            \item \textbf{Causa:} overflow de conversão de um número de 64 bits para 16 bits.
-            \item \textbf{Efeito:} o foguete europeu explodiu ~40 segundos após o lançamento.
-        \end{itemize}
+% Slide 9
+\begin{frame}[fragile]{Testes funcionais - Integração}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+import unittest
+import requests
 
-        \column{0.5\textwidth}
-        \centering
-        \href{https://www.youtube.com/watch?v=N6PWATvLQCY}{
-            \includegraphics[width=0.8\textwidth]{images/ariane.jpg}
-        }
-    \end{columns}
+class TestHTTPPublishAndResponse(unittest.TestCase):
+    BASE_URL = "http://localhost:5000"
+    def test_publish_and_get_response(self):
+        resp = requests.post(
+            f"{self.BASE_URL}/publish",
+            json={"message": "ping"}
+        )
+
+        self.assertEqual(resp.status_code, 200)
+        resp = requests.get(f"{self.BASE_URL}/response")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertIn("message", data)
+        self.assertEqual(data["message"], "pong")
+
+if __name__ == "__main__":
+    unittest.main()
+\end{lstlisting}
 \end{frame}

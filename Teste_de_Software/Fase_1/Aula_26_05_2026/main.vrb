@@ -1,15 +1,23 @@
-\frametitle{Principais desafios}
-Ambientes hostis:
-    \begin{columns}
-        \column{0.5\textwidth}
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.8\textwidth]{images/pic_and_place.jpeg}
-        \end{figure}
+\frametitle{Testes funcionais - Integração}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+import unittest
+import requests
 
-    \column{0.5\textwidth}
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.8\textwidth]{images/forno.png}
-        \end{figure}
-    \end{columns}
+class TestHTTPPublishAndResponse(unittest.TestCase):
+    BASE_URL = "http://localhost:5000"
+    def test_publish_and_get_response(self):
+        resp = requests.post(
+            f"{self.BASE_URL}/publish",
+            json={"message": "ping"}
+        )
+
+        self.assertEqual(resp.status_code, 200)
+        resp = requests.get(f"{self.BASE_URL}/response")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertIn("message", data)
+        self.assertEqual(data["message"], "pong")
+
+if __name__ == "__main__":
+    unittest.main()
+\end{lstlisting}
