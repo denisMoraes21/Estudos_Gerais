@@ -1,0 +1,259 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+
+\begin{tabular}{|>{\centering\arraybackslash}m{0.20\textwidth}|>{\centering\arraybackslash}m{0.73\textwidth}|}
+\hline
+
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+\textbf{\scriptsize CURSO TÉCNICO DE NÍVEL MÉDIO EM INFORMÁTICA PARA INTERNET} \\[0.15cm]
+\textbf{\small Disciplina: Testes de Software} \\[0.15cm]
+\textbf{\small AVALIAÇÃO 1}
+}
+
+\tabularnewline
+
+\hline
+\end{tabular}
+
+\end{table}
+\vspace{0.1cm}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|>{\raggedright\arraybackslash}m{0.70\textwidth}|>{\raggedright\arraybackslash}m{0.23\textwidth}|}
+\hline
+
+\textbf{Aluno(a):} & \textbf{Data:} \\
+\hline
+
+\textbf{Professor(a):} & \textbf{Nota:} \\
+\hline
+
+\end{tabular}
+
+\end{table}
+
+\vspace{0.05cm}
+
+\noindent
+\begin{minipage}{\textwidth}
+\scriptsize
+\begin{itemize}[itemsep=0pt, topsep=0pt, parsep=0pt]
+    \item Responda a prova com caneta azul ou preta e não use corretivo, do contrário o(a) aluno(a) não terá direito a questionamentos sobre a correção da prova.
+    \item Marque a alternativa escolhida com preenchimento no Cartão-resposta.
+    \item Proibido, durante a prova, o uso de telefone celular e/ou aparelhos eletroeletrônicos, empréstimos de materiais, conversas paralelas, nenhum tipo de consulta e sair da sala de aula sem autorização.
+    \item O(a) aluno(a) receberá nota 0,0 (Zero), caso seja surpreendido em comunicação com outro aluno de forma verbal ou escrita.
+\end{itemize}
+\end{minipage}
+
+\vspace{0.5cm}
+\noindent\rule{\textwidth}{1pt}
+
+\begin{multicols}{2}
+\raggedcolumns
+\textbf{Cartão-resposta:}
+
+\vspace{0.2cm}
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Questões} & A & B & C & D & E \\
+\hline
+01 & O & O & O & O & O \\
+\hline
+02 & O & O & O & O & O \\
+\hline
+03 & O & O & O & O & O \\
+\hline
+04 & O & O & O & O & O \\
+\hline
+05 & O & O & O & O & O \\
+\hline
+\end{tabular}
+
+\vspace{0.7cm}
+
+\begin{enumerate}[leftmargin=*]
+
+\item \textbf{(0,5 pontos)} Um sistema funciona corretamente sozinho, mas falha ao conectar com um banco de dados. Qual nível de teste detecta melhor isso?
+
+\begin{enumerate}[label=(\Alph*)]
+\item Unitário
+\item Integração
+\item Aceitação
+\item Usabilidade
+\item Sistema
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Sistema atende regras corretas, mas fica lento com muitos usuários. Qual tipo de teste detecta isso?
+
+\begin{enumerate}[label=(\Alph*)]
+\item Funcional
+\item Integração
+\item Performance
+\item Unitário
+\item Caixa-Branca
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Qual alternativa representa melhor a pirâmide de testes?
+
+\begin{enumerate}[label=(\Alph*)]
+\item Muitos E2E e poucos unitários
+\item Apenas testes manuais
+\item Muitos unitários e poucos E2E
+\item Apenas integração
+\item Caixa-Cinza
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Um bug report sem passos para reprodução causa:
+
+\begin{enumerate}[label=(\Alph*)]
+\item Correção mais rápida
+\item Melhor rastreabilidade
+\item Dificuldade na análise
+\item Mais cobertura
+\item Falta de evidência
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} O programador escreve uma condição errada no código. Isso é um:
+
+\begin{enumerate}[label=(\Alph*)]
+\item Falha
+\item Erro humano
+\item Regressão
+\item Performance
+\item Relatório
+\end{enumerate}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Uma calculadora aceita apenas números inteiros entre -999 e 999. Utilizando análise de valor limite:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item Determine os casos de teste mínimos;
+    \item Identifique quais valores são válidos e inválidos.
+\end{itemize}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Um sistema possui as seguintes regras:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item Apenas usuários administradores podem excluir contas;
+    \item Usuários comuns não podem excluir contas;
+    \item Contas bloqueadas não podem ser excluídas;
+    \item Exclusão de conta exige confirmação.
+\end{itemize}
+
+Utilizando tabela de decisão:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item Construa as combinações relevantes;
+    \item Identifique ações esperadas;
+    \item Determine quais regras podem ser eliminadas por redundância.
+\end{itemize}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Diferencie:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item teste funcional;
+    \item teste não funcional;
+\end{itemize}
+
+Para cada um:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item apresente um exemplo prático;
+    \item cite uma técnica associada;
+\end{itemize}
+
+\vspace{0.2cm}
+\columnbreak
+\item \textbf{(0,5 pontos)} Considere o seguinte pseudocódigo de uma calculadora:
+
+\begin{lstlisting}[language=Python,
+frame=single,
+breaklines=true,
+columns=fullflexible
+]
+def calcular(a, b, op):
+    if op == "+":
+        return a + b
+    elif op == "-":
+        return a - b
+    elif op == "*":
+        return a * b
+    elif op == "/":
+        if b == 0:
+            return "Erro"
+        return a / b
+\end{lstlisting}
+
+Responda:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item quais caminhos precisam ser testados para cobertura de decisão;
+    \item quais casos de teste mínimos atingem 100% de cobertura de decisão;
+    \item qual técnica de teste caixa-preta também pode ser aplicada nesse código;
+\end{itemize}
+
+\vspace{0.2cm}
+
+\item \textbf{(0,5 pontos)} Um sistema calcula desconto conforme a regra:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item Até R\$100 → sem desconto
+    \item Acima de R\$100 até R\$500 → 10%
+    \item Acima de R\$500 → 20%
+\end{itemize}
+
+Utilizando a técnica de tabela de decisão:
+
+\begin{itemize}[itemsep=0pt, topsep=0pt]
+    \item Monte os cenários mínimos necessários;
+    \item Identifique entradas, condições e saídas;
+\end{itemize}
+
+\end{enumerate}
+
+\end{multicols}
+
+\vfill
+
+\begin{center}
+\textbf{Boa Avaliação!!}
+\end{center}
+
+\end{document}
