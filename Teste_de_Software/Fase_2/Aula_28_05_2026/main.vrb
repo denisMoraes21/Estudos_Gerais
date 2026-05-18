@@ -1,0 +1,17 @@
+\frametitle{Testes Ad Hoc - Vantagens/Desvantagens}
+Vantagens:
+    \begin{itemize}
+        \item Muito rápido;
+        \item Simples;
+        \item Pode encontrar falhas óbvias inesperadas.
+    \end{itemize}
+    Desvantagens:
+    \begin{itemize}
+        \item Pouca rastreabilidade;
+        \item Difícil reproduzir;
+        \item Cobertura desconhecida.
+    \end{itemize}
+
+    \begin{center}
+        \includegraphics[width=0.3\textwidth]{images/ad.png}
+    \end{center}

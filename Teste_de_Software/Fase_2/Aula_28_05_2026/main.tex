@@ -1,0 +1,29 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 21/05/2026
+
+\documentclass{beamer}
+
+\usepackage{ppgee_style}
+
+\input{page_1}
+
+\begin{document}
+    \begin{frame}
+        \titlepage
+        \begin{tikzpicture}[remember picture, overlay]
+            \node[anchor=south east, xshift=-0.3cm, yshift=0.3cm] 
+            at (current page.south east)
+            {\includegraphics[width=2cm]{images/fpftech.png}};
+        \end{tikzpicture}
+    \end{frame}
+
+    \input{page_2}
+    \input{page_3}
+    \input{page_4}
+    \input{page_5}
+    \input{page_6}
+    \input{page_7}
+    \input{page_8}
+    \input{page_9}
+    \input{page_10}
+\end{document}

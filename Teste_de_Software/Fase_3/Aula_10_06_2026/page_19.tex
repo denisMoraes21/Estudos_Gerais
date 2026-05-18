@@ -1,0 +1,86 @@
+\begin{frame}{Testes não funcionais - Performance}
+
+Tipos de teste de performance:
+
+\begin{table}[H]
+\tiny
+\begin{tabular}{|p{1.8cm}|p{4cm}|p{4cm}|}
+\hline
+\textbf{Teste} & \textbf{Objetivo} & \textbf{Exemplo} \\
+\hline
+
+Carga & Avaliar carga esperada & 5.000 usuários simultâneos \\
+\hline
+
+Estresse & Encontrar limite do sistema & Aumentar carga até falhar \\
+\hline
+
+Escalabilidade & Verificar crescimento do sistema & Adicionar servidores \\
+\hline
+
+Volume & Avaliar muitos dados & Banco com milhões de registros \\
+\hline
+
+Capacidade & Descobrir capacidade máxima & Máximo de usuários suportados \\
+\hline
+
+Estabilidade & Verificar funcionamento contínuo & Sistema ativo por dias \\
+\hline
+
+Concorrência & Avaliar acessos simultâneos & Edição simultânea de registros \\
+\hline
+
+Endurance & Detectar degradação temporal & Carga constante por 48h \\
+\hline
+
+Pico & Avaliar aumento repentino & Explosão de acessos \\
+\hline
+
+\end{tabular}
+\end{table}
+
+\vspace{0.2cm}
+
+Métricas:
+
+\begin{table}[H]
+\tiny
+\renewcommand{\arraystretch}{1.1}
+
+\begin{tabular}{|p{4.0cm}|p{4.5cm}|}
+\hline
+\textbf{Métrica} & \textbf{Descrição} \\
+\hline
+
+Tempo de resposta &
+Tempo para responder uma requisição \\
+\hline
+
+Throughput &
+Quantidade de operações por segundo \\
+\hline
+
+Latência &
+Tempo entre solicitação e resposta \\
+\hline
+
+Taxa de erro &
+Percentual de falhas \\
+\hline
+
+Uso de CPU &
+Consumo do processador \\
+\hline
+
+Uso de memória &
+Consumo de RAM \\
+\hline
+
+Concorrência &
+Número de usuários simultâneos \\
+\hline
+
+\end{tabular}
+\end{table}
+
+\end{frame}
