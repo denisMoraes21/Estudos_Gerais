@@ -1,19 +1,34 @@
 %! Author = Denis Moraes Guimarães
 %! Date = 21/05/2026
 
-\begin{frame}{Pirâmide de testes e níveis}
-    \begin{columns}[c]
+\begin{frame}[fragile]{Exemplo}
+    \section*{Exemplo de Teste com unittest}
 
-        % Texto
-        \column{0.5\textwidth}
-        \begin{itemize}
-            \item Modelo de estratégia de automação de testes que ajuda a organizar quantos testes fazer em cada nível e onde investir mais esforço.
-        \end{itemize}
+\begin{lstlisting}[float,caption={Código Python},label={lst:python}]
+import unittest
 
-        % Imagem
-        \column{0.5\textwidth}
-        \centering
-        \includegraphics[width=0.9\textwidth]{images/piramide.png}
+def verificar_idade(idade):
+    if idade >= 18:
+        return "Maior de idade"
+    else:
+        return "Menor de idade"
 
-    \end{columns}
+assert verificar_idade(20) == "Maior de idade"
+assert verificar_idade(15) == "Menor de idade"
+
+class TestVerificarIdade(unittest.TestCase):
+
+    def test_maior_de_idade(self):
+        self.assertEqual(
+            verificar_idade(20),
+            "Maior de idade"
+        )
+
+    def test_menor_de_idade(self):
+        self.assertEqual(
+            verificar_idade(15),
+            "Menor de idade"
+        )
+\end{lstlisting}
+
 \end{frame}
