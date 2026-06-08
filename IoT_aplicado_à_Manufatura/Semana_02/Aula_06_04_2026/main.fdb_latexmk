@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1775425414 "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_02/Aula_06_04_2026/main.tex" "main.pdf" "main" 1775425415
+["pdflatex"] 1780056779 "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_02/Aula_06_04_2026/main.tex" "main.pdf" "main" 1780056780
   "/etc/texmf/web2c/texmf.cnf" 1724350189 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/denis/Documentos/GitHub/Cpp_Exercises/IoT_aplicado_à_Manufatura/Semana_02/Aula_06_04_2026/main.tex" 1775425415 596 f1c017a1fdfda649f12cb1546c70ee92 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -212,7 +212,7 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1724775982 4379155 98693266ff65f58d9f98aff394de12d2 ""
-  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1724776004 2800391 ac2eee47bcf283505c758bafbb4f165f ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1776620677 2797671 c97113b2e4c562a70b19119d72d3f79b ""
   "fase_1.tex" 1775425389 140 d9547afac9b2a741d7eaef882dcb823b ""
   "images/botao.png" 1775398127 114974 7550ddc000d5f82b684e56d1196b4a08 ""
   "images/dht11.png" 1775396800 28646 6121078cb97e66944a8877386cb20d69 ""
@@ -223,11 +223,11 @@
   "images/led.png" 1775397731 23774 90f2e9adb4f73d4290f57201798112fe ""
   "images/project.png" 1775333136 68569 608bfd9ad0df83a8de74ef31062d3553 ""
   "images/relé.png" 1775398014 94426 de3d729f86c1dd7bbc17085435f93afc ""
-  "main.aux" 1775425415 2154 907d8c2dfae5ccaee43030bebfb926a1 "pdflatex"
-  "main.nav" 1775425415 1011 83c4ff004b77303d878240d0bcc95e05 "pdflatex"
-  "main.out" 1775425415 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "main.aux" 1780056780 2154 907d8c2dfae5ccaee43030bebfb926a1 "pdflatex"
+  "main.nav" 1780056780 1011 83c4ff004b77303d878240d0bcc95e05 "pdflatex"
+  "main.out" 1780056780 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "main.tex" 1775425415 596 f1c017a1fdfda649f12cb1546c70ee92 ""
-  "main.vrb" 1775425415 548 a1431c1d039b3ae1bcf24ae2d6e007bc "pdflatex"
+  "main.vrb" 1780056780 548 a1431c1d039b3ae1bcf24ae2d6e007bc "pdflatex"
   "page_1.tex" 1775333404 279 113d76eee60ddadc6a3506e70f12f9b0 ""
   "page_2.tex" 1775333608 280 6536b60ec28df75698293f58517e4b13 ""
   "page_3.tex" 1775396860 129 1912df44c15c4f620cc445a7b4b979ff ""

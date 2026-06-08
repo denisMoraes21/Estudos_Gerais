@@ -1,23 +1,30 @@
-\frametitle{Testes funcionais - Integração}
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-import unittest
-import requests
+\frametitle{Exemplo}
+\section*{Exemplo de Teste com unittest}
 
-class TestHTTPPublishAndResponse(unittest.TestCase):
-    BASE_URL = "http://localhost:5000"
-    def test_publish_and_get_response(self):
-        resp = requests.post(
-            f"{self.BASE_URL}/publish",
-            json={"message": "ping"}
+\begin{lstlisting}[float,caption={Código Python},label={lst:python}]
+import unittest
+
+def verificar_idade(idade):
+    if idade >= 18:
+        return "Maior de idade"
+    else:
+        return "Menor de idade"
+
+assert verificar_idade(20) == "Maior de idade"
+assert verificar_idade(15) == "Menor de idade"
+
+class TestVerificarIdade(unittest.TestCase):
+
+    def test_maior_de_idade(self):
+        self.assertEqual(
+            verificar_idade(20),
+            "Maior de idade"
         )
 
-        self.assertEqual(resp.status_code, 200)
-        resp = requests.get(f"{self.BASE_URL}/response")
-        self.assertEqual(resp.status_code, 200)
-        data = resp.json()
-        self.assertIn("message", data)
-        self.assertEqual(data["message"], "pong")
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_menor_de_idade(self):
+        self.assertEqual(
+            verificar_idade(15),
+            "Menor de idade"
+        )
 \end{lstlisting}
+
