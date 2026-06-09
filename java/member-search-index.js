@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"<Unnamed>","c":"AreaPoligono","l":"AreaPoligono()","u":"%3Cinit%3E()"},{"p":"<Unnamed>","c":"AreaPoligono","l":"main(String[])","u":"main(java.lang.String[])"}];updateSearchResults();
