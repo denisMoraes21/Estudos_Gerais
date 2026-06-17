@@ -85,23 +85,23 @@ Node *search(List *p_list, int value) {
     return NULL;
 }
 
-int main() {
-    List *linked_list;
-    linked_list = createList(linked_list);
-    insertBegin(linked_list, 65);
-    insertBegin(linked_list, 52);
-    removeItem(linked_list, 65);
-    insertBegin(linked_list, 39);
-    insertBegin(linked_list, 36);
-    insertBegin(linked_list, 13);
-    printListPre(linked_list);
+// int main() {
+//     List *linked_list;
+//     linked_list = createList(linked_list);
+//     insertBegin(linked_list, 65);
+//     insertBegin(linked_list, 52);
+//     removeItem(linked_list, 65);
+//     insertBegin(linked_list, 39);
+//     insertBegin(linked_list, 36);
+//     insertBegin(linked_list, 13);
+//     printListPre(linked_list);
 
-    Node *node;
-    int value = 39;
-    node = search(linked_list, value);
-    if (node != NULL) printf("Valor %d encontrado\n", value); 
-    else printf("Valor %d nao encontrado\n", value);
+//     Node *node;
+//     int value = 39;
+//     node = search(linked_list, value);
+//     if (node != NULL) printf("Valor %d encontrado\n", value); 
+//     else printf("Valor %d nao encontrado\n", value);
     
-    freeList(linked_list);
-    return 0;
-}
+//     freeList(linked_list);
+//     return 0;
+// }
