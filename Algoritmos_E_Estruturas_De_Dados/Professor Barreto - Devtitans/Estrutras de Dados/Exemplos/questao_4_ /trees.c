@@ -75,12 +75,12 @@ s_binary_tree* freeBTree(s_binary_tree *p_tree) {
     return NULL;
 }
 
-int search(s_binary_tree *p_tree, char letter) {
+int search(s_binary_tree *p_tree, int number) {
     if (emptyBTree(p_tree)) {
         return 0;
     }
     else {
-        return p_tree->info==letter || search(p_tree->p_branch_left, letter) || search(p_tree->p_branch_right, letter);
+        return p_tree->info==number || search(p_tree->p_branch_left, number) || search(p_tree->p_branch_right, number);
     }
 }
 
@@ -115,64 +115,64 @@ s_generic_tree* freeGT(s_generic_tree *p_tree) {
     return NULL;
 }
 
-int main() {
-    s_binary_tree* d = create('d', NULL, NULL);
-    s_binary_tree* b = create('b', init(), d);
-    s_binary_tree* e = create('e', init(), init());
-    s_binary_tree* f = create('f', init(), init());
-    s_binary_tree* c = create('c', e, f);
-    s_binary_tree* a = create('a', b,c);
+// int main() {
+//     s_binary_tree* d = create('d', NULL, NULL);
+//     s_binary_tree* b = create('b', init(), d);
+//     s_binary_tree* e = create('e', init(), init());
+//     s_binary_tree* f = create('f', init(), init());
+//     s_binary_tree* c = create('c', e, f);
+//     s_binary_tree* a = create('a', b,c);
     
-    printPre(a); printf("\n");
-    printBSequence(a); printf("\n");
-    printPos(a); printf("\n");
-    printBSequence(c); printf("\n");
+//     printPre(a); printf("\n");
+//     printBSequence(a); printf("\n");
+//     printPos(a); printf("\n");
+//     printBSequence(c); printf("\n");
 
-    char caractere;
-    caractere = 'f';
-    if (search(a, caractere)) printf("Caractere %c encontrado!\n", caractere);
-    else printf("Caractere %c nao encontrado!\n", caractere);
+//     char caractere;
+//     caractere = 'f';
+//     if (search(a, caractere)) printf("Caractere %c encontrado!\n", caractere);
+//     else printf("Caractere %c nao encontrado!\n", caractere);
 
-    // Enxerto
-    a->p_branch_left->p_branch_left = create(
-        'x', 
-        create(
-            'y',
-            init(),
-            init()), 
-            create(
-                'z',
-                init(),
-                init()
-            )
-        );
-    printBSequence(a); printf("\n");
+//     // Enxerto
+//     a->p_branch_left->p_branch_left = create(
+//         'x', 
+//         create(
+//             'y',
+//             init(),
+//             init()), 
+//             create(
+//                 'z',
+//                 init(),
+//                 init()
+//             )
+//         );
+//     printBSequence(a); printf("\n");
 
-    // Poda
-    a->p_branch_right->p_branch_left = freeBTree(
-        a->p_branch_right->p_branch_left
-    );   // elimina o 'e'
-    printBSequence(a); printf("\n");
+//     // Poda
+//     a->p_branch_right->p_branch_left = freeBTree(
+//         a->p_branch_right->p_branch_left
+//     );   // elimina o 'e'
+//     printBSequence(a); printf("\n");
 
-    a = freeBTree(a);
+//     a = freeBTree(a);
 
-    int valor;
-    s_generic_tree* p_generic_tree = NULL;
-    p_generic_tree = insertGT(p_generic_tree, 30);
-    p_generic_tree = insertGT(p_generic_tree, 10);
-    p_generic_tree = insertGT(p_generic_tree, 58);
-    p_generic_tree = insertGT(p_generic_tree, 41);
-    p_generic_tree = insertGT(p_generic_tree, 60);
-    p_generic_tree = insertGT(p_generic_tree, 5);
+//     int valor;
+//     s_generic_tree* p_generic_tree = NULL;
+//     p_generic_tree = insertGT(p_generic_tree, 30);
+//     p_generic_tree = insertGT(p_generic_tree, 10);
+//     p_generic_tree = insertGT(p_generic_tree, 58);
+//     p_generic_tree = insertGT(p_generic_tree, 41);
+//     p_generic_tree = insertGT(p_generic_tree, 60);
+//     p_generic_tree = insertGT(p_generic_tree, 5);
 
-    printGTSequence(p_generic_tree); printf("\n");
+//     printGTSequence(p_generic_tree); printf("\n");
 
-    valor = 58;
-    if (searchGT(p_generic_tree, valor)) printf("Valor %d encontrado\n", valor);
-    else printf("Valor %d nao encontrado\n", valor);
+//     valor = 58;
+//     if (searchGT(p_generic_tree, valor)) printf("Valor %d encontrado\n", valor);
+//     else printf("Valor %d nao encontrado\n", valor);
 
-    valor = 69;
-    if (searchGT(p_generic_tree, valor)) printf("Valor %d encontrado\n", valor);
-    else printf("Valor %d nao encontrado\n", valor);
+//     valor = 69;
+//     if (searchGT(p_generic_tree, valor)) printf("Valor %d encontrado\n", valor);
+//     else printf("Valor %d nao encontrado\n", valor);
 
-}
+// }
