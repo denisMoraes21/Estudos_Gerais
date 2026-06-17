@@ -1,10 +1,11 @@
 /*
- * @file    questao_4
- * @brief   compare linked lists
+ * @file    questao_5
+ * @brief   Search elements
  *
- * Podar a sub-árvore que possui raiz com a informação “5” (inclusive). Utilize a função de busca
- * para buscar o nó com valor “5” e, depois disso, fazer a poda. Imprimir a árvore resultante usando
- * os três métodos (pré-fixado, in-fixado e pós-fixado).
+ * Baixe o código arvbinbusca.c. Implementar uma função que imprima a árvore in-fixada.
+ * Implementar uma função main que insira os seguintes elementos 1, 2, 3, 5, 15 e 7. Após cada
+ * inserção imprima a árvore. Buscar os elementos 2 e 8, imprimindo na tela se cada elemento foi
+ * encontrado ou não.
  *
  * @author Denis Moraes Guimarães
  * @date 2026-06-17
