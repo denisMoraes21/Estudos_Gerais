@@ -1,4 +1,0 @@
-CompileFlags:
-  Add:
-    - --target=arm-none-eabi
-    - -I/usr/include/newlib
