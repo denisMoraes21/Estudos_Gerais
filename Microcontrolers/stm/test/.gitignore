@@ -1,0 +1,6 @@
+build
+mx.scratch
+!.settings
+build/
+CM4/build/
+CM7/build/
