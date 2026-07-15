@@ -1,3 +1,13 @@
+/**
+ * @file logger.c
+ * @brief Logging module for dual-core STM32H7.
+ * @author Denis Moraes Guimarães
+ *
+ * Log messages are buffered in a ring buffer and transmitted through
+ * USART3. Access to the shared UART is protected by the Hardware
+ * Semaphore (HSEM) to prevent concurrent access from CM7 and CM4.
+ */
+
 #include "logger.h"
 
 #include "ring_buffer.h"
@@ -6,6 +16,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include "definitions.h"
 
 extern UART_HandleTypeDef huart3;
 
@@ -23,11 +34,22 @@ static const char *level_to_string(log_level_t level)
     }
 }
 
+/**
+ * @brief Initializes the logger.
+ */
 void logger_init(void)
 {
     rb_init(&rb);
 }
 
+/**
+ * @brief Formats and stores a log message.
+ *
+ * The message is written to the ring buffer and transmitted.
+ *
+ * @param level Log level.
+ * @param fmt printf-style format string.
+ */
 void log_write(log_level_t level,
                const char *fmt,
                ...)
@@ -35,8 +57,10 @@ void log_write(log_level_t level,
 
     #if defined(CORE_CM7)
         #define CORE_NAME "CM7"
+        #define PROCID 0x05U
     #elif defined(CORE_CM4)
         #define CORE_NAME "CM4"
+        #define PROCID 0x10U
     #else
         #define CORE_NAME "UNKNOWN"
     #endif
@@ -85,21 +109,34 @@ void log_write(log_level_t level,
     logger_process();
 }
 
+
+/**
+ * @brief Transmits pending log data.
+ *
+ * Acquires the HSEM before accessing USART3 and releases it
+ * after transmission.
+ */
 void logger_process(void)
 {
-    uint8_t c;
-
-    while (rb_pop(&rb, &c))
+    // Separate by semaphore to access hardware 
+    if (HAL_HSEM_Take(HSEM_ID_1, PROCID) == HAL_OK)
     {
-        /* SWV */
-        ITM_SendChar(c);
+        uint8_t c;
 
-        /* UART */
-        HAL_UART_Transmit(
-            &huart3,
-            &c,
-            1,
-            HAL_MAX_DELAY
-        );
+        while (rb_pop(&rb, &c))
+        {
+            // SWV
+            ITM_SendChar(c);
+
+            // UART
+            HAL_UART_Transmit(
+                &huart3,
+                &c,
+                1,
+                HAL_MAX_DELAY
+            );
+        }
+
+        HAL_HSEM_Release(HSEM_ID_1, PROCID);
     }
 }

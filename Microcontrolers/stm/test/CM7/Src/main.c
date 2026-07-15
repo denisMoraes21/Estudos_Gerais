@@ -14,13 +14,15 @@
   *
   ******************************************************************************
   */
+#include "main.h"
+#include "FreeRTOS.h"
+#include "cmsis_os2.h"
 
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 
-#include "main.h"
 #include "logger.h"
 #include "ring_buffer.h"
 #include "definitions.h"
@@ -31,11 +33,19 @@
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart3;
 
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
 void SystemClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
+void StartDefaultTask(void *argument);
 
 
 /**
@@ -46,66 +56,47 @@ int main(void)
 {
 
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-  int32_t timeout;
+    int32_t timeout;
 #endif 
-  
-  MPU_Config();
+    MPU_Config();
 
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-  timeout = 0xFFFF;
-  while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
-  if ( timeout < 0 )
-  {
-  Error_Handler();
-  }
+    timeout = 0xFFFF;
+    while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
+    if ( timeout < 0 )
+    {
+    Error_Handler();
+    }
 #endif 
 
-  HAL_Init();
+    HAL_Init();
 
-  HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
-  SystemClock_Config();
+    HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
+    SystemClock_Config();
   
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-__HAL_RCC_HSEM_CLK_ENABLE();
-HAL_HSEM_FastTake(HSEM_ID_0);
-HAL_HSEM_Release(HSEM_ID_0,0);
-timeout = 0xFFFF;
-while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
-if ( timeout < 0 )
-{
-Error_Handler();
-}
-#endif
-
-  MX_GPIO_Init();
-  MX_USART3_UART_Init();
-  MX_USART1_UART_Init();
-
-  logger_init();
-
-  while (1)
-  {
-    LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
- 
-    uint32_t PROCID   = 0x05U;
-
-    // o HSEM_ID_0 já está sendo usado para acordar o CM4 
-    if (HAL_HSEM_Take(HSEM_ID_1, PROCID) == HAL_OK)
+    __HAL_RCC_HSEM_CLK_ENABLE();
+    HAL_HSEM_FastTake(HSEM_ID_0);
+    HAL_HSEM_Release(HSEM_ID_0,0);
+    timeout = 0xFFFF;
+    while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
+    if ( timeout < 0 )
     {
-        HAL_Delay(2000);
-        LOG_INFO("CM7 PEGOU HSEM %lu", HSEM_ID_1);
-
-        uint32_t reg = HSEM->R[HSEM_ID_1];
-
-        LOG_INFO("HSEM=0x%08lX", reg);
-
-        HAL_HSEM_Release(HSEM_ID_1, PROCID);
+    Error_Handler();
     }
-    else
+#endif 
+
+    MX_GPIO_Init();
+    MX_USART3_UART_Init();
+    MX_USART1_UART_Init();
+
+    logger_init();
+
+    while (1)
     {
-        LOG_INFO("CM7 PERDEU HSEM");
+        LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
+        HAL_Delay(200);
     }
-  }
 }
 
 /**
@@ -276,6 +267,24 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
 
  /* MPU Configuration */
 
