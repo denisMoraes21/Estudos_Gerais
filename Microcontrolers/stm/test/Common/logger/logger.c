@@ -11,7 +11,6 @@ extern UART_HandleTypeDef huart3;
 
 static RingBuffer rb;
 
-/* Função privada */
 static const char *level_to_string(log_level_t level)
 {
     switch (level)
@@ -81,6 +80,9 @@ void log_write(log_level_t level,
     {
         rb_push(&rb, buffer[i]);
     }
+
+    // Comentar essa linha se quiser mandar o buffer só no final do ciclo
+    logger_process();
 }
 
 void logger_process(void)

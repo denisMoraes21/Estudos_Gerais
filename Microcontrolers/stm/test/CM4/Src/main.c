@@ -18,53 +18,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32h745xx.h"
 #include "string.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
 
 #include "logger.h"
 #include "ring_buffer.h"
 
-// extern UART_HandleTypeDef huart3;
-
-// #define LOG_INFO(fmt, ...)  log_write("INFO", fmt, ##__VA_ARGS__)
-// #define LOG_ERROR(fmt, ...) log_write("ERROR", fmt, ##__VA_ARGS__)
-// #define LOG_DEBUG(fmt, ...) log_write("DEBUG", fmt, ##__VA_ARGS__)
-
-// void log_write(const char *level, const char *fmt, ...)
-// {
-//     char buffer[256];
-
-//     int offset = snprintf(
-//         buffer,
-//         sizeof(buffer),
-//         "[%s] ",
-//         level
-//     );
-
-//     va_list args;
-//     va_start(args, fmt);
-
-//     vsnprintf(
-//         buffer + offset,
-//         sizeof(buffer) - offset,
-//         fmt,
-//         args
-//     );
-
-//     va_end(args);
-
-
-//     strcat(buffer, "\r\n");
-
-
-//     HAL_UART_Transmit(
-//         &huart3,
-//         (uint8_t *)buffer,
-//         strlen(buffer),
-//         HAL_MAX_DELAY
-//     );
-// }
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -220,22 +182,38 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+
   MX_USART3_UART_Init();
 
   // HAL_StatusTypeDef status;
-  int contador = 0;
   volatile uint32_t cm4_alive = 0;
 
   logger_init();
 
+  
+
   while (1)
   {
     cm4_alive++;
-    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");    
 
-    logger_process();
+    uint32_t HSEMID = 1;
+    uint32_t PROCID = 10;
 
-    HAL_Delay(3000);
+    if(HAL_HSEM_Take(HSEMID, PROCID)==HAL_OK)
+    {
+        HAL_Delay(4000);
+        LOG_INFO("CM4 PEGOU HSEM %lu", HSEMID);
+        uint32_t reg = HSEM->R[HSEMID];
+
+        LOG_INFO("HSEM=0x%08lX", reg);
+        HAL_HSEM_Release(HSEMID, PROCID);
+    }
+    else
+    {
+        LOG_INFO("CM4 PERDEU HSEM");
+    }
 
   }
   /* USER CODE END 3 */

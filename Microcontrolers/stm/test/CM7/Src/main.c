@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -15,74 +14,29 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
-#include "main.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-#include "stm32h7xx_hal.h"
-#include <stdio.h>
-#include "logger.h"
-#include "ring_buffer.h"
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* DUAL_CORE_BOOT_SYNC_SEQUENCE: Define for dual core boot synchronization    */
-/*                             demonstration code based on hardware semaphore */
-/* This define is present in both CM7/CM4 projects                            */
-/* To comment when developping/debugging on a single core                     */
-#define DUAL_CORE_BOOT_SYNC_SEQUENCE
-
-#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-#ifndef HSEM_ID_0
-#define HSEM_ID_0 (0U) /* HW semaphore 0*/
-#endif
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-UART_HandleTypeDef huart1;
-UART_HandleTypeDef huart3;
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void MPU_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_USART3_UART_Init(void);
-static void MX_USART1_UART_Init(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 
-/* USER CODE END 0 */
+#include "main.h"
+#include "logger.h"
+#include "ring_buffer.h"
+#include "definitions.h"
+#include "stm32h7xx_hal.h"
+
+#define DUAL_CORE_BOOT_SYNC_SEQUENCE
+
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart3;
+
+void SystemClock_Config(void);
+static void MPU_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_USART3_UART_Init(void);
+static void MX_USART1_UART_Init(void);
+
 
 /**
   * @brief  The application entry point.
@@ -91,85 +45,66 @@ static void MX_USART1_UART_Init(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-/* USER CODE BEGIN Boot_Mode_Sequence_0 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
   int32_t timeout;
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-/* USER CODE END Boot_Mode_Sequence_0 */
-
-  /* MPU Configuration--------------------------------------------------------*/
+#endif 
+  
   MPU_Config();
 
-/* USER CODE BEGIN Boot_Mode_Sequence_1 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-  /* Wait until CPU2 boots and enters in stop mode or timeout*/
   timeout = 0xFFFF;
   while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
   if ( timeout < 0 )
   {
   Error_Handler();
   }
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-/* USER CODE END Boot_Mode_Sequence_1 */
-  /* MCU Configuration--------------------------------------------------------*/
+#endif 
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
   HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
   SystemClock_Config();
   
-/* USER CODE BEGIN Boot_Mode_Sequence_2 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-/* When system initialization is finished, Cortex-M7 will release Cortex-M4 by means of
-HSEM notification */
-/*HW semaphore Clock enable*/
 __HAL_RCC_HSEM_CLK_ENABLE();
-/*Take HSEM */
 HAL_HSEM_FastTake(HSEM_ID_0);
-/*Release HSEM in order to notify the CPU2(CM4)*/
 HAL_HSEM_Release(HSEM_ID_0,0);
-/* wait until CPU2 wakes up from stop mode */
 timeout = 0xFFFF;
 while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
 if ( timeout < 0 )
 {
 Error_Handler();
 }
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-/* USER CODE END Boot_Mode_Sequence_2 */
+#endif
 
-  /* USER CODE BEGIN SysInit */
-  /* Start CM4 */
-
-
-
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   MX_USART1_UART_Init();
-  /* USER CODE BEGIN 2 */
 
   logger_init();
 
   while (1)
   {
     LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
+ 
+    uint32_t PROCID   = 0x05U;
 
-    logger_process();
+    // o HSEM_ID_0 já está sendo usado para acordar o CM4 
+    if (HAL_HSEM_Take(HSEM_ID_1, PROCID) == HAL_OK)
+    {
+        HAL_Delay(2000);
+        LOG_INFO("CM7 PEGOU HSEM %lu", HSEM_ID_1);
 
-    HAL_Delay(2000);
+        uint32_t reg = HSEM->R[HSEM_ID_1];
+
+        LOG_INFO("HSEM=0x%08lX", reg);
+
+        HAL_HSEM_Release(HSEM_ID_1, PROCID);
+    }
+    else
+    {
+        LOG_INFO("CM7 PERDEU HSEM");
+    }
   }
 }
 
@@ -240,14 +175,6 @@ void SystemClock_Config(void)
   */
 static void MX_USART1_UART_Init(void)
 {
-
-  /* USER CODE BEGIN USART1_Init 0 */
-
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -275,10 +202,6 @@ static void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
-
 }
 
 /**
