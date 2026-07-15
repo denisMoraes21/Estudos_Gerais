@@ -1,6 +1,6 @@
 // Semaphore definitions
-#define HSEM_ID_0   (0x00U)
-#define HSEM_ID_1   (0x01U)
+#define HSEM_ID_0   (0x00U)     // Initialize CM4
+#define HSEM_ID_1   (0x01U)     // Logger CM4/CM7
 #define HSEM_ID_2   (0x02U)
 #define HSEM_ID_3   (0x03U)
 #define HSEM_ID_4   (0x04U)

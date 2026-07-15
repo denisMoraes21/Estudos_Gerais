@@ -47,6 +47,29 @@ static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void *argument);
 
+osThreadId_t task1Handle;
+osThreadId_t task2Handle;
+
+void StartTask1(void *argument)
+{
+    for (;;)
+    {
+        LOG_INFO("Task 1");
+
+        osDelay(500);
+    }
+}
+
+void StartTask2(void *argument)
+{
+    for (;;)
+    {
+        LOG_INFO("Task 2");
+
+        osDelay(1000);
+    }
+}
+
 
 /**
   * @brief  The application entry point.
@@ -90,7 +113,45 @@ int main(void)
     MX_USART3_UART_Init();
     MX_USART1_UART_Init();
 
+    osKernelInitialize();
+
     logger_init();
+
+    const osThreadAttr_t task1_attributes = {
+        .name = "Task1",
+        .stack_size = 2048,
+        .priority = osPriorityNormal,
+    };
+
+    const osThreadAttr_t task2_attributes = {
+        .name = "Task2",
+        .stack_size = 2048,
+        .priority = osPriorityNormal,
+    };
+
+    task1Handle = osThreadNew(
+            StartTask1,
+            NULL,
+            &task1_attributes
+    );
+
+    if(task1Handle == NULL)
+    {
+        Error_Handler();
+    }
+
+    task2Handle = osThreadNew(
+            StartTask2,
+            NULL,
+            &task2_attributes
+    );
+
+    if(task2Handle == NULL)
+    {
+        Error_Handler();
+    }
+
+    osKernelStart();
 
     while (1)
     {
