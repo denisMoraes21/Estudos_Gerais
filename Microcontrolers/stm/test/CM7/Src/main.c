@@ -30,6 +30,7 @@
 
 #define DUAL_CORE_BOOT_SYNC_SEQUENCE
 
+SPI_HandleTypeDef hspi2;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart3;
 
@@ -113,7 +114,6 @@ int main(void)
     MX_USART3_UART_Init();
     MX_USART1_UART_Init();
 
-    osKernelInitialize();
 
     logger_init();
 

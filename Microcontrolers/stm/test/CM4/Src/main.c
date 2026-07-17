@@ -167,7 +167,7 @@ int main(void)
     while (1)
     {
       LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-      HAL_Delay(300);
+      HAL_Delay(1000);
     }
 }
 
