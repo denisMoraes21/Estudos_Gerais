@@ -79,84 +79,143 @@ void StartTask2(void *argument)
 int main(void)
 {
 
+  int32_t timeout;
+
+  MPU_Config();
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-    int32_t timeout;
-#endif 
-    MPU_Config();
+  /* Wait until CPU2 boots and enters in stop mode or timeout*/
+  timeout = 0xFFFF;
+  while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
+  if ( timeout < 0 )
+  {
+  Error_Handler();
+  }
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+/* USER CODE END Boot_Mode_Sequence_1 */
+  /* MCU Configuration--------------------------------------------------------*/
 
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+/* USER CODE BEGIN Boot_Mode_Sequence_2 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-    timeout = 0xFFFF;
-    while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0));
-    if ( timeout < 0 )
-    {
-    Error_Handler();
-    }
-#endif 
+/* When system initialization is finished, Cortex-M7 will release Cortex-M4 by means of
+HSEM notification */
+/*HW semaphore Clock enable*/
+__HAL_RCC_HSEM_CLK_ENABLE();
+/*Take HSEM */
+HAL_HSEM_FastTake(HSEM_ID_0);
+/*Release HSEM in order to notify the CPU2(CM4)*/
+HAL_HSEM_Release(HSEM_ID_0,0);
+/* wait until CPU2 wakes up from stop mode */
+timeout = 0xFFFF;
+while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
+if ( timeout < 0 )
+{
+Error_Handler();
+}
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+  /* USER CODE END Boot_Mode_Sequence_2 */
 
-    HAL_Init();
+    /* USER CODE BEGIN SysInit */
 
-    HAL_RCCEx_EnableBootCore(RCC_BOOT_C2);
-    SystemClock_Config();
-  
-#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-    __HAL_RCC_HSEM_CLK_ENABLE();
-    HAL_HSEM_FastTake(HSEM_ID_0);
-    HAL_HSEM_Release(HSEM_ID_0,0);
-    timeout = 0xFFFF;
-    while((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0));
-    if ( timeout < 0 )
-    {
-    Error_Handler();
-    }
-#endif 
+    /* USER CODE END SysInit */
 
+    
+    /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_USART3_UART_Init();
     MX_USART1_UART_Init();
-
+    MX_SPI2_Init();
+    /* USER CODE BEGIN 2 */
 
     logger_init();
 
-    const osThreadAttr_t task1_attributes = {
-        .name = "Task1",
-        .stack_size = 2048,
-        .priority = osPriorityNormal,
-    };
 
-    const osThreadAttr_t task2_attributes = {
-        .name = "Task2",
-        .stack_size = 2048,
-        .priority = osPriorityNormal,
-    };
+    // const osThreadAttr_t task1_attributes = {
+    //     .name = "Task1",
+    //     .stack_size = 2048,
+    //     .priority = osPriorityNormal,
+    // };
 
-    task1Handle = osThreadNew(
-            StartTask1,
-            NULL,
-            &task1_attributes
-    );
+    // const osThreadAttr_t task2_attributes = {
+    //     .name = "Task2",
+    //     .stack_size = 2048,
+    //     .priority = osPriorityNormal,
+    // };
 
-    if(task1Handle == NULL)
-    {
-        Error_Handler();
-    }
+    // task1Handle = osThreadNew(
+    //         StartTask1,
+    //         NULL,
+    //         &task1_attributes
+    // );
 
-    task2Handle = osThreadNew(
-            StartTask2,
-            NULL,
-            &task2_attributes
-    );
+    // if(task1Handle == NULL)
+    // {
+    //     Error_Handler();
+    // }
 
-    if(task2Handle == NULL)
-    {
-        Error_Handler();
-    }
+    // task2Handle = osThreadNew(
+    //         StartTask2,
+    //         NULL,
+    //         &task2_attributes
+    // );
 
-    osKernelStart();
+    // if(task2Handle == NULL)
+    // {
+    //     Error_Handler();
+    // }
+
+    // osKernelStart();
+
+    
 
     while (1)
     {
+
+        uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
+        uint8_t rx[4] = {0};
         LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
-        HAL_Delay(200);
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+
+        HAL_Delay(100);
+
+        HAL_StatusTypeDef ret = HAL_SPI_TransmitReceive(
+        &hspi2,
+        txData,
+        rx,
+        sizeof(txData),
+        1000
+        );
+
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+
+        HAL_Delay(100);
+      
+        LOG_INFO("HAL status = %d", ret);
+      LOG_INFO("SPI2->SR   = 0x%08lX", SPI2->SR);
+      LOG_INFO("SPI2->CR1  = 0x%08lX", SPI2->CR1);
+      LOG_INFO("SPI2->CFG1 = 0x%08lX", SPI2->CFG1);
+      LOG_INFO("SPI2->CFG2 = 0x%08lX", SPI2->CFG2);
+
+        if (ret == HAL_OK)
+        {
+            LOG_INFO("Recebidos %d bytes", 4);
+
+            LOG_INFO("RX: %02X %02X %02X %02X",
+             rx[0], rx[1], rx[2], rx[3]);
+        }
+        else
+        {
+            LOG_ERROR("SPI erro %d", ret);
+        }
+        HAL_Delay(1000);   // <-- 1 segundo
     }
 }
 
@@ -221,12 +280,68 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief SPI2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI2_Init(void)
+{
+
+  /* USER CODE BEGIN SPI2_Init 0 */
+
+  /* USER CODE END SPI2_Init 0 */
+
+  /* USER CODE BEGIN SPI2_Init 1 */
+
+  /* USER CODE END SPI2_Init 1 */
+  /* SPI2 parameter configuration*/
+  hspi2.Instance = SPI2;
+  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi2.Init.CRCPolynomial = 0x0;
+  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi2.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+  hspi2.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
+  hspi2.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi2.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi2.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+  hspi2.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+  hspi2.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+  hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
+  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI2_Init 2 */
+
+  /* USER CODE END SPI2_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
   */
 static void MX_USART1_UART_Init(void)
 {
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -254,6 +369,10 @@ static void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
 }
 
 /**
@@ -311,16 +430,37 @@ static void MX_USART3_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOI_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PB12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /* USER CODE BEGIN MX_GPIO_Init_2 */
+
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
+
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE END MX_GPIO_Init_2 */
 }
