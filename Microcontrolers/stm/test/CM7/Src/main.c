@@ -46,6 +46,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_SPI2_Init(void);
 void StartDefaultTask(void *argument);
 
 osThreadId_t task1Handle;
@@ -136,7 +137,6 @@ Error_Handler();
     /* USER CODE BEGIN 2 */
 
     logger_init();
-
 
     // const osThreadAttr_t task1_attributes = {
     //     .name = "Task1",
