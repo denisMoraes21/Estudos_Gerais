@@ -282,6 +282,7 @@ void SystemClock_Config(void)
   }
 }
 
+/**
   * @brief I2C4 Initialization Function
   * @param None
   * @retval None
