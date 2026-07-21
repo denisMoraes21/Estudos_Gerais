@@ -74,6 +74,50 @@ void StartTask2(void *argument)
     }
 }
 
+typedef struct __attribute__((packed))
+{
+    uint16_t temperatura;
+    uint16_t umidade;
+    uint32_t contador;
+
+} SensorData;
+
+SensorData sensor;
+
+void ESP32_ReadSensor(void)
+{
+    HAL_StatusTypeDef status;
+
+    status = HAL_I2C_Master_Receive(
+        &hi2c4,
+        0x42 << 1,              // endereço I2C + bit R/W
+        (uint8_t *)&sensor,
+        sizeof(sensor),
+        HAL_MAX_DELAY
+    );
+
+
+    if(status == HAL_OK)
+    {
+        LOG_ERROR("Temperatura: %.1f C\n",
+               sensor.temperatura / 10.0);
+
+        LOG_ERROR("Umidade: %.1f %%\n",
+               sensor.umidade / 10.0);
+
+        LOG_ERROR("Contador: %lu\n",
+               sensor.contador);
+
+        LOG_INFO("Temperatura raw: %u", sensor.temperatura);
+        LOG_INFO("Umidade raw: %u", sensor.umidade);
+        LOG_INFO("Contador: %lu", sensor.contador);
+    }
+    else
+    {
+        LOG_ERROR("Erro I2C: %d\n", status);
+    }
+}
+
 
 /**
   * @brief  The application entry point.
@@ -136,8 +180,7 @@ Error_Handler();
     MX_USART3_UART_Init();
     MX_USART1_UART_Init();
     MX_SPI2_Init();
-    /* USER CODE BEGIN 2 */
-  MX_I2C4_Init();
+    MX_I2C4_Init();
 
     logger_init();
 
@@ -181,43 +224,44 @@ Error_Handler();
 
     while (1)
     {
+        LOG_ERROR("Olá");
+        ESP32_ReadSensor();
+        // uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
+        // uint8_t rx[4] = {0};
+        // LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
+        // HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
 
-        uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
-        uint8_t rx[4] = {0};
-        LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+        // HAL_Delay(100);
 
-        HAL_Delay(100);
+        // HAL_StatusTypeDef ret = HAL_SPI_TransmitReceive(
+        // &hspi2,
+        // txData,
+        // rx,
+        // sizeof(txData),
+        // 1000
+        // );
 
-        HAL_StatusTypeDef ret = HAL_SPI_TransmitReceive(
-        &hspi2,
-        txData,
-        rx,
-        sizeof(txData),
-        1000
-        );
+        // HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
 
-        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-
-        HAL_Delay(100);
+        // HAL_Delay(100);
       
-        LOG_INFO("HAL status = %d", ret);
-      LOG_INFO("SPI2->SR   = 0x%08lX", SPI2->SR);
-      LOG_INFO("SPI2->CR1  = 0x%08lX", SPI2->CR1);
-      LOG_INFO("SPI2->CFG1 = 0x%08lX", SPI2->CFG1);
-      LOG_INFO("SPI2->CFG2 = 0x%08lX", SPI2->CFG2);
+        // LOG_INFO("HAL status = %d", ret);
+        // LOG_INFO("SPI2->SR   = 0x%08lX", SPI2->SR);
+        // LOG_INFO("SPI2->CR1  = 0x%08lX", SPI2->CR1);
+        // LOG_INFO("SPI2->CFG1 = 0x%08lX", SPI2->CFG1);
+        // LOG_INFO("SPI2->CFG2 = 0x%08lX", SPI2->CFG2);
 
-        if (ret == HAL_OK)
-        {
-            LOG_INFO("Recebidos %d bytes", 4);
+        // if (ret == HAL_OK)
+        // {
+        //     LOG_INFO("Recebidos %d bytes", 4);
 
-            LOG_INFO("RX: %02X %02X %02X %02X",
-             rx[0], rx[1], rx[2], rx[3]);
-        }
-        else
-        {
-            LOG_ERROR("SPI erro %d", ret);
-        }
+        //     LOG_INFO("RX: %02X %02X %02X %02X",
+        //      rx[0], rx[1], rx[2], rx[3]);
+        // }
+        // else
+        // {
+        //     LOG_ERROR("SPI erro %d", ret);
+        // }
         HAL_Delay(1000);   // <-- 1 segundo
     }
 }
@@ -482,6 +526,7 @@ static void MX_USART3_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
 
   /* USER CODE END MX_GPIO_Init_1 */
 
