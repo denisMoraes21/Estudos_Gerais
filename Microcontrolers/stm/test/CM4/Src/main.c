@@ -109,6 +109,14 @@ static void MX_USB_OTG_FS_PCD_Init(void);
 void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -116,6 +124,11 @@ void StartDefaultTask(void *argument);
 int main(void)
 {
 
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+/* USER CODE BEGIN Boot_Mode_Sequence_1 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
   /*HW semaphore Clock enable*/
   __HAL_RCC_HSEM_CLK_ENABLE();
@@ -130,43 +143,92 @@ int main(void)
   /* Clear HSEM flag */
   __HAL_HSEM_CLEAR_FLAG(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
 
-    HAL_Init();
 #endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
 /* USER CODE END Boot_Mode_Sequence_1 */
   /* MCU Configuration--------------------------------------------------------*/
 
-    MX_GPIO_Init();
-    // MX_ETH_Init();
-    // MX_FDCAN1_Init();
-    // MX_FDCAN2_Init();
-    // MX_FMC_Init();
-    // MX_LTDC_Init();
-    // MX_QUADSPI_Init();
-    // MX_SAI2_Init();
-    // MX_SDMMC1_MMC_Init();
-    // MX_USB_OTG_FS_PCD_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  // MX_FDCAN1_Init();
+  // MX_FDCAN2_Init();
+  // MX_FMC_Init();
+  // MX_LTDC_Init();
+  // MX_QUADSPI_Init();
+  // MX_SAI2_Init();
+  // MX_SDMMC1_MMC_Init();
+  // MX_USB_OTG_FS_PCD_Init();
+  /* USER CODE BEGIN 2 */
+
+  MX_USART3_UART_Init();
+
+  /* USER CODE END 2 */
+
+  /* Init scheduler */
+  // osKernelInitialize();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
     
-    // osKernelInitialize();
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-    MX_USART3_UART_Init();
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
 
-    MX_LWIP_Init();
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
 
-    // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-    logger_init();
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
 
-    // osKernelStart();
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
 
-    while (1)
-    {
+  /* Start scheduler */
+  // osKernelStart();
 
-      LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-      LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-      LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-      LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-      HAL_Delay(1000);
-    }
+  /* We should never get here as control is now taken by the scheduler */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+
+  MX_LWIP_Init();
+  while (1)
+  {
+    /* USER CODE END WHILE */
+    LOG_INFO("Hello World");
+
+    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+    HAL_Delay(1000);
+
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
 }
 
 /**
@@ -688,8 +750,24 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+
+  logger_init();
+
+  LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+  LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+  LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+  LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+  HAL_Delay(1000);
   /* init code for LWIP */
   MX_LWIP_Init();
+
+  logger_init();
+
+  LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+  LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+  LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+  LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+  HAL_Delay(1000);
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
