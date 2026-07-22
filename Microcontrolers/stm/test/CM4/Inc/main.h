@@ -120,16 +120,12 @@ void MX_USART3_UART_Init(void);
 #define MII_CRS_GPIO_Port GPIOH
 #define MII_MDIO_Pin GPIO_PIN_2
 #define MII_MDIO_GPIO_Port GPIOA
-#define MII_RX_CLK_Pin GPIO_PIN_1
-#define MII_RX_CLK_GPIO_Port GPIOA
 #define MII_COL_Pin GPIO_PIN_3
 #define MII_COL_GPIO_Port GPIOH
 #define VCP_TX_Pin GPIO_PIN_10
 #define VCP_TX_GPIO_Port GPIOB
 #define VCP_RX_Pin GPIO_PIN_11
 #define VCP_RX_GPIO_Port GPIOB
-#define MII_RX_DV_Pin GPIO_PIN_7
-#define MII_RX_DV_GPIO_Port GPIOA
 #define MII_RXD0_Pin GPIO_PIN_4
 #define MII_RXD0_GPIO_Port GPIOC
 #define MII_RXD3_Pin GPIO_PIN_1
