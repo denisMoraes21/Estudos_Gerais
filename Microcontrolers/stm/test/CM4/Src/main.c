@@ -108,6 +108,7 @@ static void MX_SDMMC1_MMC_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 void StartDefaultTask(void *argument);
 
+/* USER CODE BEGIN PFP */
 /**
   * @brief  The application entry point.
   * @retval int

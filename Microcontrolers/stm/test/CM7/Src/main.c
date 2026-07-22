@@ -97,25 +97,26 @@ void ESP32_ReadSensor(void)
     );
 
 
-    if(status == HAL_OK)
-    {
-        LOG_ERROR("Temperatura: %.1f C\n",
-               sensor.temperatura / 10.0);
+    // if(status == HAL_OK)
+    // {
+    //     LOG_ERROR("Temperatura: %.1f C\n",
+    //            sensor.temperatura / 10.0);
 
-        LOG_ERROR("Umidade: %.1f %%\n",
-               sensor.umidade / 10.0);
 
-        LOG_ERROR("Contador: %lu\n",
-               sensor.contador);
+    //     LOG_ERROR("Umidade: %.1f %%\n",
+    //            sensor.umidade / 10.0);
 
-        LOG_INFO("Temperatura raw: %u", sensor.temperatura);
-        LOG_INFO("Umidade raw: %u", sensor.umidade);
-        LOG_INFO("Contador: %lu", sensor.contador);
-    }
-    else
-    {
-        LOG_ERROR("Erro I2C: %d\n", status);
-    }
+    //     LOG_ERROR("Contador: %lu\n",
+    //            sensor.contador);
+
+    //     LOG_INFO("Temperatura raw: %u", sensor.temperatura);
+    //     LOG_INFO("Umidade raw: %u", sensor.umidade);
+    //     LOG_INFO("Contador: %lu", sensor.contador);
+    // }
+    // else
+    // {
+    //     LOG_ERROR("Erro I2C: %d\n", status);
+    // }
 }
 
 
@@ -224,7 +225,7 @@ Error_Handler();
 
     while (1)
     {
-        LOG_ERROR("Olá");
+        // LOG_ERROR("Olá");
         ESP32_ReadSensor();
         // uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
         // uint8_t rx[4] = {0};
