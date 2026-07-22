@@ -39,6 +39,8 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+extern struct netif gnetif;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -147,6 +149,8 @@ int main(void)
 
     MX_USART3_UART_Init();
 
+    MX_LWIP_Init();
+
     // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
     logger_init();
@@ -155,7 +159,11 @@ int main(void)
 
     while (1)
     {
+
       LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+      LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+      LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+      LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
       HAL_Delay(1000);
     }
 }
