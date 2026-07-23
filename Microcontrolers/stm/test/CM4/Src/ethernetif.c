@@ -30,7 +30,6 @@
 #include <string.h>
 #include "cmsis_os.h"
 #include "lwip/tcpip.h"
-#include "logger.h"
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
@@ -235,33 +234,13 @@ static void low_level_init(struct netif *netif)
   /* USER CODE BEGIN MACADDRESS */
 
   /* USER CODE END MACADDRESS */
-    heth.Init.PhyAddress = 1;
 
-    hal_eth_init_status = HAL_ETH_Init(&heth);
+  hal_eth_init_status = HAL_ETH_Init(&heth);
 
-    uint32_t phyid1 = 0;
-    uint32_t phyid2 = 0;
-
-    HAL_ETH_ReadPHYRegister(&heth, 0, 2, &phyid1);
-    HAL_ETH_ReadPHYRegister(&heth, 0, 3, &phyid2);
-
-    LOG_INFO("PHYID1 = 0x%04lX", phyid1);
-    LOG_INFO("PHYID2 = 0x%04lX", phyid2);
-
-    for (int addr = 0; addr < 32; addr++)
-    {
-        uint32_t id1 = 0;
-
-        if (HAL_ETH_ReadPHYRegister(&heth, addr, 2, &id1) == HAL_OK)
-        {
-            LOG_INFO("ADDR %d -> ID1 = 0x%04lX", addr, id1);
-        }
-    }
-
-  // memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
-  // TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-  // TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-  // TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
+  memset(&TxConfig, 0 , sizeof(ETH_TxPacketConfig));
+  TxConfig.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
+  TxConfig.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
+  TxConfig.CRCPadCtrl = ETH_CRC_PAD_INSERT;
 
   /* End ETH HAL Init */
 
