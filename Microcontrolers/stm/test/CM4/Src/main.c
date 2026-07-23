@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -15,8 +14,6 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32h745xx.h"
 #include "string.h"
@@ -31,41 +28,15 @@
 #include "cmsis_os2.h"
 #include "lwip.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
 extern struct netif gnetif;
 
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* DUAL_CORE_BOOT_SYNC_SEQUENCE: Define for dual core boot synchronization    */
-/*                             demonstration code based on hardware semaphore */
-/* This define is present in both CM7/CM4 projects                            */
-/* To comment when developping/debugging on a single core                     */
 #define DUAL_CORE_BOOT_SYNC_SEQUENCE
 
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
 #ifndef HSEM_ID_0
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
 #endif
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
+#endif
 
 FDCAN_HandleTypeDef hfdcan1;
 FDCAN_HandleTypeDef hfdcan2;
@@ -85,18 +56,14 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 SDRAM_HandleTypeDef hsdram1;
 
-/* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
+
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* USER CODE BEGIN PV */
 
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 static void MX_GPIO_Init(void);
 static void MX_FDCAN1_Init(void);
 static void MX_FDCAN2_Init(void);
@@ -108,14 +75,6 @@ static void MX_SDMMC1_MMC_Init(void);
 static void MX_USB_OTG_FS_PCD_Init(void);
 void StartDefaultTask(void *argument);
 
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -124,41 +83,16 @@ void StartDefaultTask(void *argument);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-/* USER CODE BEGIN Boot_Mode_Sequence_1 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-  /*HW semaphore Clock enable*/
   __HAL_RCC_HSEM_CLK_ENABLE();
-  /* Activate HSEM notification for Cortex-M4*/
   HAL_HSEM_ActivateNotification(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
-  /*
-  Domain D2 goes to STOP mode (Cortex-M4 in deep-sleep) waiting for Cortex-M7 to
-  perform system initialization (system clock config, external memory configuration.. )
-  */
   HAL_PWREx_ClearPendingEvent();
   HAL_PWREx_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFE, PWR_D2_DOMAIN);
-  /* Clear HSEM flag */
   __HAL_HSEM_CLEAR_FLAG(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
 
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-/* USER CODE END Boot_Mode_Sequence_1 */
-  /* MCU Configuration--------------------------------------------------------*/
+#endif 
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   // MX_FDCAN1_Init();
   // MX_FDCAN2_Init();
@@ -168,56 +102,16 @@ int main(void)
   // MX_SAI2_Init();
   // MX_SDMMC1_MMC_Init();
   // MX_USB_OTG_FS_PCD_Init();
-  /* USER CODE BEGIN 2 */
 
   MX_USART3_UART_Init();
 
-  /* USER CODE END 2 */
-
-  /* Init scheduler */
   // osKernelInitialize();
-
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-    
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
-
-  /* Create the thread(s) */
-  /* creation of defaultTask */
   // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
-  /* USER CODE END RTOS_EVENTS */
-
-  /* Start scheduler */
   // osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
 
   MX_LWIP_Init();
   while (1)
   {
-    /* USER CODE END WHILE */
     LOG_INFO("Hello World");
 
     LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
@@ -226,9 +120,7 @@ int main(void)
     LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
     HAL_Delay(1000);
 
-    /* USER CODE BEGIN 3 */
   }
-  /* USER CODE END 3 */
 }
 
 /**
@@ -737,44 +629,38 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
-/* USER CODE BEGIN Header_StartDefaultTask */
 /**
   * @brief  Function implementing the defaultTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+    HAL_Delay(1000);
+    logger_init();
 
-  logger_init();
+    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+    HAL_Delay(1000);
+    /* init code for LWIP */
+    MX_LWIP_Init();
 
-  LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-  LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-  LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-  LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-  HAL_Delay(1000);
-  /* init code for LWIP */
-  MX_LWIP_Init();
+    logger_init();
 
-  logger_init();
-
-  LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-  LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-  LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-  LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-  HAL_Delay(1000);
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END 5 */
+    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+    HAL_Delay(1000);
+    /* USER CODE BEGIN 5 */
+    /* Infinite loop */
+    for(;;)
+    {
+        osDelay(1);
+    }
+    /* USER CODE END 5 */
 }
 
 /**
