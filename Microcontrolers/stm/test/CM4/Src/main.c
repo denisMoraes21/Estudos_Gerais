@@ -86,6 +86,8 @@ int main(void)
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
   __HAL_RCC_HSEM_CLK_ENABLE();
   HAL_HSEM_ActivateNotification(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
+  Domain D2 goes to STOP mode (Cortex-M4 in deep-sleep) waiting for Cortex-M7 to
+  perform system initialization (system clock config, external memory configuration.. )
   HAL_PWREx_ClearPendingEvent();
   HAL_PWREx_EnterSTOPMode(PWR_MAINREGULATOR_ON, PWR_STOPENTRY_WFE, PWR_D2_DOMAIN);
   __HAL_HSEM_CLEAR_FLAG(__HAL_HSEM_SEMID_TO_MASK(HSEM_ID_0));
@@ -636,31 +638,15 @@ static void MX_GPIO_Init(void)
   */
 void StartDefaultTask(void *argument)
 {
-    HAL_Delay(1000);
-    logger_init();
-
-    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-    HAL_Delay(1000);
-    /* init code for LWIP */
-    MX_LWIP_Init();
-
-    logger_init();
-
-    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-    HAL_Delay(1000);
-    /* USER CODE BEGIN 5 */
+  /* init code for LWIP */
+  MX_LWIP_Init();
+  /* USER CODE BEGIN 5 */
     /* Infinite loop */
     for(;;)
     {
         osDelay(1);
     }
-    /* USER CODE END 5 */
+  /* USER CODE END 5 */
 }
 
 /**
