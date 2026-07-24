@@ -28,8 +28,14 @@
 #include "definitions.h"
 #include "stm32h7xx_hal.h"
 
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
 #define DUAL_CORE_BOOT_SYNC_SEQUENCE
 
+#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
+#ifndef HSEM_ID_0
+#define HSEM_ID_0 (0U) /* HW semaphore 0*/
+/* USER CODE END PM */
 I2C_HandleTypeDef hi2c4;
 SPI_HandleTypeDef hspi2;
 UART_HandleTypeDef huart1;

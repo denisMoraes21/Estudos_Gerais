@@ -26,7 +26,6 @@
 
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
-#include "lwip.h"
 
 extern struct netif gnetif;
 
@@ -109,15 +108,15 @@ int main(void)
   // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
   // osKernelStart();
 
-  MX_LWIP_Init();
+  // MX_LWIP_Init();
   while (1)
   {
-    LOG_INFO("Hello World");
+    // LOG_INFO("Hello World");
 
-    LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
-    LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
-    LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
-    LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+    // LOG_INFO("EN-US -> Client: BYD, Project: VOLTA, Description: BMS");
+    // LOG_INFO("Link: %d\r\n", netif_is_link_up(&gnetif));
+    // LOG_INFO("Up  : %d\r\n", netif_is_up(&gnetif));
+    // LOG_INFO("IP  : %s\r\n", ip4addr_ntoa(netif_ip4_addr(&gnetif)));
     HAL_Delay(1000);
 
   }

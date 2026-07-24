@@ -17,7 +17,7 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/FreeRTOS/Source/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/CMSIS/RTOS2/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/BSP/Components/lan8742
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/src/include/netif/ppp
@@ -192,7 +192,9 @@ set(MX_LINK_DIRS
 set (MX_LINK_LIBS 
     STM32_Drivers
     ${TOOLCHAIN_LINK_LIBRARIES}
-    FreeRTOS	LwIP	
+    FreeRTOS
+	LwIP
+	
     
 )
 # Interface library for includes and symbols
