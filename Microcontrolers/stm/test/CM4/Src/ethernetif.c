@@ -139,7 +139,6 @@ osSemaphoreId_t TxPktSemaphore = NULL;   /* Semaphore to signal transmit packet 
 
 /* Global Ethernet handle */
 ETH_HandleTypeDef heth;
-ETH_TxPacketConfig TxConfig;
 
 /* Private function prototypes -----------------------------------------------*/
 int32_t ETH_PHY_IO_Init(void);
