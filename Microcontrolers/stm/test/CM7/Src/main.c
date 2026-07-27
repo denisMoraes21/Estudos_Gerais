@@ -17,28 +17,53 @@
 #include "main.h"
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
+#include "lwip.h"
 
 
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+/* USER CODE END Includes */
 
 #include "logger.h"
 #include "ring_buffer.h"
 #include "definitions.h"
 #include "stm32h7xx_hal.h"
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+/* DUAL_CORE_BOOT_SYNC_SEQUENCE: Define for dual core boot synchronization    */
+/*                             demonstration code based on hardware semaphore */
+/* This define is present in both CM7/CM4 projects                            */
+/* To comment when developping/debugging on a single core                     */
 #define DUAL_CORE_BOOT_SYNC_SEQUENCE
 
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
 #ifndef HSEM_ID_0
 #define HSEM_ID_0 (0U) /* HW semaphore 0*/
+#endif
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
 /* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
 I2C_HandleTypeDef hi2c4;
+
 SPI_HandleTypeDef hspi2;
+
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 
 /* Definitions for defaultTask */
@@ -48,6 +73,11 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
@@ -55,20 +85,25 @@ static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_I2C4_Init(void);
+static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 
 osThreadId_t task1Handle;
 osThreadId_t task2Handle;
+/* USER CODE BEGIN PFP */
 
 void StartTask1(void *argument)
 {
     for (;;)
     {
         LOG_INFO("Task 1");
+/* USER CODE END PFP */
 
         osDelay(500);
     }
 }
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
 
 void StartTask2(void *argument)
 {
@@ -125,6 +160,7 @@ void ESP32_ReadSensor(void)
     // }
 }
 
+/* USER CODE END 0 */
 
 /**
   * @brief  The application entry point.
@@ -133,9 +169,19 @@ void ESP32_ReadSensor(void)
 int main(void)
 {
 
-  int32_t timeout;
+  /* USER CODE BEGIN 1 */
 
+  /* USER CODE END 1 */
+/* USER CODE BEGIN Boot_Mode_Sequence_0 */
+#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
+  int32_t timeout;
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+/* USER CODE END Boot_Mode_Sequence_0 */
+
+  /* MPU Configuration--------------------------------------------------------*/
   MPU_Config();
+
+/* USER CODE BEGIN Boot_Mode_Sequence_1 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
   /* Wait until CPU2 boots and enters in stop mode or timeout*/
   timeout = 0xFFFF;
@@ -175,11 +221,11 @@ if ( timeout < 0 )
 Error_Handler();
 }
 #endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-  /* USER CODE END Boot_Mode_Sequence_2 */
+/* USER CODE END Boot_Mode_Sequence_2 */
 
-    /* USER CODE BEGIN SysInit */
+  /* USER CODE BEGIN SysInit */
 
-    /* USER CODE END SysInit */
+  /* USER CODE END SysInit */
 
     
     /* Initialize all configured peripherals */
@@ -188,8 +234,11 @@ Error_Handler();
     MX_USART1_UART_Init();
     MX_SPI2_Init();
     MX_I2C4_Init();
+  MX_USART2_UART_Init();
+  /* USER CODE BEGIN 2 */
 
     logger_init();
+  /* USER CODE END 2 */
 
     // const osThreadAttr_t task1_attributes = {
     //     .name = "Task1",
@@ -404,6 +453,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -477,6 +527,54 @@ static void MX_USART1_UART_Init(void)
 }
 
 /**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_RS485Ex_Init(&huart2, UART_DE_POLARITY_HIGH, 0, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -538,10 +636,13 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
+  __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
@@ -580,12 +681,74 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+  /* init code for LWIP */
+  MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  LOG_INFO("===== LWIP INICIALIZADO =====");
+
+    for (;;)
+    {
+        LOG_INFO("--------------------------------");
+
+        LOG_INFO("Interface: %c%c%d",
+                 gnetif.name[0],
+                 gnetif.name[1],
+                 gnetif.num);
+
+        LOG_INFO("Link: %s",
+                 netif_is_link_up(&gnetif) ? "UP" : "DOWN");
+
+        LOG_INFO("Interface: %s",
+                 netif_is_up(&gnetif) ? "UP" : "DOWN");
+
+        LOG_INFO("IP      : %s",
+                 ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+
+        LOG_INFO("Mascara : %s",
+                 ip4addr_ntoa(netif_ip4_netmask(&gnetif)));
+
+        LOG_INFO("Gateway : %s",
+                 ip4addr_ntoa(netif_ip4_gw(&gnetif)));
+
+        LOG_INFO("MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+                 gnetif.hwaddr[0],
+                 gnetif.hwaddr[1],
+                 gnetif.hwaddr[2],
+                 gnetif.hwaddr[3],
+                 gnetif.hwaddr[4],
+                 gnetif.hwaddr[5]);
+
+        LOG_INFO("MTU: %u", gnetif.mtu);
+
+        LOG_INFO("Flags = 0x%04X", gnetif.flags);
+
+        if (gnetif.flags & NETIF_FLAG_ETHARP)
+            LOG_INFO("ARP habilitado");
+
+        if (gnetif.flags & NETIF_FLAG_BROADCAST)
+            LOG_INFO("Broadcast habilitado");
+
+        if (gnetif.flags & NETIF_FLAG_ETHERNET)
+            LOG_INFO("Ethernet habilitada");
+
+            LOG_INFO("RX packets : %u", lwip_stats.link.recv);
+        LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
+        LOG_INFO("RX errors  : %u", lwip_stats.link.drop);
+        LOG_INFO("RX mem err : %u", lwip_stats.link.memerr);
+
+        LOG_INFO("ARP recv   : %u", lwip_stats.etharp.recv);
+        LOG_INFO("ARP xmit   : %u", lwip_stats.etharp.xmit);
+
+        LOG_INFO("IP recv    : %u", lwip_stats.ip.recv);
+        LOG_INFO("IP sent    : %u", lwip_stats.ip.xmit);
+
+        
+        LOG_INFO("ICMP recv  : %u", lwip_stats.icmp.recv);
+        LOG_INFO("ICMP sent  : %u", lwip_stats.icmp.xmit);
+        osDelay(5000);
   }
+
   /* USER CODE END 5 */
 }
 
@@ -614,7 +777,7 @@ void MPU_Config(void)
 
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
   /* Enables the MPU */
-  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+  HAL_MPU_Enable(MPU_HFNMI_PRIVDEF);
 
 }
 
