@@ -65,6 +65,7 @@ SPI_HandleTypeDef hspi2;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
+extern struct netif gnetif;
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -234,11 +235,11 @@ Error_Handler();
     MX_USART1_UART_Init();
     MX_SPI2_Init();
     MX_I2C4_Init();
-  MX_USART2_UART_Init();
-  /* USER CODE BEGIN 2 */
+    MX_USART2_UART_Init();
+    /* USER CODE BEGIN 2 */
 
-    logger_init();
-  /* USER CODE END 2 */
+      logger_init();
+    /* USER CODE END 2 */
 
     // const osThreadAttr_t task1_attributes = {
     //     .name = "Task1",
@@ -280,8 +281,8 @@ Error_Handler();
 
     while (1)
     {
-        // LOG_ERROR("Olá");
-        ESP32_ReadSensor();
+        LOG_ERROR("Olá");
+        // ESP32_ReadSensor();
         // uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
         // uint8_t rx[4] = {0};
         // LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");

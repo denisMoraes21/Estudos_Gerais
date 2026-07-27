@@ -118,14 +118,6 @@ int main(void)
 }
 
 
-
-
-
-
-
-
-}
-
 /**
   * @brief LTDC Initialization Function
   * @param None
