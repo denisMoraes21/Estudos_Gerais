@@ -58,16 +58,12 @@ void MX_USART3_UART_Init(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define FDCAN2_RX_Pin GPIO_PIN_5
-#define FDCAN2_RX_GPIO_Port GPIOB
 #define SDIO1_D2_Pin GPIO_PIN_10
 #define SDIO1_D2_GPIO_Port GPIOC
 #define LCD_DISP_Pin GPIO_PIN_15
 #define LCD_DISP_GPIO_Port GPIOJ
 #define SDIO1_D3_Pin GPIO_PIN_11
 #define SDIO1_D3_GPIO_Port GPIOC
-#define FDCAN2_RXH14_Pin GPIO_PIN_14
-#define FDCAN2_RXH14_GPIO_Port GPIOH
 #define OSC32_OUT_Pin GPIO_PIN_15
 #define OSC32_OUT_GPIO_Port GPIOC
 #define OSC32_IN_Pin GPIO_PIN_14
@@ -82,8 +78,6 @@ void MX_USART3_UART_Init(void);
 #define SDIO1_CMD_GPIO_Port GPIOD
 #define VBUS_FS2_Pin GPIO_PIN_9
 #define VBUS_FS2_GPIO_Port GPIOA
-#define FDCAN1_TX_Pin GPIO_PIN_13
-#define FDCAN1_TX_GPIO_Port GPIOH
 #define SDIO1_D0_Pin GPIO_PIN_8
 #define SDIO1_D0_GPIO_Port GPIOC
 #define SDIO1_D1_Pin GPIO_PIN_9
@@ -104,8 +98,6 @@ void MX_USART3_UART_Init(void);
 #define VCP_TX_GPIO_Port GPIOB
 #define VCP_RX_Pin GPIO_PIN_11
 #define VCP_RX_GPIO_Port GPIOB
-#define FDCAN2_TX_Pin GPIO_PIN_13
-#define FDCAN2_TX_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

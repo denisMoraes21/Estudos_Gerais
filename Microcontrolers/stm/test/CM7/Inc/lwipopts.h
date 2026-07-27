@@ -91,24 +91,26 @@
 #define DEFAULT_ACCEPTMBOX_SIZE 6
 /*----- Value in opt.h for RECV_BUFSIZE_DEFAULT: INT_MAX -----*/
 #define RECV_BUFSIZE_DEFAULT 2000000000
-/*----- Value in opt.h for LWIP_STATS: 1 -----*/
-#define LWIP_STATS 0
-/*----- Value in opt.h for CHECKSUM_GEN_IP: 1 -----*/
-#define CHECKSUM_GEN_IP 0
-/*----- Value in opt.h for CHECKSUM_GEN_UDP: 1 -----*/
-#define CHECKSUM_GEN_UDP 0
-/*----- Value in opt.h for CHECKSUM_GEN_TCP: 1 -----*/
-#define CHECKSUM_GEN_TCP 0
+/*----- Default Value for LWIP_STATS: 0 ---*/
+#define LWIP_STATS 1
+/*----- Default Value for LWIP_STATS_DISPLAY: 0 ---*/
+#define LWIP_STATS_DISPLAY 1
+/*----- Value in opt.h for MIB2_STATS: 0 or SNMP_LWIP_MIB2 -----*/
+#define MIB2_STATS 0
 /*----- Value in opt.h for CHECKSUM_GEN_ICMP6: 1 -----*/
 #define CHECKSUM_GEN_ICMP6 0
-/*----- Value in opt.h for CHECKSUM_CHECK_IP: 1 -----*/
-#define CHECKSUM_CHECK_IP 0
-/*----- Value in opt.h for CHECKSUM_CHECK_UDP: 1 -----*/
-#define CHECKSUM_CHECK_UDP 0
-/*----- Value in opt.h for CHECKSUM_CHECK_TCP: 1 -----*/
-#define CHECKSUM_CHECK_TCP 0
 /*----- Value in opt.h for CHECKSUM_CHECK_ICMP6: 1 -----*/
 #define CHECKSUM_CHECK_ICMP6 0
+/*----- Default Value for ETHARP_DEBUG: LWIP_DBG_OFF ---*/
+#define ETHARP_DEBUG LWIP_DBG_ON
+/*----- Default Value for NETIF_DEBUG: LWIP_DBG_OFF ---*/
+#define NETIF_DEBUG LWIP_DBG_ON
+/*----- Default Value for ICMP_DEBUG: LWIP_DBG_OFF ---*/
+#define ICMP_DEBUG LWIP_DBG_ON
+/*----- Default Value for IP_DEBUG: LWIP_DBG_OFF ---*/
+#define IP_DEBUG LWIP_DBG_ON
+/*----- Default Value for TCP_INPUT_DEBUG: LWIP_DBG_OFF ---*/
+#define TCP_INPUT_DEBUG LWIP_DBG_ON
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 
