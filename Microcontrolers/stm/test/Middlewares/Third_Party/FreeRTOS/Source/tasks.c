@@ -29,7 +29,6 @@
 /* Standard includes. */
 #include <stdlib.h>
 #include <string.h>
-#include "logger.h"
 
 /* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
  * all the API functions to use the MPU wrappers.  That should only be done when
@@ -1305,14 +1304,11 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
 
     void vTaskDelay( const TickType_t xTicksToDelay )
     {
-        // LOG_INFO("kk");
         BaseType_t xAlreadyYielded = pdFALSE;
-        // LOG_INFO("kk1");
 
         /* A delay time of zero just forces a reschedule. */
         if( xTicksToDelay > ( TickType_t ) 0U )
         {
-            // LOG_INFO("kk2");
             configASSERT( uxSchedulerSuspended == ( UBaseType_t ) 0U );
             vTaskSuspendAll();
             {
@@ -1327,30 +1323,23 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
                  * executing task. */
                 prvAddCurrentTaskToDelayedList( xTicksToDelay, pdFALSE );
             }
-            // LOG_INFO("kk3");
             xAlreadyYielded = xTaskResumeAll();
-            // LOG_INFO("kk7");
         }
         else
         {
-            // LOG_INFO("kk4");
             mtCOVERAGE_TEST_MARKER();
         }
-        // LOG_INFO("kk8");
 
         /* Force a reschedule if xTaskResumeAll has not already done so, we may
          * have put ourselves to sleep. */
         if( xAlreadyYielded == pdFALSE )
         {
-            // LOG_INFO("kk9");
             portYIELD_WITHIN_API();
         }
         else
         {
-            // LOG_INFO("kk10");
             mtCOVERAGE_TEST_MARKER();
         }
-        // LOG_INFO("kk5");
     }
 
 #endif /* INCLUDE_vTaskDelay */
