@@ -11,6 +11,7 @@ typedef enum
 
 void logger_init(void);
 void logger_process(void);
+void logger_write_raw(const char *data, int len);
 
 void log_write(log_level_t level,
                const char *fmt,

@@ -86,6 +86,14 @@ void log_write(log_level_t level,
         CORE_NAME
     );
 
+    if (offset < 0) {
+        return;
+    }
+
+    if ((size_t)offset >= sizeof(buffer)) {
+        offset = sizeof(buffer) - 1;
+    }
+
     va_list args;
     va_start(args, fmt);
 
@@ -96,9 +104,23 @@ void log_write(log_level_t level,
         args
     );
 
+    if (offset < 0) {
+        return;
+    }
+
+    if ((size_t)offset >= sizeof(buffer)) {
+        offset = sizeof(buffer) - 1;
+    }
+
     va_end(args);
 
-    strcat(buffer, "\r\n");
+    size_t len = strnlen(buffer, sizeof(buffer));
+
+    if (len + 2 < sizeof(buffer)) {
+        buffer[len++] = '\r';
+        buffer[len++] = '\n';
+        buffer[len] = '\0';
+    }
 
     for (size_t i = 0; i < strlen(buffer); i++)
     {
@@ -139,4 +161,14 @@ void logger_process(void)
 
         HAL_HSEM_Release(HSEM_ID_1, PROCID);
     }
+}
+
+void logger_write_raw(const char *data, int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        rb_push(&rb, data[i]);
+    }
+
+    logger_process();
 }

@@ -32,6 +32,7 @@
 
 #include "cmsis_os2.h"                  // ::CMSIS:RTOS2
 #include "cmsis_compiler.h"             // Compiler agnostic definitions
+#include "logger.h"
 
 /*---------------------------------------------------------------------------*/
 #ifndef __ARM_ARCH_6M__
@@ -1093,17 +1094,26 @@ uint32_t osThreadFlagsWait (uint32_t flags, uint32_t options, uint32_t timeout) 
 */
 osStatus_t osDelay (uint32_t ticks) {
   osStatus_t stat;
+  // LOG_INFO("haha");
+  // LOG_INFO("%d", ticks);
 
   if (IRQ_Context() != 0U) {
+    // LOG_INFO("haha2");
     stat = osErrorISR;
   }
   else {
+    // LOG_INFO("haha3");
     stat = osOK;
 
     if (ticks != 0U) {
+
+      // LOG_INFO("haha4");
+      // LOG_INFO("scheduler=%d", xTaskGetSchedulerState());
       vTaskDelay(ticks);
     }
+    // LOG_INFO("haha5");
   }
+  // LOG_INFO("haha6");
 
   /* Return execution status */
   return (stat);

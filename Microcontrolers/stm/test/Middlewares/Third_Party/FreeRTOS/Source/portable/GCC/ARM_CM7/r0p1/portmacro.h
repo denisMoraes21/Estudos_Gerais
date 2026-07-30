@@ -25,6 +25,7 @@
  * https://github.com/FreeRTOS
  *
  */
+ #include "logger.h"
 
 
 #ifndef PORTMACRO_H
@@ -82,15 +83,12 @@
 /*-----------------------------------------------------------*/
 
 /* Scheduler utilities. */
-    #define portYIELD()                                 \
-    {                                                   \
-        /* Set a PendSV to request a context switch. */ \
-        portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT; \
-                                                        \
-        /* Barriers are normally not required but do ensure the code is completely \
-         * within the specified behaviour for the architecture. */ \
-        __asm volatile ( "dsb" ::: "memory" );                     \
-        __asm volatile ( "isb" );                                  \
+    
+    #define portYIELD()                                      \
+    {                                                        \          
+        portNVIC_INT_CTRL_REG = portNVIC_PENDSVSET_BIT;      \
+        __asm volatile ( "dsb" ::: "memory" );               \
+        __asm volatile ( "isb" );                            \
     }
 
     #define portNVIC_INT_CTRL_REG     ( *( ( volatile uint32_t * ) 0xe000ed04 ) )

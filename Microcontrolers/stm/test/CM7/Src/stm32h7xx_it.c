@@ -20,8 +20,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32h7xx_it.h"
+#include "ethernetif.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "logger.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -83,16 +85,37 @@ void NMI_Handler(void)
 /**
   * @brief This function handles Hard fault interrupt.
   */
+__attribute__((naked))
 void HardFault_Handler(void)
 {
-  /* USER CODE BEGIN HardFault_IRQn 0 */
+    __asm volatile(
+        "tst lr, #4      \n"
+        "ite eq          \n"
+        "mrseq r0, msp   \n"
+        "mrsne r0, psp   \n"
+        "b HardFault_HandlerC\n"
+    );
+}
 
-  /* USER CODE END HardFault_IRQn 0 */
-  while (1)
-  {
-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
-    /* USER CODE END W1_HardFault_IRQn 0 */
-  }
+void HardFault_HandlerC(uint32_t *stack)
+{
+    volatile uint32_t stacked_r0  = stack[0];
+    volatile uint32_t stacked_r1  = stack[1];
+    volatile uint32_t stacked_r2  = stack[2];
+    volatile uint32_t stacked_r3  = stack[3];
+    volatile uint32_t stacked_r12 = stack[4];
+    volatile uint32_t stacked_lr  = stack[5];
+    volatile uint32_t stacked_pc  = stack[6];
+    volatile uint32_t stacked_psr = stack[7];
+
+    volatile uint32_t hfsr = SCB->HFSR;
+    volatile uint32_t cfsr = SCB->CFSR;
+    volatile uint32_t mmfar = SCB->MMFAR;
+    volatile uint32_t bfar = SCB->BFAR;
+
+    while (1)
+    {
+    }
 }
 
 /**
@@ -188,6 +211,7 @@ void SysTick_Handler(void)
 void ETH_IRQHandler(void)
 {
   /* USER CODE BEGIN ETH_IRQn 0 */
+  eth_irq_count++;
 
   /* USER CODE END ETH_IRQn 0 */
   HAL_ETH_IRQHandler(&heth);
