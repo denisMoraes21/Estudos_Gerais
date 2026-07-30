@@ -40,6 +40,9 @@ MEMORY
 {
 FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
+/* Ethernet DMA cannot access the Cortex-M7 DTCM at 0x20000000.
+ * Keep descriptors and lwIP RX buffers in the D2 SRAM domain. */
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K
 ITCMRAM (xrw)      : ORIGIN = 0x00000000, LENGTH = 64K
 }
 /* Highest address of the user mode stack */
@@ -218,6 +221,26 @@ SECTIONS
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
   } >RAM
+
+  /* ETH DMA descriptor tables and zero-copy lwIP RX buffers.
+   * These sections must be in DMA-accessible D2 SRAM. */
+  .RxDescripSection (NOLOAD) :
+  {
+    . = ABSOLUTE(0x30000000);
+    *(.RxDescripSection)
+  } >RAM_D2
+
+  .TxDescripSection (NOLOAD) :
+  {
+    . = ABSOLUTE(0x30000080);
+    *(.TxDescripSection)
+  } >RAM_D2
+
+  .Rx_PoolSection (NOLOAD) :
+  {
+    . = ABSOLUTE(0x30000200);
+    *(.Rx_PoolSection)
+  } >RAM_D2
 
   
 
