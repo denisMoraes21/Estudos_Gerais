@@ -18,7 +18,9 @@
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
 #include "lwip.h"
-
+#include "lwip/sockets.h"
+#include "lwip/inet.h"
+#include "lwip/netdb.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -68,6 +70,164 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
 extern struct netif gnetif;
+
+#define SERVER_IP       "192.168.1.10"
+#define SERVER_PORT     5000
+#define RX_BUFFER_SIZE  128
+
+static void tcp_client_task(void *argument)
+{
+    int socket_fd;
+    int result;
+    int received;
+
+    struct sockaddr_in server_address;
+
+    char tx_buffer[128];
+    char rx_buffer[RX_BUFFER_SIZE];
+
+    (void)argument;
+
+    /*
+     * Aguarda a interface Ethernet e o link físico ficarem ativos.
+     */
+    while (!netif_is_up(&gnetif) ||
+           !netif_is_link_up(&gnetif))
+    {
+        LOG_INFO("Aguardando interface Ethernet...");
+        osDelay(1000);
+    }
+
+    LOG_INFO("Ethernet pronta");
+
+    for (;;)
+    {
+        socket_fd = lwip_socket(
+            AF_INET,
+            SOCK_STREAM,
+            IPPROTO_TCP
+        );
+
+        if (socket_fd < 0)
+        {
+            LOG_ERROR("Erro ao criar socket");
+            osDelay(2000);
+            continue;
+        }
+
+        memset(&server_address, 0, sizeof(server_address));
+
+        server_address.sin_family = AF_INET;
+        server_address.sin_port = htons(SERVER_PORT);
+
+        result = inet_aton(
+            SERVER_IP,
+            &server_address.sin_addr
+        );
+
+        if (result == 0)
+        {
+            LOG_ERROR("IP do servidor invalido");
+            lwip_close(socket_fd);
+            osDelay(2000);
+            continue;
+        }
+
+        LOG_INFO(
+            "Conectando em %s:%d...",
+            SERVER_IP,
+            SERVER_PORT
+        );
+
+        result = lwip_connect(
+            socket_fd,
+            (struct sockaddr *)&server_address,
+            sizeof(server_address)
+        );
+
+        if (result < 0)
+        {
+            LOG_ERROR(
+                "Falha ao conectar. errno = %d",
+                errno
+            );
+
+            lwip_close(socket_fd);
+            osDelay(2000);
+            continue;
+        }
+
+        LOG_INFO("Conectado ao servidor TCP");
+
+        uint32_t counter = 0;
+
+        while (1)
+        {
+            int message_length = snprintf(
+                tx_buffer,
+                sizeof(tx_buffer),
+                "Mensagem STM32: %lu\n",
+                (unsigned long)counter++
+            );
+
+            result = lwip_send(
+                socket_fd,
+                tx_buffer,
+                message_length,
+                0
+            );
+
+            if (result < 0)
+            {
+                LOG_ERROR(
+                    "Erro no envio. errno = %d",
+                    errno
+                );
+                break;
+            }
+
+            LOG_INFO("Enviados %d bytes", result);
+
+            received = lwip_recv(
+                socket_fd,
+                rx_buffer,
+                sizeof(rx_buffer) - 1,
+                0
+            );
+
+            if (received == 0)
+            {
+                LOG_WARN("Servidor encerrou a conexão");
+                break;
+            }
+
+            if (received < 0)
+            {
+                LOG_ERROR(
+                    "Erro na recepcao. errno = %d",
+                    errno
+                );
+                break;
+            }
+
+            rx_buffer[received] = '\0';
+
+            LOG_INFO(
+                "Servidor respondeu: %s",
+                rx_buffer
+            );
+
+            osDelay(1000);
+        }
+
+        LOG_INFO("Fechando socket");
+
+        lwip_shutdown(socket_fd, SHUT_RDWR);
+        lwip_close(socket_fd);
+
+        osDelay(2000);
+    }
+}
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -280,11 +440,12 @@ Error_Handler();
     // }
 
     // osKernelStart();
+    MX_LWIP_Init();
 
     osKernelInitialize();
 
     defaultTaskHandle = osThreadNew(
-        StartDefaultTask,
+        tcp_client_task,
         NULL,
         &defaultTask_attributes
     );
@@ -688,10 +849,6 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
   * @brief  Function implementing the defaultTask thread.
@@ -702,92 +859,99 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void *argument)
 {
   /* init code for LWIP */
-  MX_LWIP_Init();
+  // MX_LWIP_Init();
+  // tcp_client_task();
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
-  LOG_INFO("===== LWIP INICIALIZADO =====");
-  // printf("Teste printf\r\n");
+  // LOG_INFO("===== LWIP INICIALIZADO =====");
 
-    for (;;)
-    {
-        // LOG_INFO("--------------------------------");
+  // if (socket_init() != osOK)
+  // {
+  //     LOG_ERROR("Nao foi possivel inicializar o cliente TCP");
+  // }
 
-        // LOG_INFO("Interface: %c%c%d",
-        //          gnetif.name[0],
-        //          gnetif.name[1],
-        //          gnetif.num);
+  // // printf("Teste printf\r\n");
 
-        LOG_INFO("Link: %s",
-                 netif_is_link_up(&gnetif) ? "UP" : "DOWN");
+  //   for (;;)
+  //   {
+  //       // LOG_INFO("--------------------------------");
 
-        LOG_INFO("Interface: %s",
-                 netif_is_up(&gnetif) ? "UP" : "DOWN");
+  //       // LOG_INFO("Interface: %c%c%d",
+  //       //          gnetif.name[0],
+  //       //          gnetif.name[1],
+  //       //          gnetif.num);
 
-        LOG_INFO("IP      : %s",
-                 ip4addr_ntoa(netif_ip4_addr(&gnetif)));
+  //       LOG_INFO("Link: %s",
+  //                netif_is_link_up(&gnetif) ? "UP" : "DOWN");
 
-        LOG_INFO("Mascara : %s",
-                 ip4addr_ntoa(netif_ip4_netmask(&gnetif)));
+  //       LOG_INFO("Interface: %s",
+  //                netif_is_up(&gnetif) ? "UP" : "DOWN");
 
-        LOG_INFO("Gateway : %s",
-                 ip4addr_ntoa(netif_ip4_gw(&gnetif)));
+  //       LOG_INFO("IP      : %s",
+  //                ip4addr_ntoa(netif_ip4_addr(&gnetif)));
 
-        LOG_INFO("MAC: %02X:%02X:%02X:%02X:%02X:%02X",
-                 gnetif.hwaddr[0],
-                 gnetif.hwaddr[1],
-                 gnetif.hwaddr[2],
-                 gnetif.hwaddr[3],
-                 gnetif.hwaddr[4],
-                 gnetif.hwaddr[5]);
+  //       LOG_INFO("Mascara : %s",
+  //                ip4addr_ntoa(netif_ip4_netmask(&gnetif)));
 
-        // LOG_INFO("MTU: %u", gnetif.mtu);
+  //       LOG_INFO("Gateway : %s",
+  //                ip4addr_ntoa(netif_ip4_gw(&gnetif)));
 
-        // LOG_INFO("Flags = 0x%04X", gnetif.flags);
+  //       LOG_INFO("MAC: %02X:%02X:%02X:%02X:%02X:%02X",
+  //                gnetif.hwaddr[0],
+  //                gnetif.hwaddr[1],
+  //                gnetif.hwaddr[2],
+  //                gnetif.hwaddr[3],
+  //                gnetif.hwaddr[4],
+  //                gnetif.hwaddr[5]);
 
-        if (gnetif.flags & NETIF_FLAG_ETHARP)
-            LOG_INFO("ARP habilitado");
+  //       // LOG_INFO("MTU: %u", gnetif.mtu);
 
-        if (gnetif.flags & NETIF_FLAG_BROADCAST)
-            LOG_INFO("Broadcast habilitado");
+  //       // LOG_INFO("Flags = 0x%04X", gnetif.flags);
 
-        if (gnetif.flags & NETIF_FLAG_ETHERNET)
-            LOG_INFO("Ethernet habilitada");
+  //       if (gnetif.flags & NETIF_FLAG_ETHARP)
+  //           LOG_INFO("ARP habilitado");
 
-            LOG_INFO("RX packets : %u", lwip_stats.link.recv);
-        LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
-        LOG_INFO("RX errors  : %u", lwip_stats.link.drop);
-        LOG_INFO("RX mem err : %u", lwip_stats.link.memerr);
+  //       if (gnetif.flags & NETIF_FLAG_BROADCAST)
+  //           LOG_INFO("Broadcast habilitado");
 
-        LOG_INFO("ARP recv   : %u", lwip_stats.etharp.recv);
-        LOG_INFO("ARP xmit   : %u", lwip_stats.etharp.xmit);
+  //       if (gnetif.flags & NETIF_FLAG_ETHERNET)
+  //           LOG_INFO("Ethernet habilitada");
 
-        LOG_INFO("IP recv    : %u", lwip_stats.ip.recv);
-        LOG_INFO("IP sent    : %u", lwip_stats.ip.xmit);
+  //           LOG_INFO("RX packets : %u", lwip_stats.link.recv);
+  //       LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
+  //       LOG_INFO("RX errors  : %u", lwip_stats.link.drop);
+  //       LOG_INFO("RX mem err : %u", lwip_stats.link.memerr);
+
+  //       LOG_INFO("ARP recv   : %u", lwip_stats.etharp.recv);
+  //       LOG_INFO("ARP xmit   : %u", lwip_stats.etharp.xmit);
+
+  //       LOG_INFO("IP recv    : %u", lwip_stats.ip.recv);
+  //       LOG_INFO("IP sent    : %u", lwip_stats.ip.xmit);
 
         
-        LOG_INFO("ICMP recv  : %u", lwip_stats.icmp.recv);
-        LOG_INFO("ICMP sent  : %u", lwip_stats.icmp.xmit);
-        int32_t state = LAN8742_GetLinkState(&LAN8742);
+  //       LOG_INFO("ICMP recv  : %u", lwip_stats.icmp.recv);
+  //       LOG_INFO("ICMP sent  : %u", lwip_stats.icmp.xmit);
+  //       int32_t state = LAN8742_GetLinkState(&LAN8742);
 
-        LOG_INFO("PHY State = %ld", state);
+  //       LOG_INFO("PHY State = %ld", state);
 
-        // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
+  //       // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
 
-        osDelay(2000);
+  //       osDelay(2000);
 
-        // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
-        LOG_INFO("RX packets : %u", lwip_stats.link.recv);
-        LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
-        LOG_INFO("ETH IRQ    : %lu", eth_irq_count);
-        LOG_INFO("ETH RX cb  : %lu", eth_rx_complete_count);
-        LOG_INFO("ETH TX cb  : %lu", eth_tx_complete_count);
-        UBaseType_t watermark = uxTaskGetStackHighWaterMark(NULL);
+  //       // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
+  //       LOG_INFO("RX packets : %u", lwip_stats.link.recv);
+  //       LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
+  //       LOG_INFO("ETH IRQ    : %lu", eth_irq_count);
+  //       LOG_INFO("ETH RX cb  : %lu", eth_rx_complete_count);
+  //       LOG_INFO("ETH TX cb  : %lu", eth_tx_complete_count);
+  //       UBaseType_t watermark = uxTaskGetStackHighWaterMark(NULL);
 
-        LOG_INFO("Stack livre = %lu words (%lu bytes)",
-                watermark,
-                watermark * sizeof(StackType_t));
+  //       LOG_INFO("Stack livre = %lu words (%lu bytes)",
+  //               watermark,
+  //               watermark * sizeof(StackType_t));
 
-  }
+  // }
 
   /* USER CODE END 5 */
 }
