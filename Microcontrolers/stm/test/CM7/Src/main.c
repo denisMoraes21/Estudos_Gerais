@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include "task.h"
+#include "lan8742.h"
 /* USER CODE END Includes */
 
 #include "logger.h"
@@ -71,10 +73,11 @@ extern struct netif gnetif;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
+extern lan8742_Object_t LAN8742;
 
 /* USER CODE END PV */
 
@@ -137,6 +140,7 @@ void ESP32_ReadSensor(void)
         sizeof(sensor),
         HAL_MAX_DELAY
     );
+    (void)status;
 
 
     // if(status == HAL_OK)
@@ -277,7 +281,22 @@ Error_Handler();
 
     // osKernelStart();
 
-    
+    osKernelInitialize();
+
+    defaultTaskHandle = osThreadNew(
+        StartDefaultTask,
+        NULL,
+        &defaultTask_attributes
+    );
+
+    if (defaultTaskHandle == NULL)
+    {
+        LOG_ERROR("Falha ao criar defaultTask");
+        Error_Handler();
+    }
+
+    LOG_INFO("Iniciando kernel FreeRTOS");
+    osKernelStart();
 
     while (1)
     {
@@ -687,15 +706,16 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   LOG_INFO("===== LWIP INICIALIZADO =====");
+  // printf("Teste printf\r\n");
 
     for (;;)
     {
-        LOG_INFO("--------------------------------");
+        // LOG_INFO("--------------------------------");
 
-        LOG_INFO("Interface: %c%c%d",
-                 gnetif.name[0],
-                 gnetif.name[1],
-                 gnetif.num);
+        // LOG_INFO("Interface: %c%c%d",
+        //          gnetif.name[0],
+        //          gnetif.name[1],
+        //          gnetif.num);
 
         LOG_INFO("Link: %s",
                  netif_is_link_up(&gnetif) ? "UP" : "DOWN");
@@ -720,9 +740,9 @@ void StartDefaultTask(void *argument)
                  gnetif.hwaddr[4],
                  gnetif.hwaddr[5]);
 
-        LOG_INFO("MTU: %u", gnetif.mtu);
+        // LOG_INFO("MTU: %u", gnetif.mtu);
 
-        LOG_INFO("Flags = 0x%04X", gnetif.flags);
+        // LOG_INFO("Flags = 0x%04X", gnetif.flags);
 
         if (gnetif.flags & NETIF_FLAG_ETHARP)
             LOG_INFO("ARP habilitado");
@@ -747,7 +767,26 @@ void StartDefaultTask(void *argument)
         
         LOG_INFO("ICMP recv  : %u", lwip_stats.icmp.recv);
         LOG_INFO("ICMP sent  : %u", lwip_stats.icmp.xmit);
-        osDelay(5000);
+        int32_t state = LAN8742_GetLinkState(&LAN8742);
+
+        LOG_INFO("PHY State = %ld", state);
+
+        // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
+
+        osDelay(2000);
+
+        // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
+        LOG_INFO("RX packets : %u", lwip_stats.link.recv);
+        LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
+        LOG_INFO("ETH IRQ    : %lu", eth_irq_count);
+        LOG_INFO("ETH RX cb  : %lu", eth_rx_complete_count);
+        LOG_INFO("ETH TX cb  : %lu", eth_tx_complete_count);
+        UBaseType_t watermark = uxTaskGetStackHighWaterMark(NULL);
+
+        LOG_INFO("Stack livre = %lu words (%lu bytes)",
+                watermark,
+                watermark * sizeof(StackType_t));
+
   }
 
   /* USER CODE END 5 */

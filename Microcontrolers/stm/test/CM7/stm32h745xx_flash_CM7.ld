@@ -227,19 +227,19 @@ SECTIONS
   .RxDescripSection (NOLOAD) :
   {
     . = ABSOLUTE(0x30000000);
-    *(.RxDescripSection)
+    KEEP(*(.RxDescripSection))
   } >RAM_D2
 
   .TxDescripSection (NOLOAD) :
   {
     . = ABSOLUTE(0x30000080);
-    *(.TxDescripSection)
+    KEEP(*(.TxDescripSection))
   } >RAM_D2
 
   .Rx_PoolSection (NOLOAD) :
   {
     . = ABSOLUTE(0x30000200);
-    *(.Rx_PoolSection)
+    KEEP(*(.Rx_PoolSection))
   } >RAM_D2
 
   

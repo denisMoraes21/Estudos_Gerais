@@ -26,6 +26,7 @@
 
 extern volatile uint32_t eth_irq_count;
 extern volatile uint32_t eth_rx_complete_count;
+extern volatile uint32_t eth_tx_complete_count;
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */

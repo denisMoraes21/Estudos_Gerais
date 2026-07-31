@@ -24,6 +24,7 @@
 #include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ethernetif.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
