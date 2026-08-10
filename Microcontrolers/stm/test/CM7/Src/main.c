@@ -440,28 +440,36 @@ Error_Handler();
     // }
 
     // osKernelStart();
-    MX_LWIP_Init();
+    // MX_LWIP_Init();
 
-    osKernelInitialize();
+    // osKernelInitialize();
 
-    defaultTaskHandle = osThreadNew(
-        tcp_client_task,
-        NULL,
-        &defaultTask_attributes
-    );
+    // defaultTaskHandle = osThreadNew(
+    //     tcp_client_task,
+    //     NULL,
+    //     &defaultTask_attributes
+    // );
 
-    if (defaultTaskHandle == NULL)
-    {
-        LOG_ERROR("Falha ao criar defaultTask");
-        Error_Handler();
-    }
+    // if (defaultTaskHandle == NULL)
+    // {
+    //     LOG_ERROR("Falha ao criar defaultTask");
+    //     Error_Handler();
+    // }
 
-    LOG_INFO("Iniciando kernel FreeRTOS");
-    osKernelStart();
+    // LOG_INFO("Iniciando kernel FreeRTOS");
+    // osKernelStart();
 
     while (1)
     {
         LOG_ERROR("Olá");
+        uint8_t mensagem[] = "Teste RS485\r\n";
+
+        HAL_UART_Transmit(
+            &huart2,
+            mensagem,
+            sizeof(mensagem) - 1,
+            HAL_MAX_DELAY
+        );
         // ESP32_ReadSensor();
         // uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
         // uint8_t rx[4] = {0};
@@ -723,7 +731,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 9600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
