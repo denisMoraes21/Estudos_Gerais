@@ -1,0 +1,36 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Soma entre números binários}
+    \begin{itemize}
+        \item Soma com dois números:
+    \end{itemize}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|c|c|c}
+            \hline
+            \textbf{Operação} & \textbf{Resultado} & \textbf{Carry} & \textbf{Binário} \\
+            \hline
+            $0 + 0$         & $0$    & 0        & 0     \\
+            $0 + 1$         & $1$    & 0        & 1     \\
+            $1 + 0$         & $1$    & 0        & 1     \\
+            $1 + 1$         & $0$    & 1        & 10    \\
+            \hline
+        \end{tabular}
+    \end{table}
+    \begin{itemize}
+        \item Soma com mais de dois números:
+    \end{itemize}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{c|c|c|c}
+            \hline
+            \textbf{Operação} & \textbf{Resultado} & \textbf{Carry} & \textbf{Binário} \\
+            \hline
+            $1 + 1 + 1$         & $1$    & 1        & 11    \\
+            $1 + 1 + 1 + 1$     & $0$    & 10       & 100   \\
+            $1 + 1 + 1 + 1 + 1$ & $1$    & 10       & 101   \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}

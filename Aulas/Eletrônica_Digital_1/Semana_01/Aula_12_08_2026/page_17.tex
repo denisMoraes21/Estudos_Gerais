@@ -1,0 +1,37 @@
+
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Números binários com sinal (Complemento de 2)}
+
+    \begin{itemize}
+        \item O complemento de 2 é utilizado para representar números negativos.
+        \item O bit mais significativo (MSB) indica o sinal:
+        \begin{itemize}
+            \item $0$: número não negativo;
+            \item $1$: número negativo.
+        \end{itemize}
+    \end{itemize}
+
+    \textbf{Exemplo: representar $-5$ utilizando 4 bits}
+
+    \[
+        5_{10} = 0101_{2}
+    \]
+
+    \[
+        \text{Inverter os bits: }
+        0101 \rightarrow 1010
+    \]
+
+    \[
+        \text{Somar 1: }
+        1010 + 1 = 1011
+    \]
+
+    \[
+        \boxed{-5_{10} = 1011_{2}}
+    \]
+
+\end{frame}
+

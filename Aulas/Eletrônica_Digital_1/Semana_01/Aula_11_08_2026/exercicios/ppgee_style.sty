@@ -1,0 +1,54 @@
+%! Author = Denis Moraes Guimarães
+%! Date = 15/09/2025
+
+\ProvidesPackage{ppgee_style}
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[brazil]{babel}
+\RequirePackage{multicol}
+\RequirePackage{enumitem}
+\RequirePackage[a4paper,margin=1.5cm]{geometry}
+\RequirePackage{array}
+\RequirePackage{graphicx}
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!50!black},
+    breaklines=true,
+    frame=single
+}
+
+\definecolor{darkgreen}{RGB}{0,64,0}
+
+
+
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    language=C,                   % Linguagem C
+    basicstyle=\ttfamily\small,   % Fonte monoespaçada
+    keywordstyle=\color{green!70!black}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{orange},
+    numbers=left,                 % Numeração de linhas
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{black!5}, % Fundo claro
+    frame=single,                 % Borda ao redor
+    breaklines=true,              % Quebra linhas longas
+    tabsize=2,
+    showstringspaces=false
+}
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{array}       % Para customizar colunas
+\RequirePackage{tabularx}    % Para tabelas com largura ajustável
+\RequirePackage{booktabs}    % Para linhas horizontais bonitas
+\RequirePackage{tikz}
+\RequirePackage{graphicx}

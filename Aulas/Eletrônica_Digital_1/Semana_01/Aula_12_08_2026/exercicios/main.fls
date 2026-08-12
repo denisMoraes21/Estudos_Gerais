@@ -1,9 +1,9 @@
-PWD /home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Teste_de_Software/Fase_3/recuperação/prova
+PWD /home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_01/Aula_11_08_2026/exercicios
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Teste_de_Software/Fase_3/recuperação/prova/main.tex
+INPUT /home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_01/Aula_11_08_2026/exercicios/main.tex
 OUTPUT main.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls

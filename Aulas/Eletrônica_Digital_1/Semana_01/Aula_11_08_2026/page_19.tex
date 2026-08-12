@@ -1,0 +1,34 @@
+%! Author = denis
+%! Date = 09/08/2026
+
+
+\begin{frame}{Endianness}
+    \begin{itemize}
+        \item \textbf{Little Endian:} o byte menos significativo
+        é armazenado no menor endereço.
+
+        \item \textbf{Big Endian:} o byte mais significativo
+        é armazenado no menor endereço.
+    \end{itemize}
+
+    \vspace{0.5cm}
+
+    Exemplo: valor de 32 bits
+
+    \[
+        \texttt{0x12345678}
+    \]
+
+    \vspace{0.3cm}
+
+    \textbf{Big Endian:}
+
+    \[
+        \begin{array}{c|cccc}
+        \text{Endereço} & 0x1000 & 0x1001 & 0x1002 & 0x1003 \\
+        \hline
+        \text{Valor} & 12 & 34 & 56 & 78
+        \end{array}
+    \]
+
+\end{frame}

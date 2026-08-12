@@ -1,0 +1,519 @@
+
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{ppgee_style}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{enumitem}
+
+\begin{document}
+
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{0.6}
+
+    \begin{tabular}{
+        |>{\centering\arraybackslash}m{0.20\textwidth}
+        |>{\centering\arraybackslash}m{0.73\textwidth}|
+    }
+        \hline
+
+        \includegraphics[width=2.8cm]{fpf.png}
+        &
+        {
+            \centering
+            \vspace{0.2cm}
+
+            \textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL}
+            \\[0.15cm]
+
+            \textbf{\small Disciplina: Eletrônica Digital I}
+            \\[0.15cm]
+
+            \textbf{\small LISTA DE EXERCÍCIOS}
+        }
+
+        \tabularnewline
+        \hline
+    \end{tabular}
+
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% DADOS DO ALUNO
+% =========================================================
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+
+    \begin{tabular}{
+        |>{\raggedright\arraybackslash}m{0.70\textwidth}
+        |>{\raggedright\arraybackslash}m{0.23\textwidth}|
+    }
+        \hline
+
+        \textbf{Aluno(a):} & \textbf{Data:} \\
+        \hline
+
+        \textbf{Professor(a):} & \textbf{Nota:} \\
+        \hline
+    \end{tabular}
+
+\end{table}
+
+\vspace{0.05cm}
+
+% =========================================================
+% INSTRUÇÕES
+% =========================================================
+
+\noindent
+\begin{minipage}{\textwidth}
+    \scriptsize
+
+    \begin{itemize}[itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item Responda às questões com atenção.
+        \item Marque apenas uma alternativa por questão.
+        \item Efetue as operações utilizando números binários.
+    \end{itemize}
+\end{minipage}
+
+\vspace{0.5cm}
+
+\noindent\rule{\textwidth}{1pt}
+
+% =========================================================
+% QUESTÕES
+% =========================================================
+
+\begin{multicols}{2}
+\raggedcolumns
+
+\begin{enumerate}[leftmargin=*]
+
+% =========================================================
+% SOMA
+% =========================================================
+
+\item Qual é o resultado da soma
+$1010_2 + 0011_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $1011_2$
+    \item $1100_2$
+    \item $1101_2$
+    \item $1110_2$
+    \item $1111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da soma
+$1111_2 + 0001_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $1111_2$
+    \item $10000_2$
+    \item $10001_2$
+    \item $11000_2$
+    \item $11100_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da soma
+$1011_2 + 0110_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $01111_2$
+    \item $10000_2$
+    \item $10001_2$
+    \item $10010_2$
+    \item $10101_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% SUBTRAÇÃO
+% =========================================================
+
+\item Qual é o resultado da subtração
+$1010_2 - 0011_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0101_2$
+    \item $0110_2$
+    \item $0111_2$
+    \item $1000_2$
+    \item $1001_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da subtração
+$1100_2 - 0101_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0101_2$
+    \item $0110_2$
+    \item $0111_2$
+    \item $1000_2$
+    \item $1001_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da subtração
+$1111_2 - 0110_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0111_2$
+    \item $1000_2$
+    \item $1001_2$
+    \item $1010_2$
+    \item $1011_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% MULTIPLICAÇÃO
+% =========================================================
+
+\item Qual é o resultado da multiplicação
+$101_2 \times 11_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $1010_2$
+    \item $1100_2$
+    \item $1101_2$
+    \item $1111_2$
+    \item $10000_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da multiplicação
+$110_2 \times 10_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0110_2$
+    \item $1000_2$
+    \item $1010_2$
+    \item $1100_2$
+    \item $1110_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da multiplicação
+$111_2 \times 11_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $10001_2$
+    \item $10010_2$
+    \item $10100_2$
+    \item $10101_2$
+    \item $11001_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% DIVISÃO
+% =========================================================
+
+\item Qual é o resultado da divisão
+$1100_2 \div 10_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $10_2$
+    \item $100_2$
+    \item $101_2$
+    \item $110_2$
+    \item $111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o quociente da divisão
+$1111_2 \div 11_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $10_2$
+    \item $11_2$
+    \item $100_2$
+    \item $101_2$
+    \item $110_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Na divisão
+$1101_2 \div 10_2$,
+qual é o quociente e o resto?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item Quociente $101_2$, resto $1_2$
+    \item Quociente $110_2$, resto $0_2$
+    \item Quociente $110_2$, resto $1_2$
+    \item Quociente $111_2$, resto $0_2$
+    \item Quociente $111_2$, resto $1_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% AND
+% =========================================================
+
+\item Qual é o resultado da operação
+$1011_2 \land 1101_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $1000_2$
+    \item $1001_2$
+    \item $1010_2$
+    \item $1101_2$
+    \item $1111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da operação
+$1110_2 \land 1011_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $1000_2$
+    \item $1010_2$
+    \item $1011_2$
+    \item $1100_2$
+    \item $1110_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% OR
+% =========================================================
+
+\item Qual é o resultado da operação
+$1010_2 \lor 0101_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0000_2$
+    \item $0101_2$
+    \item $1010_2$
+    \item $1110_2$
+    \item $1111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da operação
+$1001_2 \lor 0110_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0111_2$
+    \item $1001_2$
+    \item $1101_2$
+    \item $1110_2$
+    \item $1111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% XOR
+% =========================================================
+
+\item Qual é o resultado da operação
+$1011_2 \oplus 1101_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0000_2$
+    \item $0011_2$
+    \item $0101_2$
+    \item $0110_2$
+    \item $1111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado da operação
+$1111_2 \oplus 1010_2$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0001_2$
+    \item $0011_2$
+    \item $0101_2$
+    \item $0110_2$
+    \item $1010_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% NOT
+% =========================================================
+
+\item Qual é o resultado de
+$\mathrm{NOT}(10110010_2)$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $01001101_2$
+    \item $01001110_2$
+    \item $10110001_2$
+    \item $11001101_2$
+    \item $01101101_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Considerando 8 bits, qual é o resultado de
+$\mathrm{NOT}(11110000_2)$?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $00001111_2$
+    \item $00011111_2$
+    \item $00110011_2$
+    \item $11110000_2$
+    \item $11111111_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% SHIFT LEFT
+% =========================================================
+
+\item Considerando espaço suficiente para armazenar o resultado,
+qual é o resultado de
+
+\[
+0011_2 << 2
+\]
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0011_2$
+    \item $0110_2$
+    \item $1000_2$
+    \item $1100_2$
+    \item $1110_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Considerando espaço suficiente para armazenar o resultado,
+qual é o resultado de
+
+\[
+1011_2 << 1
+\]
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $01011_2$
+    \item $10110_2$
+    \item $11010_2$
+    \item $11011_2$
+    \item $11100_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+% =========================================================
+% SHIFT RIGHT
+% =========================================================
+
+\item Qual é o resultado de
+$1100_2 >> 2$,
+considerando um número sem sinal?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $0001_2$
+    \item $0010_2$
+    \item $0011_2$
+    \item $0110_2$
+    \item $1100_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado de
+$10110_2 >> 1$,
+considerando um número sem sinal?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $00101_2$
+    \item $00110_2$
+    \item $01011_2$
+    \item $01101_2$
+    \item $10110_2$
+\end{enumerate}
+
+\vspace{0.2cm}
+
+
+\item Qual é o resultado de
+$11100_2 >> 2$,
+considerando um número sem sinal?
+
+\begin{enumerate}[label=(\Alph*)]
+    \item $00011_2$
+    \item $00101_2$
+    \item $00110_2$
+    \item $00111_2$
+    \item $01110_2$
+\end{enumerate}
+
+\end{enumerate}
+
+\end{multicols}
+
+% =========================================================
+% RODAPÉ
+% =========================================================
+
+\vfill
+
+\begin{center}
+    \textbf{Bom trabalho!}
+\end{center}
+
+\end{document}
+

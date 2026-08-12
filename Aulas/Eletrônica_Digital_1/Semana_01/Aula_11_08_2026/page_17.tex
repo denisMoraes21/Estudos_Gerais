@@ -1,0 +1,38 @@
+%! Author = denis
+%! Date = 09/08/2026
+
+
+\begin{frame}{MSB/LSB}
+    \begin{itemize}
+        \item \textbf{MSB (Most Significant Bit):} bit mais significativo,
+        possui o maior peso.
+
+        \item \textbf{LSB (Least Significant Bit):} bit menos significativo,
+        possui o menor peso.
+    \end{itemize}
+
+    \vspace{0.7cm}
+
+    \[
+        \underbrace{1}_{\text{MSB}}
+        0\,1\,1\,0\,1\,0
+        \underbrace{1}_{\text{LSB}}
+    \]
+
+    \vspace{0.5cm}
+
+    \[
+        \begin{array}{cccccccc}
+        1 & 0 & 1 & 1 & 0 & 1 & 0 & 1 \\
+        \downarrow & & & & & & & \downarrow \\
+        2^7 & 2^6 & 2^5 & 2^4 & 2^3 & 2^2 & 2^1 & 2^0
+        \end{array}
+    \]
+
+    \vspace{0.3cm}
+
+    \begin{itemize}
+        \item MSB $\rightarrow$ maior peso: $2^7$
+        \item LSB $\rightarrow$ menor peso: $2^0$
+    \end{itemize}
+\end{frame}

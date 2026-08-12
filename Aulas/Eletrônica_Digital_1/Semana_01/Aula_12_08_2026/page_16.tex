@@ -1,0 +1,29 @@
+
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Deslocamento de bits para direita (Shift Right)}
+    \begin{itemize}
+        \item Desloca os bits para a direita.
+        \item Para números sem sinal, as posições vazias à esquerda
+              são preenchidas com $0$.
+    \end{itemize}
+
+    \[
+    \begin{array}{rcl}
+        1100_{2} >> 1 & = & 0110_{2} \\
+        1100_{2} >> 2 & = & 0011_{2}
+    \end{array}
+    \]
+
+    \vspace{0.3cm}
+
+    \[
+        x >> n =
+        \left\lfloor
+        \frac{x}{2^n}
+        \right\rfloor
+    \]
+
+\end{frame}
+
