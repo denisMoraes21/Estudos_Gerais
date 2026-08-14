@@ -1,0 +1,45 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei distributiva}
+    
+    \begin{block}{Definição}
+        Distribuir uma variável sobre uma expressão lógica,
+        possibilitando expandir ou fatorar expressões booleanas.
+    \end{block}
+
+    \begin{columns}[T]
+
+        % Coluna AND sobre OR
+        \begin{column}{0.5\textwidth}
+            \begin{block}{AND sobre OR}
+                \[
+                    \boxed{A(B+C)=AB+AC}
+                \]
+                \[
+                    A(B+C)
+                \]
+                \[
+                    = A\cdot B + A\cdot C
+                \]
+            \end{block}
+        \end{column}
+
+        % Coluna OR sobre AND
+        \begin{column}{0.5\textwidth}
+            \begin{block}{OR sobre AND}
+                \[
+                    \boxed{A+BC=(A+B)(A+C)}
+                \]
+                \[
+                    A+BC
+                \]
+                \[
+                    = (A+B)(A+C)
+                \]
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}

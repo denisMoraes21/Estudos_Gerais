@@ -1,0 +1,29 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Representações de equações boleanas}
+    \begin{table}[h]
+        \centering
+        \renewcommand{\arraystretch}{1.4}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Porta} & \textbf{Operação} & \textbf{Equação} \\
+            \hline
+            NOT  & Negação       & $Y = \overline{A}$ \\
+            \hline
+            AND  & E             & $Y = A \cdot B$ \\
+            \hline
+            OR   & OU            & $Y = A + B$ \\
+            \hline
+            NAND & AND + NOT     & $Y = \overline{A \cdot B}$ \\
+            \hline
+            NOR  & OR + NOT      & $Y = \overline{A + B}$ \\
+            \hline
+            XOR  & OU Exclusivo  & $Y = A \oplus B$ \\
+            \hline
+            XNOR & Equivalência  & $Y = \overline{A \oplus B}$ \\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+\end{frame}

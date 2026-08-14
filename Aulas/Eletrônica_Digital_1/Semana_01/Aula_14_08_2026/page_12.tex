@@ -1,0 +1,58 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei da Absorção}
+    \small
+
+    \begin{block}{Definição}
+        Uma variável pode ``absorver'' uma expressão que já contém 
+        essa mesma variável.
+    \end{block}
+
+    \begin{columns}[T]
+
+        % Primeira forma
+        \small
+        \begin{column}{0.49\textwidth}
+            \begin{block}{Absorção com OR}
+                \[
+                    \boxed{A + AB = A}
+                \]
+
+                Demonstração:
+                \[
+                    A + AB
+                \]
+                \[
+                    = A(1+B)
+                \]
+                \[
+                    = A\cdot1 = \boxed{A}
+                \]
+            \end{block}
+        \end{column}
+
+        % Segunda forma
+        \small
+        \begin{column}{0.49\textwidth}
+            \begin{block}{Absorção com AND}
+                \[
+                    \boxed{A(A+B)=A}
+                \]
+
+                Demonstração:
+                \[
+                    A(A+B)
+                \]
+                \[
+                    = AA+AB
+                \]
+                \[
+                    = A+AB = \boxed{A}
+                \]
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}

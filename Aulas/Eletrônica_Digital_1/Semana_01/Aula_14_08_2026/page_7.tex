@@ -1,0 +1,54 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei da Idempotente}
+    \begin{block}{Definição}
+        Repetir uma mesma variável em uma operação lógica não altera
+        o seu resultado.
+    \end{block}
+
+    \vspace{0.3cm}
+
+    \begin{columns}[T]
+
+        % Coluna OR
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Idempotência OR}
+                \[
+                    \boxed{A + A = A}
+                \]
+                \[
+                    0 + 0 = 0
+                \]
+                \[
+                    1 + 1 = 1
+                \]
+
+                Portanto, repetir $A$ não altera a saída.
+            \end{block}
+        \end{column}
+
+        % Coluna AND
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Idempotência AND}
+                \[
+                    \boxed{A \cdot A = A}
+                \]
+                \[
+                    0 \cdot 0 = 0
+                \]
+                \[
+                    1 \cdot 1 = 1
+                \]
+
+                Portanto, repetir $A$ não altera a saída.
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+    \begin{alertblock}{Interpretação}
+        Na Álgebra Booleana, repetir a mesma variável em uma operação
+        \textbf{OR} ou \textbf{AND} é redundante e pode ser eliminado.
+    \end{alertblock}
+\end{frame}

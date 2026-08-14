@@ -1,0 +1,59 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei da Anulação}
+    \begin{block}{Definição}
+        \begin{itemize}
+            \item uma operação \textbf{OR} com $1$ sempre resulta em $1$;
+            \item uma operação \textbf{AND} com $0$ sempre resulta em $0$.
+        \end{itemize}
+    \end{block}
+
+    \vspace{0.3cm}
+
+    \begin{columns}[T]
+
+        % Coluna OR
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Anulação OR}
+                \[
+                    \boxed{A + 1 = 1}
+                \]
+                \[
+                    0 + 1 = 1
+                \]
+                \[
+                    1 + 1 = 1
+                \]
+
+                Portanto, a saída será sempre $1$.
+            \end{block}
+        \end{column}
+
+        % Coluna AND
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Anulação AND}
+                \[
+                    \boxed{A \cdot 0 = 0}
+                \]
+                \[
+                    0 \cdot 0 = 0
+                \]
+                \[
+                    1 \cdot 0 = 0
+                \]
+
+                Portanto, a saída será sempre $0$.
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+
+    \begin{alertblock}{Interpretação}
+        O valor $1$ é dominante na operação \textbf{OR}, enquanto
+        o valor $0$ é dominante na operação \textbf{AND},
+        independentemente do valor de $A$.
+    \end{alertblock}
+    
+\end{frame}

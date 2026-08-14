@@ -1,0 +1,59 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei de Morgan}
+     \small
+
+    \begin{block}{Definição}
+        As \textbf{Leis de De Morgan} permitem transformar uma operação
+        \textbf{AND} em \textbf{OR}, ou uma operação \textbf{OR} em
+        \textbf{AND}, quando existe uma negação envolvendo toda a expressão.
+    \end{block}
+
+    \begin{columns}[T]
+
+        % Primeira lei
+        \begin{column}{0.5\textwidth}
+            \begin{block}{1ª Lei de De Morgan}
+                \[
+                    \boxed{\overline{AB}
+                    =
+                    \overline{A}+\overline{B}}
+                \]
+
+                \[
+                    \overline{A\cdot B}
+                    =
+                    \overline{A}
+                    +
+                    \overline{B}
+                \]
+
+                Cada variável também deve ser negada.
+            \end{block}
+        \end{column}
+
+        % Segunda lei
+        \begin{column}{0.5\textwidth}
+            \begin{block}{2ª Lei de De Morgan}
+                \[
+                    \boxed{\overline{A+B}
+                    =
+                    \overline{A}\cdot\overline{B}}
+                \]
+
+                \[
+                    \overline{A+B}
+                    =
+                    \overline{A}
+                    \cdot
+                    \overline{B}
+                \]
+
+                Cada variável também deve ser negada.
+            \end{block}
+        \end{column}
+
+    \end{columns}
+    
+\end{frame}

@@ -1,0 +1,52 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Identidades lógicas: Lei do complemento}
+    \begin{block}{Definição}
+        Uma variável e o seu complemento possuem sempre valores lógicos
+        opostos.
+    \end{block}
+
+    \begin{columns}[T]
+
+        % Coluna OR
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Complemento OR}
+                \[
+                    \boxed{A + \overline{A} = 1}
+                \]
+                \[
+                    0 + \overline{0}
+                    = 0 + 1 = 1
+                \]
+                \[
+                    1 + \overline{1}
+                    = 1 + 0 = 1
+                \]
+
+                Portanto, a saída será sempre $1$.
+            \end{block}
+        \end{column}
+
+        % Coluna AND
+        \begin{column}{0.5\textwidth}
+            \begin{block}{Complemento AND}
+                \[
+                    \boxed{A \cdot \overline{A} = 0}
+                \]
+                \[
+                    0 \cdot \overline{0}
+                    = 0 \cdot 1 = 0
+                \]
+                \[
+                    1 \cdot \overline{1}
+                    = 1 \cdot 0 = 0
+                \]
+
+                Portanto, a saída será sempre $0$.
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}
