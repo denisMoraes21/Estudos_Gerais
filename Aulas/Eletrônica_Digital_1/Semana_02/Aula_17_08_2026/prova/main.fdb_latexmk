@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1786760359 "/home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_02/Aula_17_08_2026/prova/main.tex" "main.pdf" "main" 1786760364
+["pdflatex"] 1786920573 "/home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_02/Aula_17_08_2026/prova/main.tex" "main.pdf" "main" 1786920574
   "/etc/texmf/web2c/texmf.cnf" 1724350189 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_02/Aula_17_08_2026/prova/main.tex" 1786760353 8676 a51f3edd0f7c1e48ff6120023cf79500 ""
+  "/home/denis/Documentos/GitHub/Cpp_Exercises/Aulas/Eletrônica_Digital_1/Semana_02/Aula_17_08_2026/prova/main.tex" 1786920572 8709 c85941c1714260c48172adb0b2f93860 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -56,8 +56,8 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1776620677 2797671 c97113b2e4c562a70b19119d72d3f79b ""
   "figura.png" 1786759500 539047 fa9993789099a2fc4d3f4ff1525e6172 ""
   "fpf.png" 1786758933 7305 32949eb59ee980a8340575ef77f33c7a ""
-  "main.aux" 1786760363 131 40086e4b23201847fb9ecf8ea5c3d660 "pdflatex"
-  "main.tex" 1786760353 8676 a51f3edd0f7c1e48ff6120023cf79500 ""
+  "main.aux" 1786920574 131 40086e4b23201847fb9ecf8ea5c3d660 "pdflatex"
+  "main.tex" 1786920572 8709 c85941c1714260c48172adb0b2f93860 ""
   (generated)
   "main.aux"
   "main.log"

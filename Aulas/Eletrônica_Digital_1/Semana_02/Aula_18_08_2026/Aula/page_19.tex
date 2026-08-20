@@ -1,0 +1,31 @@
+\begin{frame}{Mapa de Karnaugh: Preenchendo o mapa}
+    \small
+
+    Para: $F=\Sigma m(2,3,6,7,10,11,14,15)$
+
+    temos:
+
+    \[
+    \begin{array}{c|cccc}
+        AB\backslash CD
+        & 00 & 01 & 11 & 10 \\ \hline
+
+        00 & 0 & 0 & \boxed{1} & \boxed{1} \\
+        01 & 0 & 0 & \boxed{1} & \boxed{1} \\
+        11 & 0 & 0 & \boxed{1} & \boxed{1} \\
+        10 & 0 & 0 & \boxed{1} & \boxed{1}
+    \end{array}
+    \]
+
+    \begin{block}{Agrupamento}
+        Podemos formar um único grupo contendo:
+
+        \[
+            \boxed{8\text{ células}}
+        \]
+
+        Quanto maior o grupo, mais variáveis poderão
+        ser eliminadas.
+    \end{block}
+
+\end{frame}

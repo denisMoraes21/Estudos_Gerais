@@ -1,0 +1,44 @@
+\begin{frame}{Mapa de Karnaugh: 3 variáveis}
+    \small
+
+    \begin{block}{Definição}
+        Para três variáveis $A$, $B$ e $C$, existem $2^3 = 8$ combinações possíveis de entrada.
+    \end{block}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Tabela verdade}
+                \centering
+
+                \begin{tabular}{c c c | c}
+                    $A$ & $B$ & $C$ & Mintermo \\ \hline
+                    0 & 0 & 0 & $m_0$ \\
+                    0 & 0 & 1 & $m_1$ \\
+                    0 & 1 & 0 & $m_2$ \\
+                    0 & 1 & 1 & $m_3$ \\
+                    1 & 0 & 0 & $m_4$ \\
+                    1 & 0 & 1 & $m_5$ \\
+                    1 & 1 & 0 & $m_6$ \\
+                    1 & 1 & 1 & $m_7$
+                \end{tabular}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Mapa de Karnaugh}
+
+                \[
+                \begin{array}{c|cccc}
+                    A\backslash BC & 00 & 01 & 11 & 10 \\ \hline
+                    0 & m_0 & m_1 & m_3 & m_2 \\
+                    1 & m_4 & m_5 & m_7 & m_6
+                \end{array}
+                \]
+
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}

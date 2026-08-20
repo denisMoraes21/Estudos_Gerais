@@ -1,0 +1,29 @@
+\begin{frame}{Mapa de Karnaugh: Tamanho dos grupos}
+    \small
+    Para uma função com quatro variáveis:
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            Grupo & Variáveis eliminadas & Variáveis restantes \\ \hline
+            1 célula  & 0 & 4 \\
+            2 células & 1 & 3 \\
+            4 células & 2 & 2 \\
+            8 células & 3 & 1 \\
+            16 células & 4 & 0
+        \end{tabular}
+    \end{center}
+    \begin{block}{Exemplo}
+        Um grupo de $8$ células elimina três das quatro variáveis:
+
+        \[
+            ABCD
+            \quad\longrightarrow\quad
+            C
+        \]
+    \end{block}
+
+    \begin{alertblock}{Regra}
+        \centering
+        Sempre procure formar o \textbf{maior grupo possível}.
+    \end{alertblock}
+
+\end{frame}

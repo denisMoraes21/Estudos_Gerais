@@ -1,0 +1,47 @@
+%! Author = denis
+%! Date = 11/08/2026
+
+\begin{frame}{Mapa de Karnaugh: 2 variáveis}
+    \small
+
+    \begin{block}{Definição}
+        Para duas variáveis $A$ e $B$, existem:
+        \[
+            2^2 = 4
+        \]
+        combinações possíveis de entrada.
+    \end{block}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Tabela verdade}
+                \centering
+                \begin{tabular}{c c | c}
+                    $A$ & $B$ & Mintermo \\ \hline
+                    0 & 0 & $m_0$ \\
+                    0 & 1 & $m_1$ \\
+                    1 & 0 & $m_2$ \\
+                    1 & 1 & $m_3$
+                \end{tabular}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Mapa de Karnaugh}
+
+                \[
+                \begin{array}{c|cc}
+                    A\backslash B & 0 & 1 \\ \hline
+                    0 & m_0 & m_1 \\
+                    1 & m_2 & m_3
+                \end{array}
+                \]
+
+            \end{block}
+ 
+        \end{column}
+
+    \end{columns}
+
+\end{frame}

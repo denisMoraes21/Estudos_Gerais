@@ -1,0 +1,30 @@
+\begin{frame}{Mapa de Karnaugh: Como obter a expressão}
+    \small
+    \begin{block}{Regra}
+        Para cada grupo, observe o comportamento de cada variável.
+    \end{block}
+    \begin{center}
+        \begin{tabular}{c|c}
+            Comportamento & Resultado \\ \hline
+            Varia entre $0$ e $1$ & Elimina a variável \\
+            Permanece em $1$ & Mantém a variável \\
+            Permanece em $0$ & Mantém a variável negada
+        \end{tabular}
+    \end{center}
+
+    Por exemplo:
+    \[
+        A:\;0\rightarrow1
+        \qquad
+        B:\;0\rightarrow1
+        \qquad
+        C:\;1
+    \]
+    Logo:
+    \[
+        \cancel{A}\;
+        \cancel{B}\;
+        C
+    \]
+
+\end{frame}

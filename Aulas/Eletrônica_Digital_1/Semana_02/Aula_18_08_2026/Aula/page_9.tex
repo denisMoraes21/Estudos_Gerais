@@ -1,0 +1,64 @@
+\begin{frame}{Mapa de Karnaugh: Simplificação}
+    \small
+
+    Temos o seguinte agrupamento:
+
+    \[
+    \begin{array}{c|cc}
+        A\backslash B & 0 & 1 \\ \hline
+        0 & 0 & \boxed{1} \\
+        1 & 0 & \boxed{1}
+    \end{array}
+    \]
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Variável $A$}
+                No grupo:
+
+                \[
+                    A=0
+                \]
+
+                e
+
+                \[
+                    A=1
+                \]
+
+                Portanto, $A$ varia e é eliminada:
+
+                \[
+                    \cancel{A}
+                \]
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Variável $B$}
+                No grupo:
+
+                \[
+                    B=1
+                \]
+
+                nas duas células.
+
+                Portanto, $B$ permanece:
+
+                \[
+                    \boxed{B}
+                \]
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+    \begin{alertblock}{Resultado}
+        \[
+            \boxed{F=B}
+        \]
+    \end{alertblock}
+
+\end{frame}

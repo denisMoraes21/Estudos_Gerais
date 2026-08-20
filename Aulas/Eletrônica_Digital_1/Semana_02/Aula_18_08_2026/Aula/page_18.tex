@@ -1,0 +1,30 @@
+\begin{frame}{Mapa de Karnaugh: Exemplo com 4 variáveis}
+    \small
+
+    Considere a função:
+
+    \[
+        F(A,B,C,D)
+        =
+        \Sigma m(2,3,6,7,10,11,14,15)
+    \]
+
+    \begin{block}{Mintermos onde $F=1$}
+
+        \[
+        \begin{array}{c|c@{\qquad}c|c}
+            m_2 & 0010 & m_3 & 0011 \\
+            m_6 & 0110 & m_7 & 0111 \\
+            m_{10} & 1010 & m_{11} & 1011 \\
+            m_{14} & 1110 & m_{15} & 1111
+        \end{array}
+        \]
+
+    \end{block}
+
+    \begin{alertblock}{Objetivo}
+        Posicionar esses valores no mapa e encontrar
+        o maior agrupamento possível.
+    \end{alertblock}
+
+\end{frame}

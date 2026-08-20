@@ -1,0 +1,43 @@
+\begin{frame}{Mapa de Karnaugh: 4 variáveis}
+    \small
+
+    \begin{block}{Definição}
+        Para quatro variáveis $A$, $B$, $C$ e $D$, existem:
+
+        \[
+            2^4 = 16
+        \]
+
+        combinações possíveis de entrada.
+    \end{block}
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Organização}
+                Utilizamos duas variáveis nas linhas: AB
+                e duas variáveis nas colunas: CD
+                Tanto as linhas quanto as colunas seguem
+                o \textbf{Código Gray}.
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Mapa de Karnaugh}
+
+                \[
+                \begin{array}{c|cccc}
+                    AB\backslash CD & 00 & 01 & 11 & 10 \\ \hline
+                    00 & & & & \\
+                    01 & & & & \\
+                    11 & & & & \\
+                    10 & & & &
+                \end{array}
+                \]
+
+            \end{block}
+        \end{column}
+
+    \end{columns}
+
+\end{frame}

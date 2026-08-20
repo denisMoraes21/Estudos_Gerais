@@ -1,0 +1,27 @@
+\begin{frame}{Mapa de Karnaugh: Analisando o grupo}
+    \small
+    O grupo contém $m_1,\quad m_3,\quad m_5,\quad m_7$.
+
+    \begin{center}
+        \begin{tabular}{c|c c c}
+            Mintermo & $A$ & $B$ & $C$ \\ \hline
+            $m_1$ & 0 & 0 & \textbf{1} \\
+            $m_3$ & 0 & 1 & \textbf{1} \\
+            $m_5$ & 1 & 0 & \textbf{1} \\
+            $m_7$ & 1 & 1 & \textbf{1}
+        \end{tabular}
+    \end{center}
+
+    \begin{block}{Análise das variáveis}
+        \begin{itemize}
+            \item $A$ varia entre $0$ e $1$ $\Rightarrow$ é eliminado;
+            \item $B$ varia entre $0$ e $1$ $\Rightarrow$ é eliminado;
+            \item $C$ permanece sempre em $1$ $\Rightarrow$ permanece.
+        \end{itemize}
+    \end{block}
+
+    \begin{alertblock}{Resultado}
+        \boxed{F=C}
+    \end{alertblock}
+
+\end{frame}

@@ -1,0 +1,38 @@
+\begin{frame}{Mapa de Karnaugh: Mintermos}
+    \small
+
+    Cada célula representa uma combinação de $A$, $B$, $C$ e $D$.
+
+    \[
+    \begin{array}{c|cccc}
+        AB\backslash CD
+        & 00 & 01 & 11 & 10 \\ \hline
+
+        00
+        & m_0 & m_1 & m_3 & m_2 \\
+
+        01
+        & m_4 & m_5 & m_7 & m_6 \\
+
+        11
+        & m_{12} & m_{13} & m_{15} & m_{14} \\
+
+        10
+        & m_8 & m_9 & m_{11} & m_{10}
+    \end{array}
+    \]
+
+    \begin{block}{Exemplo}
+        O mintermo $m_{13}$ corresponde a ABCD = 1101
+
+        Como:
+        \[
+            1101_2 = 13_{10}
+        \]
+        temos:
+        \[
+            \boxed{1101 \rightarrow m_{13}}
+        \]
+    \end{block}
+
+\end{frame}

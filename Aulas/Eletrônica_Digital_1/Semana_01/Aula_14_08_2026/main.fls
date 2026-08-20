@@ -1521,6 +1521,13 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/sansmathaccent/mathkerncmssi8.tfm
+INPUT ./page_12_1.tex
+INPUT ./page_12_1.tex
+INPUT ./page_12_1.tex
+INPUT page_12_1.tex
+INPUT ./page_12_1.tex
+INPUT ./page_12_1.tex
+INPUT page_12_1.tex
 INPUT ./page_13.tex
 INPUT ./page_13.tex
 INPUT ./page_13.tex

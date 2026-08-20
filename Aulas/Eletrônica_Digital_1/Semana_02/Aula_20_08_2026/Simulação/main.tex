@@ -1,0 +1,357 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+
+\begin{document}
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+
+\begin{tabular}{|>{\centering\arraybackslash}m{0.20\textwidth}|
+>{\centering\arraybackslash}m{0.73\textwidth}|}
+\hline
+
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+\textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL} \\[0.15cm]
+\textbf{\small Disciplina: Eletrônica Digital 1} \\[0.15cm]
+\textbf{\small ATIVIDADE PRÁTICA -- MAPA DE KARNAUGH E MULTISIM}
+}
+
+\tabularnewline
+\hline
+\end{tabular}
+
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% DADOS DO ALUNO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|>{\raggedright\arraybackslash}m{0.70\textwidth}|
+>{\raggedright\arraybackslash}m{0.23\textwidth}|}
+\hline
+
+\textbf{Aluno(a):} & \textbf{Data:} \\
+\hline
+
+\textbf{Professor(a):} & \textbf{Nota:} \\
+\hline
+
+\end{tabular}
+
+\end{table}
+
+\vspace{0.2cm}
+
+% =========================================================
+% ORIENTAÇÕES
+% =========================================================
+
+\begin{center}
+\textbf{Orientações}
+\end{center}
+
+Para a atividade proposta, o grupo deverá:
+
+\begin{enumerate}[label=\alph*)]
+    \item Identificar as entradas e saídas;
+    \item Construir a tabela-verdade;
+    \item Determinar os mintermos;
+    \item Simplificar as funções utilizando Mapas de Karnaugh;
+    \item Implementar o circuito com portas lógicas;
+    \item Montar e testar o circuito no Multisim;
+    \item Registrar o circuito e os resultados da simulação.
+\end{enumerate}
+
+\newpage
+
+% =========================================================
+% ATIVIDADES
+% =========================================================
+
+\begin{enumerate}[leftmargin=*]
+
+% =========================================================
+% ATIVIDADE 1
+% =========================================================
+
+\item \textbf{BCD para Display -- Números de 0 a 99}
+
+Desenvolva um circuito capaz de representar números de 0 a 99
+utilizando dois displays de 7 segmentos.
+
+Cada algarismo deverá ser recebido em BCD:
+
+\[
+0000_2 \rightarrow 0
+\qquad \cdots \qquad
+1001_2 \rightarrow 9
+\]
+
+Um display representará as dezenas e o outro as unidades.
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Utilize 4 bits BCD para cada display;
+    \item Desenvolva as funções dos segmentos
+    $a,b,c,d,e,f,g$ utilizando Mapas de Karnaugh;
+    \item Considere as combinações de 1010 até 1111 como
+    \textit{don't care} ($X$);
+    \item Teste valores entre 00 e 99 no Multisim.
+\end{itemize}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ATIVIDADE 2
+% =========================================================
+
+\item \textbf{Binário para Gray -- Posição de Motor}
+
+Desenvolva um circuito conversor de binário para Código Gray para
+representar oito posições de um motor.
+
+O circuito deverá possuir:
+
+\[
+B_2B_1B_0
+\longrightarrow
+G_2G_1G_0
+\]
+
+As entradas variam entre:
+
+\[
+000_2 \quad \text{e} \quad 111_2
+\]
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Desenvolva as funções $G_2$, $G_1$ e $G_0$;
+    \item Utilize LEDs para representar a saída Gray;
+    \item Teste sequencialmente os oito estados;
+    \item Verifique a mudança dos bits entre posições consecutivas.
+\end{itemize}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ATIVIDADE 3
+% =========================================================
+
+\item \textbf{Binário para ASCII -- Mostrador de Mensagem}
+
+Desenvolva um circuito capaz de selecionar os caracteres de
+\textbf{A até H} a partir de uma entrada binária de 3 bits.
+
+Considere:
+
+\[
+\begin{array}{c|c}
+\text{Entrada} & \text{Caractere} \\ \hline
+000 & A \\
+001 & B \\
+010 & C \\
+011 & D \\
+100 & E \\
+101 & F \\
+110 & G \\
+111 & H
+\end{array}
+\]
+
+Cada caractere deverá ser convertido para seu código ASCII.
+
+Por exemplo:
+
+\[
+A = 41_{16} = 01000001_2
+\]
+
+\[
+B = 42_{16} = 01000010_2
+\]
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Determine os códigos ASCII de A até H;
+    \item Identifique os bits constantes e variáveis da saída;
+    \item Desenvolva as funções dos bits variáveis;
+    \item Utilize LEDs para representar a saída ASCII;
+    \item Teste os oito caracteres no Multisim.
+\end{itemize}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ATIVIDADE 4
+% =========================================================
+
+\item \textbf{Chave Eletrônica -- BCD + Gray + ENTRAR}
+
+Desenvolva uma chave eletrônica cuja senha seja formada por:
+
+\begin{itemize}
+    \item 4 bits em BCD: $B_3B_2B_1B_0$;
+    \item 3 bits em Código Gray: $G_2G_1G_0$;
+    \item um botão $E$ (ENTRAR).
+\end{itemize}
+
+A saída $ABRIR$ deverá ser ativada somente quando a combinação BCD,
+a combinação Gray e o botão ENTRAR estiverem corretos.
+
+\[
+\text{BCD correto}
++
+\text{Gray correto}
++
+E
+\longrightarrow
+ABRIR
+\]
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Defina uma senha válida;
+    \item Utilize chaves digitais para inserir a senha;
+    \item Utilize um botão para ENTRAR;
+    \item Utilize um LED para representar $ABRIR$;
+    \item Teste combinações corretas e incorretas.
+\end{itemize}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ATIVIDADE 5
+% =========================================================
+
+\item \textbf{Registrador de CLP -- Conversão Binário para Octal}
+
+Um CLP possui um registrador de 2 bytes:
+
+\[
+2\text{ bytes}=16\text{ bits}
+\]
+
+Considere os seis bits menos significativos:
+
+\[
+B_5B_4B_3B_2B_1B_0
+\]
+
+Esses bits deverão ser convertidos para octal e apresentados em
+\textbf{dois displays de 7 segmentos}.
+
+Separe os bits em dois grupos:
+
+\[
+\underbrace{B_5B_4B_3}_{\text{Display 1}}
+\qquad
+\underbrace{B_2B_1B_0}_{\text{Display 2}}
+\]
+
+Cada grupo representa um algarismo octal entre 0 e 7.
+
+Por exemplo:
+
+\[
+001111_2 = 17_8
+\]
+
+\[
+101010_2 = 52_8
+\]
+
+\[
+111111_2 = 77_8
+\]
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Desenvolva o conversor de 3 bits para display de 7 segmentos;
+    \item Determine as funções dos segmentos
+    $a,b,c,d,e,f,g$ utilizando Mapas de Karnaugh;
+    \item Utilize o mesmo circuito lógico para controlar os dois displays;
+    \item Utilize seis chaves digitais como entradas;
+    \item Teste valores entre $000000_2$ e $111111_2$.
+\end{itemize}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ATIVIDADE 6
+% =========================================================
+
+\item \textbf{Controle de Estacionamento -- Carros e Vagas Disponíveis}
+
+Um estacionamento possui capacidade máxima para \textbf{8 carros}.
+
+
+\[
+\text{Vagas}=8-\text{Carros}
+\]
+
+Portanto:
+
+\[
+\begin{array}{c|c}
+\text{Carros} & \text{Vagas} \\ \hline
+0 & 8\\
+1 & 7\\
+2 & 6\\
+3 & 5\\
+4 & 4\\
+5 & 3\\
+6 & 2\\
+7 & 1\\
+8 & 0
+\end{array}
+\]
+
+\textbf{Requisitos:}
+
+\begin{itemize}
+    \item Desenvolva as funções para representar a quantidade
+    de vagas disponíveis;
+    \item Apresente a quantidade de vagas utilizando LEDs ou display;
+    \item Teste todas as quantidades de 0 até 8 carros no Multisim.
+\end{itemize}
+
+\end{enumerate}
+
+\vfill
+
+\begin{center}
+\textbf{Bom trabalho!}
+\end{center}
+
+\end{document}

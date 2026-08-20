@@ -1,0 +1,32 @@
+\begin{frame}{Mapa de Karnaugh: Código Gray}
+    \small
+
+    \begin{block}{Por que a ordem é diferente?}
+        No Mapa de Karnaugh, células vizinhas devem diferir em
+        apenas \textbf{uma variável}.
+    \end{block}
+
+    \[
+        \boxed{00 \rightarrow 01 \rightarrow 11 \rightarrow 10}
+    \]
+
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            Transição & Bit que muda & Quantidade \\ \hline
+            $00 \rightarrow 01$ & $C$ & 1 \\
+            $01 \rightarrow 11$ & $B$ & 1 \\
+            $11 \rightarrow 10$ & $C$ & 1
+        \end{tabular}
+    \end{center}
+
+    \vspace{0.3cm}
+
+    \begin{alertblock}{Importante}
+        Essa organização é chamada de \textbf{Código Gray}.
+
+        \[
+            \boxed{\text{Entre células vizinhas, apenas um bit muda.}}
+        \]
+    \end{alertblock}
+
+\end{frame}

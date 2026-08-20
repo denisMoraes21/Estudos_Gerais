@@ -1,0 +1,26 @@
+\begin{frame}{Decodificadores}
+
+    Um decoder recebe um código binário e ativa uma das suas saídas.
+
+    Exemplo: decoder 2 para 4.
+
+    \[
+        A_1A_0
+        \longrightarrow
+        D_0,D_1,D_2,D_3
+    \]
+
+    \begin{center}
+        \begin{tabular}{c c | c c c c}
+            \hline
+            $A_1$ & $A_0$ & $D_0$ & $D_1$ & $D_2$ & $D_3$ \\
+            \hline
+            0 & 0 & 1 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 1 & 0 & 0 \\
+            1 & 0 & 0 & 0 & 1 & 0 \\
+            1 & 1 & 0 & 0 & 0 & 1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+\end{frame}

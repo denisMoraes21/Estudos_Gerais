@@ -1,0 +1,27 @@
+\begin{frame}{Mapa de Karnaugh: Exemplo}
+    \small
+
+    Considere a seguinte função:
+
+    \begin{center}
+        \begin{tabular}{c c | c}
+            $A$ & $B$ & $F$ \\ \hline
+            0 & 0 & 0 \\
+            0 & 1 & 1 \\
+            1 & 0 & 0 \\
+            1 & 1 & 1
+        \end{tabular}
+    \end{center}
+
+
+    \begin{block}{Passo 2: Preencher o mapa}
+        \[
+        \begin{array}{c|cc}
+            A\backslash B & 0 & 1 \\ \hline
+            0 & 0 & \boxed{1} \\
+            1 & 0 & \boxed{1}
+        \end{array}
+        \]
+    \end{block}
+
+\end{frame}

@@ -1,0 +1,332 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\begin{document}
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+
+\begin{tabular}{|>{\centering\arraybackslash}m{0.20\textwidth}|>{\centering\arraybackslash}m{0.73\textwidth}|}
+\hline
+
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+\textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL} \\[0.15cm]
+\textbf{\small Disciplina: Eletrônica Digital 1} \\[0.15cm]
+\textbf{\small AVALIAÇÃO 1}
+}
+
+\tabularnewline
+\hline
+\end{tabular}
+
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% DADOS DO ALUNO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|>{\raggedright\arraybackslash}m{0.70\textwidth}|>{\raggedright\arraybackslash}m{0.23\textwidth}|}
+\hline
+
+\textbf{Aluno(a):} & \textbf{Data:} \\
+\hline
+
+\textbf{Professor(a):} & \textbf{Nota:} \\
+\hline
+
+\end{tabular}
+
+\end{table}
+
+\vspace{0.05cm}
+
+
+% =========================================================
+% PROVA
+% =========================================================
+
+\begin{multicols}{2}
+\raggedcolumns
+
+\vspace{0.7cm}
+
+\begin{enumerate}[leftmargin=*]
+
+% =========================================================
+% NÍVEL 1
+% =========================================================
+
+\item \textbf{Nível 1 — Básico}
+
+Simplifique as expressões utilizando as propriedades da Álgebra Booleana.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $A + A$
+
+    \item $A \cdot A$
+
+    \item $A + 0$
+
+    \item $A \cdot 1$
+
+    \item $A + \overline{A}$
+
+    \item $A \cdot \overline{A}$
+
+    \item $A + 1$
+
+    \item $A \cdot 0$
+
+    \item $\overline{\overline{A}}$
+
+    \item $AB + AB$
+
+\end{enumerate}
+
+\vspace{0.4cm}
+
+% =========================================================
+% NÍVEL 2
+% =========================================================
+
+\item \textbf{Nível 2 — Colocando termos em evidência}
+
+Simplifique as expressões.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $AB + A\overline{B}$
+
+    \item $AB + \overline{A}B$
+
+    \item $AB + AC$
+
+    \item $ABC + AB\overline{C}$
+
+    \item $ABC + \overline{A}BC$
+
+    \item $AB\overline{C} + ABC$
+
+    \item $ABC + ABD$
+
+    \item $\overline{A}B + \overline{A}\overline{B}$
+
+    \item $A\overline{B} + AB$
+
+    \item $ABC + ABC$
+
+\end{enumerate}
+
+\vspace{0.4cm}
+
+% =========================================================
+% NÍVEL 3
+% =========================================================
+
+\item \textbf{Nível 3 — Lei da Absorção}
+
+Simplifique as expressões utilizando, quando possível, a Lei da Absorção.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $A + AB$
+
+    \item $A + A\overline{B}$
+
+    \item $B + AB$
+
+    \item $AB + ABC$
+
+    \item $A + ABC$
+
+    \item $AB + AB\overline{C}$
+
+    \item $A(A+B)$
+
+    \item $B(A+B)$
+
+    \item $AB(1+C)$
+
+    \item $A + A(B+C)$
+
+\end{enumerate}
+
+\vspace{0.4cm}
+
+% =========================================================
+% NÍVEL 4
+% =========================================================
+
+\item \textbf{Nível 4 — Simplificação em várias etapas}
+
+Simplifique completamente as expressões.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $AB + A\overline{B} + AC$
+
+    \item $AB + \overline{A}B + BC$
+
+    \item $ABC + AB\overline{C} + A\overline{B}$
+
+    \item $ABC + \overline{A}BC + AC$
+
+    \item $AB + A\overline{B} + \overline{A}B$
+
+    \item $ABC + AB\overline{C} + \overline{A}B$
+
+    \item $AB + AC + A\overline{B}$
+
+    \item $ABC + A\overline{B}C + AB\overline{C}$
+
+    \item $ABC + \overline{A}BC + AB\overline{C}$
+
+    \item $AB + A\overline{B} + \overline{A}B
+    + \overline{A}\overline{B}$
+
+\end{enumerate}
+
+\vspace{0.4cm}
+
+% =========================================================
+% NÍVEL 5
+% =========================================================
+
+\item \textbf{Nível 5 — Distributiva e expressões fatoradas}
+
+Simplifique as expressões.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $(A+B)(A+\overline{B})$
+
+    \item $(A+B)(A+C)$
+
+    \item $(A+B)(A+BC)$
+
+    \item $(A+B)(A+\overline{B}+C)$
+
+    \item $(A+B)(\overline{A}+B)$
+
+    \item $(A+B)(\overline{A}+C)$
+
+    \item $A(B+\overline{B}+C)$
+
+    \item $(A+\overline{B})(A+B)$
+
+    \item $(A+B)(A+B+C)$
+
+    \item $(A+B)(A+B\overline{C})$
+
+\end{enumerate}
+
+\vspace{0.4cm}
+
+% =========================================================
+% NÍVEL 6
+% =========================================================
+
+\item \textbf{Nível 6 — Leis de De Morgan}
+
+Simplifique as expressões aplicando as Leis de De Morgan.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item $\overline{A+B}$
+
+    \item $\overline{AB}$
+
+    \item $\overline{\overline{A}+B}$
+
+    \item $\overline{A+\overline{B}}$
+
+    \item $\overline{\overline{A}+\overline{B}}$
+
+    \item $\overline{\overline{A}\overline{B}}$
+
+    \item $\overline{A+BC}$
+
+    \item $\overline{AB+C}$
+
+    \item $\overline{(A+B)C}$
+
+    \item $\overline{(A+B)(C+D)}$
+
+\end{enumerate}
+
+\vspace{0.5cm}
+
+% =========================================================
+% DESAFIO
+% =========================================================
+
+\item \textbf{Desafio}
+
+Simplifique completamente as expressões a seguir. Indique as propriedades da
+Álgebra Booleana utilizadas em cada etapa.
+
+\begin{enumerate}[label=(\Alph*)]
+
+    \item
+    \[
+        AB + A\overline{B} + \overline{A}B
+    \]
+
+    \item
+    \[
+        ABC + AB\overline{C} + A\overline{B}
+    \]
+
+    \item
+    \[
+        ABC + \overline{A}BC
+        + AB\overline{C}
+        + \overline{A}B\overline{C}
+    \]
+
+    \item
+    \[
+        (A+B)(A+\overline{B})(A+C)
+    \]
+
+    \item
+    \[
+        AB + A\overline{B}
+        + \overline{A}B
+        + \overline{A}\overline{B}
+    \]
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{multicols}
+
+\vfill
+
+\end{document}

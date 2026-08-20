@@ -1,0 +1,60 @@
+\begin{frame}{Código Gray: Por que utilizar?}
+    \small
+
+    Considere a transição do número 3 para o número 4.
+
+    \begin{columns}[T]
+
+        \begin{column}{0.48\textwidth}
+
+            \begin{block}{Binário}
+                \[
+                    3 = 011
+                \]
+
+                \[
+                    4 = 100
+                \]
+
+                Portanto:
+
+                \[
+                    011 \rightarrow 100
+                \]
+
+                \textbf{Três bits mudam.}
+            \end{block}
+
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+
+            \begin{block}{Gray}
+                \[
+                    3 = 010
+                \]
+
+                \[
+                    4 = 110
+                \]
+
+                Portanto:
+
+                \[
+                    010 \rightarrow 110
+                \]
+
+                \textbf{Apenas um bit muda.}
+            \end{block}
+
+        \end{column}
+
+    \end{columns}
+
+    \vspace{0.3cm}
+
+    \begin{alertblock}{Vantagem}
+        Isso reduz erros durante transições entre estados.
+    \end{alertblock}
+
+\end{frame}

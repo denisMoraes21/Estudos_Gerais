@@ -1,0 +1,30 @@
+\begin{frame}{Mapa de Karnaugh: Preenchendo o mapa}
+    \small
+
+    Temos $F(A,B,C)=\Sigma m(1,3,5,7)$.
+
+    \begin{block}{Passo 2: Posicionar os valores no mapa}
+
+        \[
+        \begin{array}{c|cccc}
+            A\backslash BC & 00 & 01 & 11 & 10 \\ \hline
+            0 & 0 & \boxed{1} & \boxed{1} & 0 \\
+            1 & 0 & \boxed{1} & \boxed{1} & 0
+        \end{array}
+        \]
+
+    \end{block}
+
+    Os valores $1$ correspondem aos mintermos:
+
+    \[
+        m_1,\quad m_3,\quad m_5,\quad m_7
+    \]
+
+    \begin{alertblock}{Agrupamento}
+        Os quatro valores $1$ são adjacentes e podem formar
+        um único grupo de \boxed{4\text{ células}}
+
+    \end{alertblock}
+
+\end{frame}
