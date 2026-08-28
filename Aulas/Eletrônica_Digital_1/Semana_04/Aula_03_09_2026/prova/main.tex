@@ -1,0 +1,274 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amssymb}
+
+\begin{document}
+
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+
+\begin{tabular}{
+|>{\centering\arraybackslash}m{0.20\textwidth}|
+>{\centering\arraybackslash}m{0.73\textwidth}|
+}
+\hline
+
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+
+\textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL}\\[0.15cm]
+\textbf{\small Disciplina: Eletrônica Digital 1}\\[0.15cm]
+\textbf{\small AVALIAÇÃO PRÁTICA DE CIRCUITOS DIGITAIS}
+
+}
+\tabularnewline
+
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% DADOS DOS ALUNOS
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{
+|>{\raggedright\arraybackslash}m{0.70\textwidth}|
+>{\raggedright\arraybackslash}m{0.23\textwidth}|
+}
+\hline
+
+\textbf{Aluno(a) ou equipe:}
+&
+\textbf{Data:}
+\\
+\hline
+
+\textbf{Professor(a):}
+&
+\textbf{Nota:}
+\\
+\hline
+
+\end{tabular}
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% IDENTIFICAÇÃO DO CIRCUITO
+% =========================================================
+
+\noindent
+\textbf{Circuito desenvolvido:}
+\rule{0.72\textwidth}{0.4pt}
+
+\vspace{0.3cm}
+
+\noindent
+\textbf{Integrantes da equipe:}
+\rule{0.69\textwidth}{0.4pt}
+
+\vspace{0.4cm}
+
+% =========================================================
+% ORIENTAÇÕES
+% =========================================================
+
+\noindent
+\fcolorbox{black}{gray!10}{
+\begin{minipage}{0.96\textwidth}
+\scriptsize
+
+\textbf{Orientações para a avaliação}
+
+\begin{itemize}[
+    leftmargin=0.6cm,
+    itemsep=1pt,
+    topsep=2pt,
+    parsep=0pt
+]
+    \item O circuito deverá executar corretamente a função lógica proposta.
+    \item Todas as combinações de entrada deverão ser testadas.
+    \item Os alunos deverão apresentar a tabela-verdade e o diagrama lógico.
+    \item A equipe deverá explicar o funcionamento do circuito durante a avaliação.
+    \item A nota será atribuída de acordo com os critérios apresentados abaixo.
+\end{itemize}
+
+\end{minipage}
+}
+
+\vspace{0.4cm}
+
+% =========================================================
+% CRITÉRIOS DE AVALIAÇÃO
+% =========================================================
+
+\begin{center}
+\textbf{\large CRITÉRIOS DE AVALIAÇÃO}
+\end{center}
+
+\vspace{0.1cm}
+
+\renewcommand{\arraystretch}{1.35}
+\small
+
+\noindent\begin{tabularx}{\textwidth}{
+|>{\centering\arraybackslash}m{0.7cm}|
+>{\raggedright\arraybackslash}m{3.5cm}|
+X|
+>{\centering\arraybackslash}m{1.5cm}|
+>{\centering\arraybackslash}m{1.4cm}|
+}
+\hline
+
+\textbf{Nº}
+&
+\textbf{Critério}
+&
+\centering\arraybackslash\textbf{Descrição}
+&
+\textbf{Valor}
+&
+\textbf{Nota}
+\\
+\hline
+
+1
+&
+\textbf{Funcionamento do circuito}
+&
+O circuito realiza corretamente a função lógica proposta para todas as combinações de entrada.
+&
+3,0
+&
+\\
+\hline
+
+2
+&
+\textbf{Montagem e conexões}
+&
+Os componentes, entradas, saídas e alimentações estão conectados corretamente, sem curtos-circuitos ou entradas flutuantes.
+&
+1,5
+&
+\\
+\hline
+
+3
+&
+\textbf{Testes e tabela-verdade}
+&
+A equipe testou todas as combinações de entrada e comparou os resultados com a tabela-verdade.
+&
+1,5
+&
+\\
+\hline
+
+4
+&
+\textbf{Compreensão e explicação}
+&
+Os alunos conseguem explicar a função do circuito, as portas utilizadas e o caminho dos sinais.
+&
+1,5
+&
+\\
+\hline
+
+5
+&
+\textbf{Organização da montagem}
+&
+A montagem está organizada e permite identificar claramente entradas, saídas e componentes.
+&
+1,0
+&
+\\
+\hline
+
+6
+&
+\textbf{Diagrama lógico}
+&
+O diagrama lógico apresentado está correto e corresponde ao circuito montado.
+&
+0,5
+&
+\\
+\hline
+
+7
+&
+\textbf{Participação da equipe}
+&
+Os integrantes participaram da montagem, dos testes e da apresentação.
+&
+0,5
+&
+\\
+\hline
+
+8
+&
+\textbf{Boas práticas e segurança}
+&
+A equipe utilizou corretamente os componentes, equipamentos e fontes de alimentação.
+&
+0,5
+&
+\\
+\hline
+
+\multicolumn{3}{|r|}{\textbf{NOTA TOTAL}}
+&
+\textbf{10,0}
+&
+\\
+\hline
+
+\end{tabularx}
+
+\normalsize
+
+\vspace{0.5cm}
+
+
+\renewcommand{\arraystretch}{1.4}
+
+\noindent\begin{tabularx}{\textwidth}{
+|>{\raggedright\arraybackslash}X|
+>{\centering\arraybackslash}m{2.5cm}|
+}
+\hline
+
+
+\end{tabularx}
+
+
+\end{document}

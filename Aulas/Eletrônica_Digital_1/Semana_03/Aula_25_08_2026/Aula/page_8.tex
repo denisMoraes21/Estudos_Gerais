@@ -1,0 +1,22 @@
+\begin{frame}{CMOS compatível com níveis TTL}
+    \begin{block}{Por que a compatibilidade pode falhar?}
+        Uma saída TTL alta pode ser garantida apenas a partir de aproximadamente
+        2.4~V. Uma entrada CMOS HC alimentada em 5~V pode
+        exigir cerca de 3.5~V para reconhecer nível alto.
+    \end{block}
+
+    \begin{alertblock}{Solução: variantes com ``T''}
+        Famílias como HCT e VHCT usam limiares de entrada semelhantes aos TTL:
+        \[
+            V_{IL(\max)}=0.8~V
+            \qquad
+            V_{IH(\min)}=2.0~V
+        \]
+        Assim, uma saída TTL pode acionar uma entrada HCT alimentada em
+        5~V com margens especificadas.
+    \end{alertblock}
+
+    \centering
+    \textbf{TTL $\rightarrow$ HC: verificar cuidadosamente}\qquad
+    \textbf{TTL $\rightarrow$ HCT: geralmente compatível}
+\end{frame}

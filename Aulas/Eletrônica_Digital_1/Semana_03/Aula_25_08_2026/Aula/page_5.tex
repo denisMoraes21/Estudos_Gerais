@@ -1,0 +1,34 @@
+%! Author = denis
+%! Date = 20/08/2026
+
+\begin{frame}{Tensão de alimentação}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{TTL bipolar}
+                \begin{itemize}
+                    \item Famílias TTL clássicas: aproximadamente
+                          5~V $\pm$ 5\%
+                    \item A faixa permitida deve ser confirmada no datasheet
+                    \item Não se deve aplicar 3.3~V a um CI TTL
+                          projetado exclusivamente para 5~V
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{block}{CMOS}
+                \begin{itemize}
+                    \item CD4000: ampla faixa de alimentação
+                    \item HC/HCT: frequentemente utilizados em 5~V
+                    \item LVC: versões comuns para 1.8~V,
+                          2.5~V e 3.3~V
+                    \item Maior $V_{CC}$ pode reduzir o atraso, mas aumenta a
+                          energia por comutação
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+
+    \begin{alertblock}{Atenção}
+        Componentes da mesma família podem possuir limites diferentes.
+    \end{alertblock}
+\end{frame}

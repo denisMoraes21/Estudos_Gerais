@@ -1,0 +1,14 @@
+\begin{frame}{Tolerância de tensão e proteção das entradas}
+    \begin{itemize}
+        \item Muitas entradas CMOS possuem diodos de proteção ligados aos
+              trilhos de alimentação.
+        \item Em HC/HCT, normalmente não se deve aplicar tensão acima de
+              $V_{CC}$ nem abaixo de GND, salvo dentro dos limites especificados.
+        \item Alguns componentes LVC possuem entradas tolerantes a 5~V,
+              mas isso não vale para toda a família nem para todos os pinos.
+        \item ``Tolerante a 5~V'' não significa automaticamente que o
+              pino aceita tensão quando o CI está desligado.
+        \item Descargas eletrostáticas podem danificar entradas CMOS; o
+              manuseio deve seguir cuidados contra ESD.
+    \end{itemize}
+\end{frame}

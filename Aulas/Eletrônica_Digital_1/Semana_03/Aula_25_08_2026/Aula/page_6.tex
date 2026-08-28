@@ -1,0 +1,21 @@
+%! Author = denis
+%! Date = 20/08/2026
+
+\begin{frame}{Corrente nas entradas}
+    \begin{block}{Entrada CMOS}
+        A porta isolada do MOSFET praticamente não consome corrente contínua.
+        Há apenas corrente de fuga em estado estacionário.
+    \end{block}
+
+    \begin{block}{Durante a comutação}
+        A capacitância de entrada, tipicamente de poucos picofarads, precisa ser
+        carregada e descarregada. Portanto, a entrada CMOS consome corrente
+        transitória sempre que muda de estado.
+    \end{block}
+
+    \begin{alertblock}{Entrada TTL}
+        A entrada bipolar exige corrente contínua. Para manter uma entrada TTL
+        em nível baixo, o circuito acionador precisa absorver a corrente indicada
+        por $I_{IL}$.
+    \end{alertblock}
+\end{frame}

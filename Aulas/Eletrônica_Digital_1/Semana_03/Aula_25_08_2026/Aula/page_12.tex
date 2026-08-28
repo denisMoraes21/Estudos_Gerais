@@ -1,0 +1,29 @@
+\begin{frame}{Capacidade de acionamento e fan-out}
+    \begin{block}{Fan-out}
+        É a quantidade máxima de entradas que uma saída consegue acionar sem
+        violar os níveis de tensão ou os limites de corrente.
+    \end{block}
+
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Limite em corrente contínua}
+                \[
+                    \text{fan-out}_{H}=\frac{|I_{OH}|}{I_{IH}}
+                \]
+                \[
+                    \text{fan-out}_{L}=\frac{I_{OL}}{|I_{IL}|}
+                \]
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{Limite dinâmico}
+                Mesmo com baixa corrente estática, muitas entradas CMOS somam
+                capacitância. Isso aumenta o tempo de subida, o tempo de descida
+                e a corrente de comutação.
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+
+    \centering
+    O fan-out real é o menor limite obtido para os estados alto e baixo.
+\end{frame}

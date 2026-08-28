@@ -1,0 +1,26 @@
+\begin{frame}{Estágios de saída}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{CMOS}
+                \begin{itemize}
+                    \item Usa um MOSFET para aproximar a saída de $V_{CC}$ e
+                          outro para aproximá-la de GND
+                    \item É chamada de saída \textit{push-pull}
+                    \item Aproxima-se dos trilhos com carga leve
+                    \item A queda de tensão aumenta com a corrente de saída
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{TTL}
+                \begin{itemize}
+                    \item A saída baixa usa transistor conduzindo em direção a GND
+                    \item A saída alta do estágio \textit{totem-pole} fica abaixo
+                          de $V_{CC}$
+                    \item TTL costuma absorver mais corrente em nível baixo do
+                          que fornecer em nível alto
+                \end{itemize}
+            \end{alertblock}
+        \end{column}
+    \end{columns}
+\end{frame}

@@ -1,0 +1,35 @@
+
+\begin{frame}{Níveis lógicos e margens de ruído}
+    \begin{columns}[T]
+        \begin{column}{0.49\textwidth}
+            \begin{block}{Entradas TTL em 5~V}
+                Valores clássicos de referência:
+                \[
+                    V_{IL(\max)}=0.8~V
+                \]
+                \[
+                    V_{IH(\min)}=2.0~V
+                \]
+                Entre 0.8~V e 2.0~V, o nível não é garantido.
+            \end{block}
+        \end{column}
+        \begin{column}{0.49\textwidth}
+            \begin{block}{Entradas CMOS}
+                Os limites normalmente são proporcionais a $V_{CC}$.
+                Um exemplo comum é:
+                \[
+                    V_{IL(\max)}\approx 0{,}3V_{CC}
+                \]
+                \[
+                    V_{IH(\min)}\approx 0{,}7V_{CC}
+                \]
+                Os valores exatos dependem da família e do componente.
+            \end{block}
+        \end{column}
+    \end{columns}
+
+    \begin{alertblock}{Margem de ruído}
+        Quanto maior a separação entre a saída garantida e o limiar da entrada,
+        maior a tolerância do sistema a interferências elétricas.
+    \end{alertblock}
+\end{frame}

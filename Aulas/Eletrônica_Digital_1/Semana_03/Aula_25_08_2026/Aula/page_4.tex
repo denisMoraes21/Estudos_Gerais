@@ -1,0 +1,19 @@
+%! Author = denis
+%! Date = 20/08/2026
+
+\begin{frame}{Comparação inicial}
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{>{\bfseries}p{0.25\textwidth}p{0.31\textwidth}p{0.31\textwidth}}
+        \toprule
+        Característica & TTL bipolar & CMOS \\
+        \midrule
+        Alimentação & Normalmente 5~V & Depende da família; pode variar amplamente \\
+        Corrente de entrada & Existe corrente contínua, especialmente em nível baixo & Praticamente apenas fuga em regime estático \\
+        Entrada & Limiares TTL típicos: 0.8~V e 2.0~V & Limiares geralmente relacionados a $V_{CC}$ \\
+        Saída & O nível alto não alcança exatamente $V_{CC}$ & Aproxima-se dos trilhos, dependendo da carga \\
+        Potência estática & Não nula & Muito baixa quando o circuito não comuta \\
+        \bottomrule
+    \end{tabular}
+\end{frame}

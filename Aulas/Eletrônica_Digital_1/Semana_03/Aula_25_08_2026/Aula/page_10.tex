@@ -1,0 +1,18 @@
+\begin{frame}{Entradas não utilizadas não devem flutuar}
+    \begin{block}{O problema}
+        Uma entrada CMOS aberta pode captar ruído, alternar de estado e fazer os
+        transistores internos conduzirem simultaneamente. Isso aumenta o consumo
+        e pode causar comportamento imprevisível.
+    \end{block}
+    \begin{block}{Como resolver}
+        \begin{itemize}
+            \item Conecte a entrada a GND ou $V_{CC}$, conforme a função desejada.
+            \item Quando necessário, use resistor de \textit{pull-up} ou
+                  \textit{pull-down}.
+            \item Não deixe entradas de portas lógicas sem nível definido.
+        \end{itemize}
+    \end{block}
+    \begin{alertblock}{Observação sobre TTL}
+        Uma entrada TTL aberta tende a ser interpretada como nível alto.
+    \end{alertblock}
+\end{frame}
