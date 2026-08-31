@@ -1,0 +1,33 @@
+%! Author = denis
+%! Date = 20/08/2026
+
+\begin{frame}{Armazenamento e tempo: Buffer/Memórias}
+    \begin{columns}[c,onlytextwidth]
+
+        % Coluna esquerda: texto
+        \begin{column}{0.56\textwidth}
+            Para que serve?
+            \begin{itemize}
+                \item Isolar dois estágios do circuito;
+                \item aumentar a capacidade de acionamento;
+                \item evitar que uma saída seja sobrecarregada;
+                \item restaurar os níveis lógicos do sinal.
+            \end{itemize}
+
+            Importante!
+            O buffer não inverte nem modifica a informação lógica.
+            Ele apenas fortalece e reproduz o sinal.
+        \end{column}
+
+        % Coluna direita: imagem
+        \begin{column}{0.38\textwidth}
+            \centering
+            \includegraphics[
+                width=\linewidth,
+                height=0.65\textheight,
+                keepaspectratio
+            ]{images/buffer.png}
+        \end{column}
+
+    \end{columns}
+\end{frame}

@@ -1,0 +1,436 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\usetikzlibrary{positioning,arrows.meta}
+
+\begin{document}
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+\begin{tabular}{
+|>{\centering\arraybackslash}m{0.20\textwidth}|
+>{\centering\arraybackslash}m{0.73\textwidth}|}
+\hline
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+\textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL}\\[0.15cm]
+\textbf{\small Disciplina: Eletrônica Digital 1}\\[0.15cm]
+\textbf{\small LISTA DE EXERCÍCIOS: FLIP-FLOPS E APLICAÇÕES}
+}
+\tabularnewline
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{
+|>{\raggedright\arraybackslash}m{0.70\textwidth}|
+>{\raggedright\arraybackslash}m{0.23\textwidth}|}
+\hline
+\textbf{Aluno(a):} & \textbf{Data:} \\
+\hline
+\textbf{Professor(a):} & \textbf{Turma:} \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+\fcolorbox{black}{gray!10}{
+\begin{minipage}{0.96\textwidth}
+\small
+\textbf{Orientações}
+\begin{itemize}[leftmargin=0.6cm,itemsep=1pt,topsep=2pt,parsep=0pt]
+    \item Resolva as questões observando o estado atual e o próximo estado das saídas.
+    \item Considere os flip-flops acionados na borda de subida do clock, salvo indicação contrária.
+    \item Nas questões de sequência, considere o estado inicial informado.
+    \item Apresente os cálculos e justificativas quando solicitado.
+\end{itemize}
+\end{minipage}}
+
+\vspace{0.4cm}
+
+\begin{enumerate}[leftmargin=0.8cm,label=\textbf{\arabic*.},itemsep=0.65cm]
+
+\item \textbf{Conceito de memória}
+
+Explique, com suas palavras, por que um flip-flop é considerado um elemento de
+memória. Quantos bits podem ser armazenados por um flip-flop?
+
+\vspace{1.3cm}
+
+\item \textbf{Identificação dos terminais}
+
+Observe o símbolo simplificado de um flip-flop D.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex]
+\node[draw,minimum width=2.4cm,minimum height=2.3cm] (ff) at (0,0) {};
+\node at (-0.9,0.6) {$D$};
+\node at (-0.78,-0.6) {$>$};
+\node at (0.9,0.6) {$Q$};
+\node at (0.82,-0.6) {$\overline{Q}$};
+\draw[->] (-2.2,0.6) -- (ff.west |- 0,0.6);
+\draw[->] (-2.2,-0.6) -- (ff.west |- 0,-0.6);
+\draw[->] (ff.east |- 0,0.6) -- (2.2,0.6);
+\draw[->] (ff.east |- 0,-0.6) -- (2.2,-0.6);
+\end{tikzpicture}
+\end{center}
+
+Indique a função de cada terminal:
+
+\begin{enumerate}[label=\alph*)]
+    \item $D$: \rule{0.72\textwidth}{0.4pt}
+    \item $CLK$: \rule{0.68\textwidth}{0.4pt}
+    \item $Q$: \rule{0.72\textwidth}{0.4pt}
+    \item $\overline{Q}$: \rule{0.67\textwidth}{0.4pt}
+\end{enumerate}
+
+\item \textbf{Latch SR com portas NOR}
+
+Complete a tabela usando: \textbf{armazenar}, \textbf{set}, \textbf{reset} ou
+\textbf{estado proibido}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$S$ & $R$ & \textbf{Operação} & $Q_{próximo}$ \\
+\hline
+0 & 0 & & $Q_{atual}$ \\
+\hline
+0 & 1 & & \\
+\hline
+1 & 0 & & \\
+\hline
+1 & 1 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\item \textbf{Latch SR com portas NAND}
+
+As entradas de um latch SR com portas NAND são ativas em nível baixo e podem
+ser representadas por $\overline{S}$ e $\overline{R}$. Complete a tabela.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|}
+\hline
+$\overline{S}$ & $\overline{R}$ & \textbf{Operação} \\
+\hline
+1 & 1 & \\
+\hline
+0 & 1 & \\
+\hline
+1 & 0 & \\
+\hline
+0 & 0 & \\
+\hline
+\end{tabular}
+\end{center}
+
+Qual é a principal diferença entre as entradas do latch NOR e do latch NAND?
+
+\vspace{1cm}
+
+\newpage
+
+\item \textbf{Flip-flop tipo D}
+
+Complete a tabela característica do flip-flop D.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|}
+\hline
+$D$ na borda do clock & $Q_{próximo}$ \\
+\hline
+0 & \\
+\hline
+1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+Se $D=1$ no instante da borda ativa do clock, qual será o novo valor de $Q$?
+O que acontece com $Q$ se $D$ mudar depois dessa borda?
+
+\vspace{1.2cm}
+
+\item \textbf{Sequência no flip-flop D}
+
+Considere inicialmente $Q=0$. Complete a saída depois de cada borda de subida.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Borda do clock} & $D$ & $Q$ após a borda \\
+\hline
+Estado inicial & -- & 0 \\
+\hline
+1 & 1 & \\
+\hline
+2 & 0 & \\
+\hline
+3 & 0 & \\
+\hline
+4 & 1 & \\
+\hline
+5 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\item \textbf{Flip-flop JK}
+
+Complete a tabela utilizando: \textbf{armazenar}, \textbf{reset}, \textbf{set}
+ou \textbf{alternar}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$J$ & $K$ & \textbf{Operação} & $Q_{próximo}$ \\
+\hline
+0 & 0 & & $Q_{atual}$ \\
+\hline
+0 & 1 & & \\
+\hline
+1 & 0 & & \\
+\hline
+1 & 1 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+Por que o flip-flop JK não possui o estado proibido encontrado no latch SR?
+
+\vspace{1cm}
+
+\item \textbf{Sequência no flip-flop JK}
+
+Um flip-flop JK inicia com $Q=0$. Complete a sequência.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Pulso} & $J$ & $K$ & $Q$ após o pulso \\
+\hline
+Estado inicial & -- & -- & 0 \\
+\hline
+1 & 1 & 0 & \\
+\hline
+2 & 0 & 0 & \\
+\hline
+3 & 0 & 1 & \\
+\hline
+4 & 1 & 1 & \\
+\hline
+5 & 1 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\item \textbf{Flip-flop tipo T}
+
+Complete a tabela característica.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|}
+\hline
+$T$ & \textbf{Operação} & $Q_{próximo}$ \\
+\hline
+0 & & \\
+\hline
+1 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+Explique por que o flip-flop T é muito utilizado na construção de contadores.
+
+\vspace{1cm}
+
+\item \textbf{Divisor de frequência}
+
+Um flip-flop T está com $T=1$ e recebe um clock de $800\,\text{Hz}$.
+
+\begin{enumerate}[label=\alph*)]
+    \item Qual é a frequência da saída $Q$? \rule{3cm}{0.4pt}
+    \item Qual será a frequência após dois flip-flops T em cascata?
+    \rule{3cm}{0.4pt}
+    \item E após três flip-flops T em cascata? \rule{3cm}{0.4pt}
+\end{enumerate}
+
+\item \textbf{Contador binário de 2 bits}
+
+Complete a sequência de um contador crescente iniciado em $00$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Pulso} & $Q_1Q_0$ & \textbf{Decimal} \\
+\hline
+0 & 00 & 0 \\
+\hline
+1 & & \\
+\hline
+2 & & \\
+\hline
+3 & & \\
+\hline
+4 & & \\
+\hline
+5 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+Quantos estados diferentes esse contador possui? \rule{2cm}{0.4pt}
+
+\item \textbf{Contador binário de 3 bits}
+
+Um contador de 3 bits possui as saídas $Q_2Q_1Q_0$.
+
+\begin{enumerate}[label=\alph*)]
+    \item Quantos estados diferentes ele possui? \rule{2cm}{0.4pt}
+    \item Qual é o menor valor decimal contado? \rule{2cm}{0.4pt}
+    \item Qual é o maior valor decimal contado? \rule{2cm}{0.4pt}
+    \item Qual estado aparece depois de $111$? \rule{2cm}{0.4pt}
+\end{enumerate}
+
+\item \textbf{Registrador de deslocamento}
+
+Um registrador de 4 bits inicia em $Q_3Q_2Q_1Q_0=0000$. A cada pulso, os bits
+são deslocados para a direita e o novo bit entra em $Q_3$. Complete a tabela.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Pulso} & \textbf{Entrada serial} & $Q_3Q_2Q_1Q_0$ \\
+\hline
+0 & -- & 0000 \\
+\hline
+1 & 1 & \\
+\hline
+2 & 0 & \\
+\hline
+3 & 1 & \\
+\hline
+4 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+Cite uma aplicação de um registrador de deslocamento.
+
+\vspace{1cm}
+
+\newpage
+
+\item \textbf{Aplicações}
+
+Relacione cada dispositivo à aplicação mais adequada.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabularx}{0.95\textwidth}{|c|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Dispositivo} & \textbf{Aplicação} \\
+\hline
+1. Flip-flop D & (\quad) Contar peças que passam por um sensor \\
+\hline
+2. Contador & (\quad) Armazenar vários bits \\
+\hline
+3. Registrador & (\quad) Dividir a frequência de um clock \\
+\hline
+4. Flip-flop T & (\quad) Armazenar um bit de informação \\
+\hline
+\end{tabularx}
+\end{center}
+
+\item \textbf{Aplicação industrial: contador de peças}
+
+Um sensor gera um pulso sempre que uma peça passa por uma esteira. Deseja-se
+mostrar no display a quantidade de peças, de 0 até 7.
+
+\begin{enumerate}[label=\alph*)]
+    \item Quantos flip-flops são necessários para representar os valores de
+    0 até 7? Justifique.
+    \item Qual dispositivo deve receber os pulsos do sensor?
+    \item Qual será o valor binário mostrado depois da passagem de cinco peças?
+\end{enumerate}
+
+\vspace{1.3cm}
+
+\item \textbf{Aplicação industrial: ligar e desligar um motor}
+
+Um botão $L$ deve ligar um motor e um botão $D$ deve desligá-lo. O estado do
+motor deve permanecer armazenado depois que o botão for solto.
+
+\begin{enumerate}[label=\alph*)]
+    \item Por que um circuito puramente combinacional não é suficiente?
+    \item Qual elemento de memória pode ser utilizado nessa aplicação?
+    \item Em um latch SR com portas NOR, a qual entrada deve ser ligado o botão
+    de ligar? E o botão de desligar?
+\end{enumerate}
+
+\vspace{1.3cm}
+
+\item \textbf{Desafio: contador com display de 7 segmentos}
+
+Deseja-se construir um contador de 0 até 9, com saída exibida em um display de
+7 segmentos por meio de um decodificador BCD.
+
+\begin{enumerate}[label=\alph*)]
+    \item Quantos bits são necessários para representar os números de 0 a 9?
+    \item Quantos flip-flops são necessários para armazenar esses bits?
+    \item Depois de qual estado o contador deve retornar para $0000$?
+    \item Qual é a função do decodificador BCD para 7 segmentos?
+\end{enumerate}
+
+\vspace{1.5cm}
+
+\end{enumerate}
+
+\begin{center}
+\fcolorbox{black}{gray!10}{
+\begin{minipage}{0.92\textwidth}
+\centering
+\textbf{Resumo para estudo}\\[0.15cm]
+SR: armazena, ativa ou desativa uma saída.\quad
+D: copia a entrada na borda do clock.\\
+JK: elimina o estado proibido do SR.\quad
+T: alterna a saída e pode contar pulsos.
+\end{minipage}}
+\end{center}
+
+\end{document}

@@ -19,7 +19,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "lwip.h"
+#include "usart.h"
 #include "gpio.h"
+
+#include "logger.h"
+#include "ring_buffer.h"
+#include "definitions.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -139,6 +144,7 @@ Error_Handler();
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LWIP_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -148,6 +154,8 @@ Error_Handler();
   while (1)
   {
     /* USER CODE END WHILE */
+    LOG_INFO("Iniciando kernel FreeRTOS");
+    HAL_Delay(1000);
 
     /* USER CODE BEGIN 3 */
   }

@@ -1,0 +1,673 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage[a4paper,margin=1.5cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+
+\usetikzlibrary{
+    circuits.logic.US,
+    positioning,
+    calc,
+    arrows.meta
+}
+
+\begin{document}
+
+\pagestyle{empty}
+
+% =========================================================
+% CABEÇALHO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{0.6}
+
+\begin{tabular}{
+|>{\centering\arraybackslash}m{0.20\textwidth}|
+>{\centering\arraybackslash}m{0.73\textwidth}|
+}
+\hline
+
+\includegraphics[width=2.8cm]{fpf.png}
+&
+{
+\centering
+\vspace{0.2cm}
+
+\textbf{\scriptsize CURSO TÉCNICO EM AUTOMAÇÃO INDUSTRIAL}\\[0.15cm]
+\textbf{\small Disciplina: Eletrônica Digital 1}\\[0.15cm]
+\textbf{\small AVALIAÇÃO: Recuperação}
+
+}
+\tabularnewline
+
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{0.1cm}
+
+% =========================================================
+% DADOS DO ALUNO
+% =========================================================
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{
+|>{\raggedright\arraybackslash}m{0.70\textwidth}|
+>{\raggedright\arraybackslash}m{0.23\textwidth}|
+}
+\hline
+
+\textbf{Aluno(a):}
+&
+\textbf{Data:}
+\\
+\hline
+
+\textbf{Professor(a):}
+&
+\textbf{Nota:}
+\\
+\hline
+
+\end{tabular}
+\end{table}
+
+% =========================================================
+% ORIENTAÇÕES
+% =========================================================
+
+\noindent
+\fcolorbox{black}{gray!10}{
+\begin{minipage}{0.96\textwidth}
+\small
+
+\textbf{Orientações}
+
+\begin{itemize}[
+    leftmargin=0.6cm,
+    itemsep=1pt,
+    topsep=2pt,
+    parsep=0pt
+]
+    \item Leia atentamente todas as questões antes de responder.
+    \item Apresente os cálculos, tabelas-verdade e diagramas solicitados.
+    \item Nas questões discursivas, respostas sem justificativa poderão receber
+    apenas parte da pontuação.
+    \item Considere que as entradas e saídas utilizam lógica positiva.
+    \item Valor total da avaliação: \textbf{10,0 pontos}.
+\end{itemize}
+
+\end{minipage}
+}
+
+\vspace{0.4cm}
+
+% =========================================================
+% QUESTÕES
+% =========================================================
+
+\begin{enumerate}[
+    leftmargin=0.8cm,
+    label=\textbf{\arabic*.},
+    itemsep=0.7cm
+]
+
+% =========================================================
+% QUESTÃO 1
+% =========================================================
+
+\item \textbf{Circuitos combinacionais e sequenciais \hfill (1,0 ponto)}
+
+Classifique cada dispositivo como \textbf{combinacional} ou
+\textbf{sequencial}.
+
+\vspace{0.2cm}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Dispositivo}
+&
+\textbf{Combinacional}
+&
+\textbf{Sequencial}
+\\
+\hline
+
+Somador binário & $\square$ & $\square$ \\
+\hline
+
+Multiplexador & $\square$ & $\square$ \\
+\hline
+
+Flip-flop & $\square$ & $\square$ \\
+\hline
+
+Contador binário & $\square$ & $\square$ \\
+\hline
+
+Decodificador & $\square$ & $\square$ \\
+\hline
+
+Registrador & $\square$ & $\square$ \\
+\hline
+
+\end{tabular}
+\end{center}
+
+Explique a principal diferença entre circuitos combinacionais e sequenciais.
+
+\vspace{1.5cm}
+
+% =========================================================
+% QUESTÃO 2
+% =========================================================
+
+\item \textbf{Análise de circuito combinacional \hfill (1,0 ponto)}
+
+Considere o circuito lógico a seguir.
+
+\begin{center}
+\begin{tikzpicture}[
+    circuit logic US,
+    every circuit symbol/.style={scale=0.85},
+    node distance=1.4cm
+]
+
+\node (A) at (0,1.5) {$A$};
+\node (B) at (0,0.5) {$B$};
+\node (C) at (0,-0.8) {$C$};
+
+\node[and gate US, draw, logic gate inputs=nn]
+    (and1) at (2.3,1) {};
+
+\node[not gate US, draw]
+    (not1) at (2.3,-0.8) {};
+
+\node[or gate US, draw, logic gate inputs=nn]
+    (or1) at (5,0.4) {};
+
+\draw (A.east) -- ++(0.5,0) |- (and1.input 1);
+\draw (B.east) -- ++(0.8,0) |- (and1.input 2);
+\draw (C.east) -- (not1.input);
+
+\draw (and1.output) -- ++(0.7,0) |- (or1.input 1);
+\draw (not1.output) -- ++(0.7,0) |- (or1.input 2);
+
+\draw (or1.output) -- ++(1,0)
+    node[right] {$S$};
+
+\end{tikzpicture}
+\end{center}
+
+\begin{enumerate}[label=\alph*)]
+    \item Escreva a expressão booleana da saída $S$.
+    \item Complete a tabela-verdade do circuito.
+\end{enumerate}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+$A$ & $B$ & $C$ & $S$ \\
+\hline
+0 & 0 & 0 & \\
+\hline
+0 & 0 & 1 & \\
+\hline
+0 & 1 & 0 & \\
+\hline
+0 & 1 & 1 & \\
+\hline
+1 & 0 & 0 & \\
+\hline
+1 & 0 & 1 & \\
+\hline
+1 & 1 & 0 & \\
+\hline
+1 & 1 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+% =========================================================
+% QUESTÃO 3
+% =========================================================
+
+\item \textbf{Projeto de circuito combinacional \hfill (1,0 ponto)}
+
+Uma máquina possui três sensores digitais: $A$, $B$ e $C$.
+
+Uma saída de alarme $L$ deverá ser ativada quando \textbf{dois ou mais sensores}
+estiverem simultaneamente em nível lógico 1.
+
+\begin{enumerate}[label=\alph*)]
+    \item Complete a tabela-verdade.
+    \item Escreva a expressão booleana da saída $L$.
+    \item Desenhe o circuito utilizando portas lógicas.
+\end{enumerate}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+$A$ & $B$ & $C$ & $L$ \\
+\hline
+0 & 0 & 0 & \\
+\hline
+0 & 0 & 1 & \\
+\hline
+0 & 1 & 0 & \\
+\hline
+0 & 1 & 1 & \\
+\hline
+1 & 0 & 0 & \\
+\hline
+1 & 0 & 1 & \\
+\hline
+1 & 1 & 0 & \\
+\hline
+1 & 1 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{2.3cm}
+
+% =========================================================
+% QUESTÃO 4
+% =========================================================
+
+\item \textbf{Latch SR \hfill (1,0 ponto)}
+
+Um latch SR construído com portas NOR possui entradas ativas em nível lógico 1.
+
+Complete a tabela abaixo.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+$S$ & $R$ & $Q_{\text{atual}}$ & $Q_{\text{próximo}}$ \\
+\hline
+0 & 0 & 0 & \\
+\hline
+0 & 0 & 1 & \\
+\hline
+0 & 1 & X & \\
+\hline
+1 & 0 & X & \\
+\hline
+1 & 1 & X & \\
+\hline
+\end{tabular}
+\end{center}
+
+O que ocorre quando $S=1$ e $R=1$?
+
+\vspace{1.3cm}
+
+% =========================================================
+% QUESTÃO 5
+% =========================================================
+
+\item \textbf{Flip-flop tipo D \hfill (1,0 ponto)}
+
+O flip-flop D abaixo é sensível à \textbf{borda de subida} do clock.
+
+\begin{center}
+\begin{tikzpicture}
+
+\node[draw, minimum width=2cm, minimum height=2.2cm]
+    (ff) at (0,0) {};
+
+\node at (-0.75,0.55) {$D$};
+\node at (-0.58,-0.55) {$>$};
+\node at (0.72,0.55) {$Q$};
+\node at (0.63,-0.55) {$\overline{Q}$};
+
+\draw[-{Latex}] (-2,0.55) -- (-1,0.55);
+\draw[-{Latex}] (-2,-0.55) -- (-1,-0.55);
+
+\draw[-{Latex}] (1,0.55) -- (2,0.55);
+\draw[-{Latex}] (1,-0.55) -- (2,-0.55);
+
+\node[left] at (-2,0.55) {$D$};
+\node[left] at (-2,-0.55) {$CLK$};
+
+\end{tikzpicture}
+\end{center}
+
+Considere inicialmente $Q=0$. Determine o valor da saída após cada borda de
+subida.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Borda de subida} & $D$ & $Q$ após a borda \\
+\hline
+1ª & 1 & \\
+\hline
+2ª & 0 & \\
+\hline
+3ª & 1 & \\
+\hline
+4ª & 1 & \\
+\hline
+5ª & 0 & \\
+\hline
+\end{tabular}
+\end{center}
+
+Explique por que alterações em $D$ entre as bordas de subida não modificam
+imediatamente a saída $Q$.
+
+\vspace{1.2cm}
+
+\newpage
+
+% =========================================================
+% QUESTÃO 6
+% =========================================================
+
+\item \textbf{Flip-flop JK \hfill (1,0 ponto)}
+
+Complete a tabela de funcionamento do flip-flop JK.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|c|l|}
+\hline
+$J$ & $K$ & $Q_{\text{próximo}}$ & \textbf{Operação} \\
+\hline
+0 & 0 & & \\
+\hline
+0 & 1 & & \\
+\hline
+1 & 0 & & \\
+\hline
+1 & 1 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+Se inicialmente $Q=0$ e as entradas permanecerem em $J=1$ e $K=1$, determine
+a saída após quatro pulsos de clock.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Pulso} & $Q$ \\
+\hline
+Estado inicial & 0 \\
+\hline
+1 & \\
+\hline
+2 & \\
+\hline
+3 & \\
+\hline
+4 & \\
+\hline
+\end{tabular}
+\end{center}
+
+% =========================================================
+% QUESTÃO 7
+% =========================================================
+
+\item \textbf{Flip-flop tipo T e divisor de frequência \hfill (1,0 ponto)}
+
+Um flip-flop T possui a entrada mantida em nível lógico 1 e recebe um sinal de
+clock de frequência igual a:
+
+\[
+f_{CLK}=1000\,\text{Hz}
+\]
+
+\begin{enumerate}[label=\alph*)]
+    \item Qual operação é realizada pelo flip-flop a cada pulso de clock?
+    \item Qual será a frequência da saída $Q$?
+    \item Se dois flip-flops T forem ligados em cascata, qual será a frequência
+    na saída do segundo flip-flop?
+\end{enumerate}
+
+\vspace{1.8cm}
+
+% =========================================================
+% QUESTÃO 8
+% =========================================================
+
+\item \textbf{Contador binário \hfill (1,0 ponto)}
+
+O circuito abaixo representa um contador binário de 3 bits. Considere o estado
+inicial $Q_2Q_1Q_0=000$.
+
+\begin{center}
+\begin{tikzpicture}[
+    block/.style={
+        draw,
+        minimum width=1.7cm,
+        minimum height=1.8cm,
+        align=center
+    },
+    >=Latex
+]
+
+\node[block] (ff0) at (0,0) {FF-T\\$T=1$};
+\node[block] (ff1) at (3,0) {FF-T\\$T=1$};
+\node[block] (ff2) at (6,0) {FF-T\\$T=1$};
+
+\draw[->] (-1.8,0) -- (ff0.west)
+    node[midway,above] {$CLK$};
+
+\draw[->] (ff0.east) -- (ff1.west)
+    node[midway,above] {$Q_0$};
+
+\draw[->] (ff1.east) -- (ff2.west)
+    node[midway,above] {$Q_1$};
+
+\draw[->] (ff2.east) -- ++(1.2,0)
+    node[right] {$Q_2$};
+
+\end{tikzpicture}
+\end{center}
+
+Complete a sequência dos estados.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Pulso de clock} & $Q_2Q_1Q_0$ & \textbf{Valor decimal} \\
+\hline
+0 & 000 & 0 \\
+\hline
+1 & & \\
+\hline
+2 & & \\
+\hline
+3 & & \\
+\hline
+4 & & \\
+\hline
+5 & & \\
+\hline
+6 & & \\
+\hline
+7 & & \\
+\hline
+8 & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+% =========================================================
+% QUESTÃO 9
+% =========================================================
+
+\item \textbf{Registradores \hfill (1,0 ponto)}
+
+Um registrador de deslocamento de 4 bits apresenta inicialmente o estado:
+
+\[
+Q_3Q_2Q_1Q_0=0000
+\]
+
+A cada borda de subida, os bits são deslocados para a direita. O novo bit entra
+em $Q_3$.
+
+A sequência aplicada na entrada serial é:
+
+\[
+1,\quad 0,\quad 1,\quad 1
+\]
+
+Complete a tabela.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Pulso} & \textbf{Entrada serial} & $Q_3Q_2Q_1Q_0$ \\
+\hline
+Estado inicial & -- & 0000 \\
+\hline
+1 & 1 & \\
+\hline
+2 & 0 & \\
+\hline
+3 & 1 & \\
+\hline
+4 & 1 & \\
+\hline
+\end{tabular}
+\end{center}
+
+Cite uma aplicação prática dos registradores de deslocamento.
+
+\vspace{1.2cm}
+
+% =========================================================
+% QUESTÃO 10
+% =========================================================
+
+\item \textbf{Máquina de estados \hfill (1,0 ponto)}
+
+Um sistema de controle possui dois estados:
+
+\begin{itemize}[itemsep=1pt]
+    \item $S_0$: motor desligado;
+    \item $S_1$: motor ligado.
+\end{itemize}
+
+O botão $L$ liga o motor e o botão $D$ desliga o motor. Quando nenhum botão é
+pressionado, o sistema permanece no estado atual.
+
+Complete o diagrama de estados indicando as condições de transição.
+
+\begin{center}
+\begin{tikzpicture}[
+    state/.style={
+        circle,
+        draw,
+        minimum size=2.4cm,
+        align=center
+    },
+    >=Latex
+]
+
+\node[state] (s0) at (0,0) {$S_0$\\Motor\\desligado};
+\node[state] (s1) at (6,0) {$S_1$\\Motor\\ligado};
+
+\draw[->] (-2,0) -- (s0.west)
+    node[midway,above] {Inicial};
+
+\draw[->,bend left=25]
+    (s0) to node[above] {\rule{2cm}{0.4pt}} (s1);
+
+\draw[->,bend left=25]
+    (s1) to node[below] {\rule{2cm}{0.4pt}} (s0);
+
+\draw[->]
+    (s0) edge[loop above]
+    node[above] {\rule{2cm}{0.4pt}} (s0);
+
+\draw[->]
+    (s1) edge[loop above]
+    node[above] {\rule{2cm}{0.4pt}} (s1);
+
+\end{tikzpicture}
+\end{center}
+
+Responda:
+
+\begin{enumerate}[label=\alph*)]
+    \item Qual elemento digital pode armazenar o estado atual desse sistema?
+    \item Por que esse sistema não pode ser implementado apenas com portas
+    combinacionais?
+\end{enumerate}
+
+\vspace{1.5cm}
+
+\end{enumerate}
+
+% =========================================================
+% QUADRO DE NOTAS
+% =========================================================
+
+\begin{center}
+\textbf{\large QUADRO DE NOTAS}
+\end{center}
+
+\renewcommand{\arraystretch}{1.5}
+\small
+
+\begin{center}
+\begin{tabular}{|c|c||c|c||c|c||c|c||c|c|}
+\hline
+Q1 & Q2 & Q3 & Q4 & Q5 & Q6 & Q7 & Q8 & Q9 & Q10 \\
+\hline
+ & & & & & & & & & \\
+\hline
+\multicolumn{8}{|r|}{\textbf{Nota total:}}
+&
+\multicolumn{2}{c|}{\hspace{1.5cm}/10,0}
+\\
+\hline
+\end{tabular}
+\end{center}
+
+\normalsize
+
+\end{document}

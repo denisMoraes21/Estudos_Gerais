@@ -1,0 +1,21 @@
+\begin{frame}{Exemplo: saída de 3.3~V acionando entrada de 5~V}
+    \begin{block}{Pergunta}
+        Um microcontrolador de 3.3~V pode acionar qualquer porta lógica
+        alimentada em 5~V?
+    \end{block}
+
+    \begin{alertblock}{Não necessariamente}
+        \begin{itemize}
+            \item Se a entrada exigir $V_{IH(\min)}=3.5~V$, o nível
+                  alto de 3.3~V não é garantido.
+            \item Se a entrada HCT exigir apenas 2.0~V, a tensão pode
+                  ser compatível.
+            \item Ainda é necessário verificar corrente, frequência, ruído e
+                  limites absolutos.
+        \end{itemize}
+    \end{alertblock}
+
+    \centering
+    \textbf{Compatibilidade é demonstrada por valores mínimos e máximos,
+    não apenas pelas tensões nominais.}
+\end{frame}

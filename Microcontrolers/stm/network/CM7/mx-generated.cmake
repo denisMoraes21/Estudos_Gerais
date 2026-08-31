@@ -32,14 +32,12 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/src/include/compat/stdc
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/system/arch
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/CMSIS/Include
-
-    # project includes
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src
 )
 # STM32CubeMX generated application sources
 set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/main.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/gpio.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/usart.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/stm32h7xx_it.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/stm32h7xx_hal_msp.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Src/sysmem.c
@@ -48,10 +46,6 @@ set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/LWIP/Target/eth_custom_phy_interface.c
     ${CMAKE_CURRENT_SOURCE_DIR}/LWIP/App/lwip.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Core/Startup/startup_stm32h755xx_CM7.s
-
-    # project includes
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ring_buffer.c
 )
 
 # STM32 HAL/LL Drivers
@@ -77,6 +71,8 @@ set(STM32_Drivers_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_exti.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c
 )
 
 # Drivers Midllewares
@@ -173,8 +169,7 @@ set(MX_LINK_DIRS
 set (MX_LINK_LIBS 
     STM32_Drivers
     ${TOOLCHAIN_LINK_LIBRARIES}
-    LwIP
-	
+    LwIP	
     
 )
 # Interface library for includes and symbols
