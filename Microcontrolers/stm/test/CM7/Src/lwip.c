@@ -26,6 +26,7 @@
 #include "lwip/sio.h"
 #endif /* MDK ARM Compiler */
 #include "ethernetif.h"
+#include "logger.h"
 #include <string.h>
 
 /* USER CODE BEGIN 0 */
@@ -127,14 +128,16 @@ void MX_LWIP_Init(void)
   */
 static void ethernet_link_status_updated(struct netif *netif)
 {
-  if (netif_is_up(netif))
+  if (netif_is_link_up(netif))
   {
 /* USER CODE BEGIN 5 */
+    LOG_INFO("Link Ethernet UP - IP 192.168.1.20");
 /* USER CODE END 5 */
   }
-  else /* netif is down */
+  else /* link is down */
   {
 /* USER CODE BEGIN 6 */
+    LOG_WARN("Link Ethernet DOWN");
 /* USER CODE END 6 */
   }
 }

@@ -32,6 +32,7 @@
 #include "logger.h"
 #include "ring_buffer.h"
 #include "definitions.h"
+#include "ethernet_stack.h"
 #include "stm32h7xx_hal.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
@@ -229,6 +230,28 @@ static void tcp_client_task(void *argument)
     }
 }
 
+static void ping_test_task(void *argument)
+{
+    (void)argument;
+
+    for (;;)
+    {
+        if (netif_is_up(&gnetif) && netif_is_link_up(&gnetif))
+        {
+            if (ping())
+            {
+                LOG_INFO("Teste de ping concluido com sucesso");
+            }
+            else
+            {
+                LOG_WARN("Dispositivo nao respondeu ao ping");
+            }
+        }
+
+        osDelay(5000);
+    }
+}
+
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
@@ -244,6 +267,7 @@ extern lan8742_Object_t LAN8742;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MPU_Config(void);
+static void Log_Reset_Cause(uint32_t flags);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
@@ -334,6 +358,8 @@ void ESP32_ReadSensor(void)
 int main(void)
 {
 
+  const uint32_t reset_cause_flags = RCC->RSR;
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -403,6 +429,8 @@ Error_Handler();
     /* USER CODE BEGIN 2 */
 
       logger_init();
+      Log_Reset_Cause(reset_cause_flags);
+      __HAL_RCC_CLEAR_RESET_FLAGS();
     /* USER CODE END 2 */
 
     // const osThreadAttr_t task1_attributes = {
@@ -439,25 +467,22 @@ Error_Handler();
     //     Error_Handler();
     // }
 
-    // osKernelStart();
-    // MX_LWIP_Init();
+    osKernelInitialize();
 
-    // osKernelInitialize();
+    defaultTaskHandle = osThreadNew(
+        StartDefaultTask,
+        NULL,
+        &defaultTask_attributes
+    );
 
-    // defaultTaskHandle = osThreadNew(
-    //     tcp_client_task,
-    //     NULL,
-    //     &defaultTask_attributes
-    // );
+    if (defaultTaskHandle == NULL)
+    {
+        LOG_ERROR("Falha ao criar defaultTask");
+        Error_Handler();
+    }
 
-    // if (defaultTaskHandle == NULL)
-    // {
-    //     LOG_ERROR("Falha ao criar defaultTask");
-    //     Error_Handler();
-    // }
-
-    // LOG_INFO("Iniciando kernel FreeRTOS");
-    // osKernelStart();
+    LOG_INFO("Iniciando Ethernet/FreeRTOS");
+    osKernelStart();
 
     while (1)
     {
@@ -509,6 +534,19 @@ Error_Handler();
         // }
         HAL_Delay(1000);   // <-- 1 segundo
     }
+}
+
+static void Log_Reset_Cause(uint32_t flags)
+{
+  LOG_WARN("Reset flags RCC_RSR=0x%08lX", (unsigned long)flags);
+
+  if ((flags & RCC_RSR_BORRSTF) != 0U)   LOG_WARN("Reset: brown-out/alimentacao");
+  if ((flags & RCC_RSR_PINRSTF) != 0U)   LOG_WARN("Reset: pino NRST");
+  if ((flags & RCC_RSR_PORRSTF) != 0U)   LOG_WARN("Reset: power-on");
+  if ((flags & RCC_RSR_SFT1RSTF) != 0U)  LOG_WARN("Reset: software CM7");
+  if ((flags & RCC_RSR_IWDG1RSTF) != 0U) LOG_WARN("Reset: watchdog independente CM7");
+  if ((flags & RCC_RSR_WWDG1RSTF) != 0U) LOG_WARN("Reset: window watchdog CM7");
+  if ((flags & RCC_RSR_LPWR1RSTF) != 0U) LOG_WARN("Reset: low-power CM7");
 }
 
 /**
@@ -731,7 +769,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 9600;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -866,10 +904,36 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
+  const osThreadAttr_t ping_task_attributes = {
+    .name = "PingTest",
+    .stack_size = 2048,
+    .priority = (osPriority_t)osPriorityNormal,
+  };
+
+  (void)argument;
+
   /* init code for LWIP */
-  // MX_LWIP_Init();
-  // tcp_client_task();
+  MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
+  LOG_INFO("Ethernet inicializada: IP 192.168.1.20");
+
+  if (osThreadNew(ping_test_task, NULL, &ping_task_attributes) == NULL)
+  {
+    LOG_ERROR("Falha ao criar tarefa de ping");
+  }
+
+  /* O processamento de RX e ICMP e feito pelas tarefas do LwIP. */
+  for (;;)
+  {
+    LOG_INFO("ETH link=%s IRQ=%lu RX=%lu TX=%lu",
+             netif_is_link_up(&gnetif) ? "UP" : "DOWN",
+             (unsigned long)eth_irq_count,
+             (unsigned long)eth_rx_complete_count,
+             (unsigned long)eth_tx_complete_count);
+
+    osDelay(5000);
+  }
+
   /* Infinite loop */
   // LOG_INFO("===== LWIP INICIALIZADO =====");
 
@@ -982,6 +1046,21 @@ void MPU_Config(void)
   MPU_InitStruct.SubRegionDisable = 0x87;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
   MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+
+  /* SRAM D2 usada pelos descritores, buffers RX e heap do LwIP. */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress = 0x30000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_64KB;
+  MPU_InitStruct.SubRegionDisable = 0x00;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
   MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;

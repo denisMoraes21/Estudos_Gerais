@@ -242,6 +242,13 @@ SECTIONS
     KEEP(*(.Rx_PoolSection))
   } >RAM_D2
 
+  /* Buffers TX copiados para memoria acessivel pelo DMA Ethernet. */
+  .Tx_BuffSection (NOLOAD) :
+  {
+    . = ABSOLUTE(0x3000D000);
+    KEEP(*(.Tx_BuffSection))
+  } >RAM_D2
+
   
 
   /* Remove information from the standard libraries */

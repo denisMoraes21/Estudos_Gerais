@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "logger.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +56,25 @@
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+
+void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
+{
+  (void)task;
+  LOG_ERROR("Stack overflow: %s", task_name != NULL ? task_name : "?");
+  taskDISABLE_INTERRUPTS();
+  for (;;)
+  {
+  }
+}
+
+void vApplicationMallocFailedHook(void)
+{
+  LOG_ERROR("FreeRTOS malloc falhou");
+  taskDISABLE_INTERRUPTS();
+  for (;;)
+  {
+  }
+}
 
 /* USER CODE END Application */
 

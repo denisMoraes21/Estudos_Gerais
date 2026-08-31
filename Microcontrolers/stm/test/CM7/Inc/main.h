@@ -65,8 +65,8 @@ void Error_Handler(void);
 #define OSC32_IN_GPIO_Port GPIOC
 #define MII_TXD3_Pin GPIO_PIN_2
 #define MII_TXD3_GPIO_Port GPIOE
-#define RMII_TXD1_Pin GPIO_PIN_12
-#define RMII_TXD1_GPIO_Port GPIOG
+#define MII_TXD1_Pin GPIO_PIN_12
+#define MII_TXD1_GPIO_Port GPIOG
 #define RMII_TXD0_Pin GPIO_PIN_13
 #define RMII_TXD0_GPIO_Port GPIOG
 #define MII_RX_ER_Pin GPIO_PIN_10

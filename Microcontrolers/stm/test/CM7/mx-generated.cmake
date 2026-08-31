@@ -183,6 +183,7 @@ set(LwIP_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/src/core/ipv6/ip6_addr.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/system/OS/sys_arch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/src/apps/mqtt/mqtt.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Middlewares/Third_Party/LwIP/src/apps/tftp/tftp.c
 )
 # Link directories setup
 set(MX_LINK_DIRS
