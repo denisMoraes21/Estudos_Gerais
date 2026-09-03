@@ -28,10 +28,14 @@ typedef enum {
 
 bool f_phy_wait_for_link(void);
 bool f_phy_init(void);
+bool f_phy_is_up(void);
 bool f_phy_is_link_up(void);
-uint16_t f_phy_get_speed(void);
-phy_duplex_mode_t f_phy_get_duplex_mode(void);
+int32_t f_link_state(void);
+uint16_t f_phy_get_speed_and_mode(void);
+
+// TODO add in a task
 phy_link_status_t f_phy_link_status(void);
+void f_phy_monitor(void);
 
 #ifdef __cplusplus
 }
