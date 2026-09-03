@@ -13,35 +13,6 @@ extern struct netif gnetif;
 static int ping_socket_fd = -1;
 
 
-#define PHY_CONNECTION_TIMEOUT 5000
-#define PHY_CONNECTION_TIMEOUT_MESSAGE_ERROR "Timeout: PHY connection!"
-#define PHY_CONNECTION_MESSAGE_SUCCESS "Waiting PHY connection..."
-
-
-bool wait_phy_conection(void) {
-    bool phy_connected = true;
-    uint32_t start_time = HAL_GetTick();
-
-    while (!netif_is_up(&gnetif) ||
-           !netif_is_link_up(&gnetif))
-    {   
-        uint32_t end_time = HAL_GetTick();
-        uint32_t delta_time = end_time - start_time;
-
-        if (delta_time > PHY_CONNECTION_TIMEOUT) {
-            LOG_WARN(PHY_CONNECTION_TIMEOUT_MESSAGE_ERROR);
-            phy_connected = false;
-            break;
-        }
-
-        LOG_INFO(PHY_CONNECTION_MESSAGE_SUCCESS);
-        osDelay(1000);
-    }
-
-    return phy_connected;
-}
-
-
 #define PING_TIMEOUT 20000
 #define PING_TIMEOUT_MESSAGE_ERROR "Timeout: Ping connection!"
 #define PING_CONNECTION_MESSAGE_SUCCESS "ETH link=%s IRQ=%lu RX=%lu TX=%lu"

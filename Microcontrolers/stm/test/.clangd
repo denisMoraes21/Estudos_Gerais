@@ -1,3 +1,16 @@
+If:
+  PathExclude: unit_tests/.*
+CompileFlags:
+  Add:
+    - -isystem
+    - /usr/lib/gcc/arm-none-eabi/10.3.1/include
+    - -isystem
+    - /usr/lib/gcc/arm-none-eabi/10.3.1/include-fixed
+    - -isystem
+    - /usr/lib/arm-none-eabi/include
+
+---
+
 CompileFlags:
   CompilationDatabase: CM4/build
 If:
@@ -9,3 +22,24 @@ CompileFlags:
   CompilationDatabase: CM7/build
 If:
   PathMatch: CM7/.*
+
+---
+
+CompileFlags:
+  CompilationDatabase: unit_tests/build/artifacts
+If:
+  PathMatch: unit_tests/.*
+
+---
+
+CompileFlags:
+  CompilationDatabase: CM7/build
+If:
+  PathMatch: Common/.*
+
+---
+
+CompileFlags:
+  CompilationDatabase: CM7/build
+If:
+  PathMatch: (Middlewares|Drivers)/.*

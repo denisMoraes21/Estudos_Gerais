@@ -61,7 +61,16 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/socket.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/ethernet_stack.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/application.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/data.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/dhcp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/network.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/physical.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/ping.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/presentation.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/session.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/static_ip.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/transport.c
 )
 
 # Link directories setup
@@ -81,8 +90,6 @@ list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
 if((CMAKE_C_STANDARD EQUAL 90) OR (CMAKE_C_STANDARD EQUAL 99))
     message(ERROR "Generated code requires C11 or higher")
 endif()
-
-
 
 
 

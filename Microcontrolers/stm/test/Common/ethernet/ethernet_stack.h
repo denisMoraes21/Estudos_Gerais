@@ -1,6 +1,7 @@
 #ifndef ETHERNET_STACK_H
 #define ETHERNET_STACK_H
 
+#include "physical.h"
 #include <stdbool.h>
 
 #ifndef PING_TARGET_IP
@@ -8,13 +9,12 @@
 #endif
 
 #define PING_REPLY_TIMEOUT_MS 1000U
-#define PING_PAYLOAD_SIZE     32U
+#define PING_PAYLOAD_SIZE 32U
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool wait_phy_conection(void);
 bool wait_ping(void);
 
 /**
