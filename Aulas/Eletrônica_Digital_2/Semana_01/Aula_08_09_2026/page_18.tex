@@ -1,0 +1,16 @@
+\begin{frame}{Exemplo: por que usar um buffer?}
+  \begin{center}
+  \begin{tikzpicture}[every node/.style={align=center}, node distance=1.2cm, >=Latex]
+    \node[draw, fill=blue!10, minimum width=2.5cm, minimum height=1cm] (prod) {Produtor\\rápido};
+    \node[draw, fill=yellow!20, minimum width=2.5cm, minimum height=1cm, right=of prod] (fifo) {Buffer / FIFO};
+    \node[draw, fill=green!12, minimum width=2.5cm, minimum height=1cm, right=of fifo] (cons) {Consumidor\\mais lento};
+    \draw[->, thick] (prod)--node[above]{escreve}(fifo);
+    \draw[->, thick] (fifo)--node[above]{lê}(cons);
+  \end{tikzpicture}
+  \end{center}
+  \begin{itemize}
+    \item Sem buffer: o produtor pode sobrescrever ou perder dados.
+    \item Com buffer: os dados aguardam até o consumidor estar pronto.
+    \item Se a fila encher, o sistema deve parar o produtor ou descartar dados conforme a aplicação.
+  \end{itemize}
+\end{frame}

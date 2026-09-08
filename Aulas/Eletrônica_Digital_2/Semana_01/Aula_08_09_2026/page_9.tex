@@ -1,0 +1,17 @@
+%! Author = denis
+%! Date = 09/08/2026
+
+
+\begin{frame}{O que é transferência de dados?}
+  É o processo de mover informação digital de um bloco para outro.
+  \vspace{0.4cm}
+  \begin{center}
+  \begin{tikzpicture}[every node/.style={align=center}, node distance=1.7cm, >=Latex]
+    \node[draw, rounded corners, fill=blue!10, minimum width=2.8cm, minimum height=1cm] (a) {Origem\\[2pt]registrador};
+    \node[draw, rounded corners, fill=green!12, minimum width=2.8cm, minimum height=1cm, right=of a] (b) {Destino\\[2pt]registrador/periférico};
+    \draw[->, very thick] (a) -- node[above] {bits + controle} (b);
+    \draw[->, dashed] (b.south) to[out=-120,in=-60] node[below] {confirmação, quando necessária} (a.south);
+  \end{tikzpicture}
+  \end{center}
+  Para funcionar corretamente, origem e destino precisam concordar sobre \textbf{quando} e \textbf{como} os bits serão lidos.
+\end{frame}

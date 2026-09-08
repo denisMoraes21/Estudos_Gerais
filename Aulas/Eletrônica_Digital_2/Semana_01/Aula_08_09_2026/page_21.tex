@@ -1,0 +1,11 @@
+\begin{frame}{Paralela \texorpdfstring{$\times$}{x} serial}
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X@{}}
+    \textbf{Característica} & \textbf{Paralela} & \textbf{Serial} \\ \hline
+    Linhas de dados & Uma por bit & Uma ou poucas linhas \\ \hline
+    Exemplo & Barramento interno do processador & UART, SPI, I\textsuperscript{2}C \\ \hline
+    Custo físico & Maior & Menor \\ \hline
+    Distância & Geralmente curta & Pode ser maior \\ \hline
+    Desafio principal & Skew entre os bits & Sincronização e codificação temporal
+  \end{tabularx}
+\end{frame}

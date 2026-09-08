@@ -1,0 +1,7 @@
+- Physical - OK
+- Data - OK
+- Network
+- Transport
+- Session
+- Presentation
+- Application

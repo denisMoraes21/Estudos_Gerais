@@ -14,11 +14,14 @@ extern lan8742_Object_t LAN8742; // Board phy Ethernet
 extern struct netif gnetif;
 struct netif *p_gnetif = &gnetif;
 
-static phy_link_info_t board_phy_link_info = {
+static s_phy_link_info_t board_phy_link_info = {
     .link_up = false,
     .speed_mbps = 0U,
     .full_duplex = false,
 };
+
+#define PHY_READ_ID_FIRST_ERROR "PHY first ID read failed!"
+#define PHY_READ_ID_SECOND_ERROR "PHY second ID read failed!"
 
 bool f_phy_init(void) {
 
@@ -35,18 +38,18 @@ bool f_phy_init(void) {
     HAL_StatusTypeDef v_read_phy_first_register = HAL_ETH_ReadPHYRegister(
         &heth, v_phy_address, v_phy_first_id_register, p_phy_fisrt_id_value);
 
-    if (v_read_phy_first_register != HAL_OK &&
+    if (v_read_phy_first_register != HAL_OK ||
         v_phy_fisrt_id_value == v_mdio_not_responding_value) {
-        LOG_ERROR("PHY first ID read failed!");
+        LOG_ERROR(PHY_READ_ID_FIRST_ERROR);
         return false;
     }
 
     HAL_StatusTypeDef v_read_phy_second_register = HAL_ETH_ReadPHYRegister(
         &heth, v_phy_address, v_phy_second_id_register, p_phy_second_id_value);
 
-    if (v_read_phy_second_register != HAL_OK &&
+    if (v_read_phy_second_register != HAL_OK ||
         v_phy_second_id_value == v_mdio_not_responding_value) {
-        LOG_ERROR("PHY second ID read failed!");
+        LOG_ERROR(PHY_READ_ID_SECOND_ERROR);
         return false;
     }
 
@@ -155,7 +158,7 @@ uint16_t f_phy_get_speed_and_mode(void) {
     return v_speed;
 }
 
-#define PHY_MONITOR_DELAY 1000U
+#define PHY_MONITOR_DELAY 250U
 
 void f_phy_monitor(void) {
     while (1) {

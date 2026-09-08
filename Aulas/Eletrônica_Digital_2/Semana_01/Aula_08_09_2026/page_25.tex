@@ -1,0 +1,11 @@
+\begin{frame}{Síncrona \texorpdfstring{$\times$}{x} assíncrona}
+  \small
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X@{}}
+    \textbf{Característica} & \textbf{Síncrona} & \textbf{Assíncrona} \\ \hline
+    Referência de tempo & Clock comum & Sem clock comum contínuo \\ \hline
+    Controle & Borda do clock & Start/stop ou handshake \\ \hline
+    Previsibilidade & Alta & Depende do protocolo \\ \hline
+    Exemplo & SPI, registradores & UART, handshake entre blocos \\ \hline
+    Uso típico & Circuitos próximos, mesma frequência & Blocos independentes ou frequências diferentes
+  \end{tabularx}
+\end{frame}

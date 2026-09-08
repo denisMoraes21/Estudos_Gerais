@@ -1,0 +1,20 @@
+\begin{frame}{Transferência assíncrona}
+  Não há clock compartilhado continuamente. Cada lado usa seu próprio tempo e um protocolo indica quando os dados são válidos.
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \textbf{UART: bits de enquadramento}
+    \begin{itemize}
+      \item bit de início (start);
+      \item 5 a 9 bits de dados;
+      \item opcionalmente paridade;
+      \item um ou mais bits de parada (stop).
+    \end{itemize}
+    \column{0.48\textwidth}
+    \textbf{Handshake: sinais de controle}
+    \begin{itemize}
+      \item origem indica \texttt{valid} / \texttt{request};
+      \item destino responde \texttt{ready} / \texttt{ack};
+      \item a transferência ocorre quando ambos concordam.
+    \end{itemize}
+  \end{columns}
+\end{frame}

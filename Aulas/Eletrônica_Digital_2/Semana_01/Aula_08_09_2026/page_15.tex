@@ -1,0 +1,21 @@
+\begin{frame}{1.2 Armazenamento temporário}
+  O armazenamento temporário compensa diferenças de tempo entre quem produz e quem consome dados.
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \textbf{Buffer}\par
+      Armazena uma pequena quantidade de dados para desacoplar dois blocos.
+      \begin{itemize}
+        \item absorve pequenas variações;
+        \item evita perda imediata de dados;
+        \item pode ser implementado com registradores ou memória.
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{FIFO (First In, First Out)}\par
+      Fila em que o primeiro dado gravado é o primeiro dado lido.
+      \begin{itemize}
+        \item possui escrita e leitura independentes;
+        \item útil entre blocos com velocidades diferentes;
+        \item pode indicar \textit{vazia} e \textit{cheia}.
+      \end{itemize}
+  \end{columns}
+\end{frame}

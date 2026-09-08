@@ -1,0 +1,16 @@
+\begin{frame}{Transferência serial}
+  Os bits são enviados um após o outro pela mesma linha de dados.
+  \begin{center}
+  \begin{tikzpicture}[every node/.style={align=center}, >=Latex, node distance=1.3cm]
+    \node[draw, minimum width=2.1cm, minimum height=1.2cm] (a) {Origem};
+    \node[draw, fill=yellow!20, minimum width=2.7cm, minimum height=1.2cm, right=of a] (s) {Linha de dados\\0\;1\;1\;0\;1};
+    \node[draw, minimum width=2.1cm, minimum height=1.2cm, right=of s] (b) {Destino};
+    \draw[->, thick] (a)--(s); \draw[->, thick] (s)--(b);
+  \end{tikzpicture}
+  \end{center}
+  \begin{itemize}
+    \item Exemplo: UART, SPI, I\textsuperscript{2}C, USB e Ethernet.
+    \item Vantagens: menos fios, cabos menores e melhor uso em longas distâncias.
+    \item Desvantagem: os bits precisam ser organizados no tempo para serem reconstruídos no destino.
+  \end{itemize}
+\end{frame}

@@ -1,0 +1,19 @@
+\begin{frame}{Sincronizador de dois flip-flops}
+  Para levar um sinal de um domínio de clock para outro, é comum usar dois flip-flops D em série.
+  \begin{center}
+  \resizebox{0.9\linewidth}{!}{%
+  \begin{tikzpicture}[every node/.style={align=center}, node distance=1.1cm, >=Latex]
+    \node (in) {Sinal assíncrono};
+    \node[draw, minimum width=1.4cm, minimum height=1.2cm, right=of in] (ff1) {FF D\\1};
+    \node[draw, minimum width=1.4cm, minimum height=1.2cm, right=of ff1] (ff2) {FF D\\2};
+    \node[right=of ff2] (out) {Sinal sincronizado};
+    \draw[->] (in)--(ff1); \draw[->] (ff1)--(ff2); \draw[->] (ff2)--(out);
+    \draw[->, blue] (ff1.south) -- ++(0,-0.8) node[below]{CLK de destino};
+    \draw[->, blue] (ff2.south) -- ++(0,-0.8);
+  \end{tikzpicture}%
+  }
+  \end{center}
+  \begin{alertblock}{Atenção}
+    Esse circuito é indicado para sinais de controle de um bit. Para barramentos, usam-se protocolos, handshake ou FIFO.
+  \end{alertblock}
+\end{frame}
