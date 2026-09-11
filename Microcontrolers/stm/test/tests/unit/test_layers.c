@@ -15,6 +15,14 @@ int lock_depth;
 static uint32_t tick, ready_at = UINT32_MAX;
 static int delay_error, phy_fail, phy_invalid, phy_state, phy_reads;
 static int dhcp_calls, dhcp_error, callback_error;
+static int mac_update_error;
+int ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]) {
+    if (mac_update_error) {
+        return mac_update_error;
+    }
+    memcpy(netif->hwaddr, mac, 6);
+    return ERR_OK;
+}
 static ip_addr_t dns;
 static int socket_result = 7, connect_result, fcntl_result, close_result,
            close_calls;
@@ -192,6 +200,18 @@ int main(int argc, char **argv) {
         assert(memcmp(f_data_get_mac(), buffer, 6) == 0);
         buffer[5] = 0;
         assert(gnetif.hwaddr[5] == 42);
+        callback_error = -1;
+        assert(!f_data_set_mac(buffer));
+        assert(gnetif.hwaddr[5] == 42);
+        callback_error = 0;
+        mac_update_error = -1;
+        assert(!f_data_set_mac(buffer));
+        assert(gnetif.hwaddr[5] == 42);
+        mac_update_error = 0;
+        buffer[0] = 3;
+        assert(!f_data_set_mac(buffer));
+        memset(buffer, 0, sizeof(buffer));
+        assert(!f_data_set_mac(buffer));
     }
     else CASE(phy_ids) {
         assert(f_phy_init());

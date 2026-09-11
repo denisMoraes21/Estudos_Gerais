@@ -26,6 +26,12 @@ typedef enum {
     FULL_DUPLEX = 1,
 } e_phy_duplex_mode_t;
 
+typedef struct phy_info {
+    uint32_t manufacturer;
+    uint32_t model;
+    uint32_t revision;
+} s_phy_info;
+
 bool f_phy_wait_for_link(void);
 bool f_phy_init(void);
 bool f_phy_is_up(void);
@@ -33,6 +39,7 @@ bool f_phy_is_link_up(void);
 int32_t f_link_state(void);
 uint16_t f_phy_get_speed_and_mode(void);
 e_phy_link_status_t f_phy_link_status(void);
+void f_phy_show_speed(void);
 
 // TODO add in a task
 void f_phy_monitor(void);

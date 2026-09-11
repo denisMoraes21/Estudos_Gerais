@@ -30,6 +30,8 @@
 extern volatile uint32_t eth_irq_count;
 extern volatile uint32_t eth_rx_complete_count;
 extern volatile uint32_t eth_tx_complete_count;
+/* Called in the LwIP TCP/IP thread after ethernetif_init(). */
+err_t ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]);
 
 /* USER CODE END 0 */
 

@@ -62,7 +62,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/socket.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/data.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/dhcp.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/network.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/physical.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/transport.c

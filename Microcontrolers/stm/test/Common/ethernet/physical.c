@@ -22,6 +22,8 @@ static s_phy_link_info_t board_phy_link_info = {
 
 #define PHY_READ_ID_FIRST_ERROR "PHY first ID read failed!"
 #define PHY_READ_ID_SECOND_ERROR "PHY second ID read failed!"
+#define PHY_READ_MDIO_SUCCESS                                                  \
+    "Manufacturer=0x%04lX, Model=0x%02lX, Revision=%lu"
 
 bool f_phy_init(void) {
 
@@ -53,6 +55,24 @@ bool f_phy_init(void) {
         return false;
     }
 
+    uint32_t v_manufacturer_first_part =
+        (unsigned long)(v_phy_fisrt_id_value & LAN8742_PHYI1R_OUI_3_18);
+    uint32_t v_manufacturer_second_part =
+        (unsigned long)((v_phy_second_id_value & LAN8742_PHYI2R_OUI_19_24) >>
+                        10);
+
+    s_phy_info s_phy_information = {
+        .manufacturer =
+            (v_manufacturer_first_part << 6) | v_manufacturer_second_part,
+        .model = (unsigned long)((v_phy_second_id_value &
+                                  LAN8742_PHYI2R_MODEL_NBR) >>
+                                 4),
+        .revision = (unsigned long)(v_phy_second_id_value &
+                                    LAN8742_PHYI2R_REVISION_NBR)};
+
+    LOG_INFO(PHY_READ_MDIO_SUCCESS, s_phy_information.manufacturer,
+             s_phy_information.model, s_phy_information.revision);
+
     return true;
 }
 
@@ -81,8 +101,8 @@ bool f_phy_wait_for_link(void) {
     return true;
 }
 
-#define PHY_UP_MESSAGE "Ethernet is up"
-#define PHY_DOWN_MESSAGE "Ethernet cable disconnected"
+#define PHY_UP_MESSAGE "Network interface enabled!"
+#define PHY_DOWN_MESSAGE "Ethernet cable disconnected..."
 
 bool f_phy_is_up(void) {
     if (netif_is_up(p_gnetif)) {
@@ -93,8 +113,8 @@ bool f_phy_is_up(void) {
     return false;
 }
 
-#define PHY_LINK_UP_MESSAGE "Ethernet link is up"
-#define PHY_LINK_DOWN_MESSAGE "Ethernet cable disconnected"
+#define PHY_LINK_UP_MESSAGE "Ethernet physical link established!"
+#define PHY_LINK_DOWN_MESSAGE "Ethernet cable disconnected..."
 
 bool f_phy_is_link_up(void) {
 
@@ -165,4 +185,10 @@ void f_phy_monitor(void) {
         f_phy_get_speed_and_mode();
         osDelay(PHY_MONITOR_DELAY);
     }
+}
+
+#define PHY_SHOW_SPEED "Ethernet max speed: %d Mb/s"
+
+void f_phy_show_speed(void) {
+    LOG_INFO(PHY_SHOW_SPEED, f_phy_get_speed_and_mode());
 }

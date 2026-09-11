@@ -18,8 +18,10 @@ typedef struct {
 
 bool f_data_init(void);
 
-bool f_data_set_mac(const uint8_t mac[DATA_MAC_ADDRESS_SIZE]);
+bool f_data_set_mac(const uint8_t v_mac[DATA_MAC_ADDRESS_SIZE]);
 
 const uint8_t *f_data_get_mac(void);
+
+void f_data_show_mac(void);
 
 #endif
