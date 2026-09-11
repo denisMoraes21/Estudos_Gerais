@@ -1,0 +1,20 @@
+\begin{frame}{Definição}
+  \begin{block}{Sample and Hold (S/H)}
+    É um circuito analógico que \textbf{amostra} uma tensão de entrada em determinado instante e depois \textbf{mantém} esse valor na saída por um tempo.
+  \end{block}
+
+  \begin{center}
+  \begin{tikzpicture}[>=Latex, node distance=1.1cm]
+    \node[draw, rounded corners, minimum width=2.8cm, minimum height=1cm, fill=blue!10] (sh) {Circuito S/H};
+    \draw[->, thick] (-3.0,0) node[left] {$V_{in}$} -- (sh.west);
+    \draw[->, thick] (sh.east) -- ++(3.0,0) node[right] {$V_{out}$};
+    \draw[->, thick] (0,-1.2) node[below] {Sinal de controle} -- (sh.south);
+  \end{tikzpicture}
+  \end{center}
+
+  \begin{itemize}
+    \item \textbf{Entrada:} tensão analógica a ser observada.
+    \item \textbf{Controle:} define quando acompanhar ou manter a tensão.
+    \item \textbf{Saída:} tensão armazenada, entregue ao próximo estágio.
+  \end{itemize}
+\end{frame}

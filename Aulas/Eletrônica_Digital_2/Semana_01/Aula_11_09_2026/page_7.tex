@@ -1,0 +1,26 @@
+\begin{frame}{Etapas da conversão ADC}
+    \begin{enumerate}
+        \item \textbf{Amostragem:} mede o sinal em instantes definidos.
+        \item \textbf{Quantização:} associa a amostra a um nível digital.
+        \item \textbf{Codificação:} representa esse nível em bits.
+    \end{enumerate}
+
+    \begin{center}
+        \resizebox{0.9\linewidth}{!}{%
+        \begin{tikzpicture}[
+            bloco/.style={draw, rounded corners, minimum width=2.6cm,
+                          minimum height=1cm, align=center, fill=blue!10},
+            seta/.style={-{Latex[length=3mm]}, thick}
+        ]
+            \node[bloco] (a) {Sinal\\analógico};
+            \node[bloco, right=0.8cm of a] (b) {Amostragem};
+            \node[bloco, right=0.8cm of b] (c) {Quantização};
+            \node[bloco, right=0.8cm of c] (d) {Código\\binário};
+
+            \draw[seta] (a) -- (b);
+            \draw[seta] (b) -- (c);
+            \draw[seta] (c) -- (d);
+        \end{tikzpicture}%
+        }
+    \end{center}
+\end{frame}

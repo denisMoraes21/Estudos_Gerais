@@ -1,0 +1,15 @@
+\begin{frame}{Quadro UART}
+\begin{center}
+\begin{tikzpicture}[>=Latex]
+\node[draw,minimum width=1.3cm,minimum height=0.9cm,fill=red!12,align=center] (s) at (0,0) {Start\\0};
+\node[draw,minimum width=5.2cm,minimum height=0.9cm,fill=blue!8] (d) at (3.3,0) {Dados \(D_0\) até \(D_7\)};
+\node[draw,minimum width=1.5cm,minimum height=0.9cm,fill=yellow!20,align=center] (p) at (6.7,0) {Paridade\\opcional};
+\node[draw,minimum width=1.3cm,minimum height=0.9cm,fill=green!12,align=center] (t) at (8.2,0) {Stop\\1};
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+  \item O bit de início permite ao receptor sincronizar a amostragem.
+  \item O bit de parada encerra o quadro e deixa a linha em nível lógico 1.
+  \item A paridade pode ajudar a detectar erros simples.
+\end{itemize}
+\end{frame}

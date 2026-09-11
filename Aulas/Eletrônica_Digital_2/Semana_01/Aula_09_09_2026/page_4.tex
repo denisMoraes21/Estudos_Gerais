@@ -1,0 +1,23 @@
+\begin{frame}{Estrutura com flip-flops D}
+Em um registrador de quatro bits, a saída de cada flip-flop alimenta a entrada
+do próximo flip-flop.
+
+\begin{columns}
+\column{0.50\textwidth}
+\begin{itemize}
+  \item Todos os flip-flops recebem o mesmo clock.
+  \item Cada FF D copia a entrada presente em \(D\) na borda ativa do clock.
+  \item O bit em \(Q_0\) passa para \(Q_1\), depois para \(Q_2\) e assim por diante.
+\end{itemize}
+
+\column{0.45\textwidth}
+\begin{block}{Equações de próximo estado}
+\[\begin{aligned}
+Q_0^+ &= SI\\
+Q_1^+ &= Q_0\\
+Q_2^+ &= Q_1\\
+Q_3^+ &= Q_2
+\end{aligned}\]
+\end{block}
+\end{columns}
+\end{frame}

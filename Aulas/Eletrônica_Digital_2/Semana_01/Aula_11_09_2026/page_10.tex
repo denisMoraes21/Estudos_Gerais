@@ -1,0 +1,22 @@
+\begin{frame}{Exemplo de leitura ADC}
+    Considere um ADC de 10 bits com $V_{ref} = 3{,}3\text{ V}$
+    e entrada $V_{in} = 1{,}65\text{ V}$.
+
+    O valor digital aproximado será:
+
+    \[
+        \text{Valor ADC} =
+        \frac{V_{in}}{V_{ref}} \times (2^{10}-1)
+    \]
+
+    \[
+        \text{Valor ADC} =
+        \frac{1{,}65}{3{,}3} \times 1023
+        \approx 512
+    \]
+
+    Portanto, a saída digital será aproximadamente:
+    \[
+        512_{10} = 1000000000_2
+    \]
+\end{frame}

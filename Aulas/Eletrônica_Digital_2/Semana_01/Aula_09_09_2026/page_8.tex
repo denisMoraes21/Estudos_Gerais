@@ -1,0 +1,19 @@
+\begin{frame}{SIPO e PISO}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{SIPO: Serial In, Parallel Out}
+\begin{itemize}
+  \item Recebe uma palavra bit a bit.
+  \item Disponibiliza \(Q_0\ldots Q_{n-1}\) simultaneamente.
+  \item Exemplo: expansor de saídas, como o 74HC595.
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{PISO: Parallel In, Serial Out}
+\begin{itemize}
+  \item Carrega uma palavra inteira em paralelo.
+  \item Envia os bits pela saída serial a cada clock.
+  \item Exemplo: leitura de várias chaves usando poucos pinos do microcontrolador.
+\end{itemize}
+\end{columns}
+\end{frame}

@@ -1,0 +1,22 @@
+\begin{frame}{Funcionamento básico do DAC}
+    Cada combinação de bits gera uma saída analógica diferente.
+
+    \begin{table}
+        \centering
+        \begin{tabular}{ccc}
+            \toprule
+            Entrada digital & Valor decimal & Saída analógica aproximada \\
+            \midrule
+            0000 & 0  & 0 V \\
+            0100 & 4  & $V_{ref}/4$ \\
+            1000 & 8  & $V_{ref}/2$ \\
+            1111 & 15 & próxima de $V_{ref}$ \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{block}{Observação}
+        Um DAC não produz necessariamente uma curva perfeitamente contínua:
+        sua saída varia em pequenos degraus.
+    \end{block}
+\end{frame}

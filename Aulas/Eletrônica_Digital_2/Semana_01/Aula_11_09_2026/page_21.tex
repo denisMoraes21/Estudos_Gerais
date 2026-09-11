@@ -1,0 +1,30 @@
+\begin{frame}{Estrutura básica}
+  \begin{center}
+  \begin{tikzpicture}[>=Latex, node distance=1.25cm]
+    \node (in) {$V_{in}$};
+    \node[draw, minimum width=1.5cm, minimum height=0.8cm, right=of in, fill=orange!15] (sw) {Chave};
+    \node[circle, draw, minimum size=0.55cm, right=of sw] (n) {};
+    \node[draw, minimum width=1.9cm, minimum height=0.8cm, right=of n, fill=green!12] (buf) {Buffer};
+    \node[right=of buf] (out) {$V_{out}$};
+    \draw[->, thick] (in) -- (sw);
+    \draw[thick] (sw) -- (n);
+    \draw[->, thick] (n) -- (buf);
+    \draw[->, thick] (buf) -- (out);
+    \draw[thick] (n) -- ($(n)+(0,-0.65)$);
+    \draw[thick] ($(n)+(-0.18,-0.65)$) -- ($(n)+(0.18,-0.65)$);
+    \draw[thick] ($(n)+(-0.18,-0.84)$) -- ($(n)+(0.18,-0.84)$);
+    \draw[thick] ($(n)+(0,-0.84)$) -- ($(n)+(0,-1.35)$);
+    \draw[thick] ($(n)+(-0.30,-1.35)$) -- ($(n)+(0.30,-1.35)$);
+    \draw[thick] ($(n)+(-0.20,-1.47)$) -- ($(n)+(0.20,-1.47)$);
+    \draw[thick] ($(n)+(-0.10,-1.59)$) -- ($(n)+(0.10,-1.59)$);
+    \node[left] at ($(n)+(-0.20,-0.75)$) {$C_H$};
+    \draw[->, thick] (sw.south) -- ++(0,-1.15) node[below] {Controle};
+  \end{tikzpicture}
+  \end{center}
+
+  \begin{itemize}
+    \item \textbf{Chave analógica:} conecta ou desconecta a entrada do capacitor.
+    \item \textbf{Capacitor de retenção ($C_H$):} armazena carga elétrica; sua tensão representa a amostra.
+    \item \textbf{Buffer:} isola o capacitor da carga, evitando que a saída descarregue rapidamente o capacitor.
+  \end{itemize}
+\end{frame}

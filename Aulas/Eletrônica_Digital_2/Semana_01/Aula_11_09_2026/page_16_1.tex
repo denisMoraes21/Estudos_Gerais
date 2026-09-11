@@ -1,0 +1,33 @@
+\begin{frame}{PWM como saída analógica aproximada}
+    \begin{columns}
+        \begin{column}{0.52\textwidth}
+            \begin{itemize}
+                \item PWM alterna rapidamente entre 0 V e $V_{CC}$;
+                \item o \textit{duty cycle} controla o valor médio;
+                \item um filtro RC suaviza o sinal;
+                \item não possui a mesma precisão de um DAC dedicado.
+            \end{itemize}
+
+            \[
+                V_{\text{médio}} \approx D \times V_{CC}
+            \]
+
+            onde $D$ é o \textit{duty cycle}.
+        \end{column}
+
+        \begin{column}{0.43\textwidth}
+            \centering
+            \resizebox{\linewidth}{!}{%
+            \begin{tikzpicture}[scale=0.8]
+                \draw[->] (0,0) -- (4,0) node[right] {tempo};
+                \draw[->] (0,-0.2) -- (0,2) node[above] {V};
+                \draw[blue,thick] (0,0) -- (0.5,0) -- (0.5,1.5)
+                -- (2.2,1.5) -- (2.2,0) -- (2.7,0) -- (2.7,1.5)
+                -- (4,1.5);
+                \draw[dashed] (0,1.0) -- (4,1.0);
+                \node[right] at (4,1.0) {$V_{\text{médio}}$};
+            \end{tikzpicture}%
+            }
+        \end{column}
+    \end{columns}
+\end{frame}

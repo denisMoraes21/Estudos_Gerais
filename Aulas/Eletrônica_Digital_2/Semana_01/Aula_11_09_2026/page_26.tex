@@ -1,0 +1,13 @@
+\begin{frame}{S/H interno no ADC}
+  Muitos microcontroladores já possuem um circuito S/H integrado ao ADC.
+
+  \begin{block}{Consequência prática}
+    Ao configurar o \textbf{tempo de amostragem} do ADC, você está definindo quanto tempo o capacitor interno terá para carregar até a tensão do canal selecionado.
+  \end{block}
+
+  \begin{itemize}
+    \item Fontes de baixa impedância carregam o capacitor rapidamente.
+    \item Sensores ou divisores resistivos de alta impedância podem exigir tempo de amostragem maior.
+    \item Um tempo pequeno demais pode causar conversões abaixo ou acima do valor real.
+  \end{itemize}
+\end{frame}

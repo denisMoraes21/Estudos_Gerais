@@ -1,0 +1,23 @@
+\begin{frame}{Visão geral}
+    \centering
+    \resizebox{0.9\linewidth}{!}{%
+    \begin{tikzpicture}[
+        bloco/.style={draw, rounded corners, minimum width=2.5cm,
+                      minimum height=1.2cm, align=center, fill=blue!10},
+        seta/.style={-{Latex[length=3mm]}, thick}
+    ]
+        \node[bloco] (sensor) {Sensor\\Sinal analógico};
+        \node[bloco, right=1.4cm of sensor] (adc) {ADC};
+        \node[bloco, right=1.4cm of adc] (digital) {Microcontrolador\\Dados digitais};
+
+        \draw[seta] (sensor) -- node[above] {tensão} (adc);
+        \draw[seta] (adc) -- node[above] {bits} (digital);
+
+        \node[bloco, below=1.5cm of digital] (dac) {DAC};
+        \node[bloco, left=1.4cm of dac] (atuador) {Atuador\\Sinal analógico};
+
+        \draw[seta] (digital) -- node[right] {bits} (dac);
+        \draw[seta] (dac) -- node[above] {tensão} (atuador);
+    \end{tikzpicture}%
+    }
+\end{frame}

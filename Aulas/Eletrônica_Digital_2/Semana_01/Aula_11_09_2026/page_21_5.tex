@@ -1,0 +1,24 @@
+\begin{frame}{S/H em um sistema de aquisição de dados}
+  \begin{center}
+  \resizebox{0.9\linewidth}{!}{%
+  \begin{tikzpicture}[>=Latex, node distance=0.65cm]
+    \node[draw, rounded corners, fill=blue!10, minimum width=1.8cm, minimum height=0.8cm] (sensor) {Sensor};
+    \node[draw, rounded corners, fill=orange!15, minimum width=2.0cm, minimum height=0.8cm, right=of sensor] (cond) {Condicionamento};
+    \node[draw, rounded corners, fill=yellow!18, minimum width=1.5cm, minimum height=0.8cm, right=of cond] (sh) {S/H};
+    \node[draw, rounded corners, fill=green!12, minimum width=1.5cm, minimum height=0.8cm, right=of sh] (adc) {ADC};
+    \node[draw, rounded corners, fill=purple!12, minimum width=2.1cm, minimum height=0.8cm, right=of adc] (mcu) {Microcontrolador};
+    \draw[->, thick] (sensor) -- (cond);
+    \draw[->, thick] (cond) -- (sh);
+    \draw[->, thick] (sh) -- (adc);
+    \draw[->, thick] (adc) -- (mcu);
+  \end{tikzpicture}%
+  }
+  \end{center}
+
+  \begin{itemize}
+    \item O sensor produz um sinal analógico.
+    \item O condicionamento ajusta nível, faixa e filtragem do sinal.
+    \item O S/H estabiliza a entrada para o ADC.
+    \item O microcontrolador recebe e processa o valor digital.
+  \end{itemize}
+\end{frame}

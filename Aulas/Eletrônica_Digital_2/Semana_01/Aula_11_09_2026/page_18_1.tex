@@ -1,0 +1,28 @@
+
+\begin{frame}{Exemplo: sistema de controle de temperatura}
+    \centering
+    \resizebox{0.9\linewidth}{!}{%
+    \begin{tikzpicture}[
+        bloco/.style={draw, rounded corners, minimum width=2.6cm,
+                      minimum height=1cm, align=center, fill=blue!10},
+        seta/.style={-{Latex[length=3mm]}, thick}
+    ]
+        \node[bloco] (sensor) {Sensor\\Temperatura};
+        \node[bloco, right=0.8cm of sensor] (adc) {ADC};
+        \node[bloco, right=0.8cm of adc] (mcu) {Controlador\\digital};
+        \node[bloco, right=0.8cm of mcu] (dac) {DAC ou\\PWM};
+        \node[bloco, below=1.3cm of dac] (atuador) {Ventilador\\ou aquecedor};
+
+        \draw[seta] (sensor) -- (adc);
+        \draw[seta] (adc) -- (mcu);
+        \draw[seta] (mcu) -- (dac);
+        \draw[seta] (dac) -- (atuador);
+    \end{tikzpicture}%
+    }
+
+    \vspace{0.4cm}
+
+    O ADC permite \textbf{medir} a temperatura. O DAC ou PWM permite
+    \textbf{controlar} um atuador.
+\end{frame}
+

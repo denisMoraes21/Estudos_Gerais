@@ -1,0 +1,19 @@
+\begin{frame}{SISO: Serial In, Serial Out}
+\begin{itemize}
+  \item Recebe um bit por clock e fornece um bit por clock.
+  \item Funciona como atraso digital: um registrador de \(n\) estágios atrasa o dado em \(n\) períodos de clock.
+  \item Aplicações: sincronização de sinais, linhas de atraso e transmissão serial.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[>=Latex, node distance=0.35cm, ff/.style={draw, minimum width=0.9cm, minimum height=1cm}]
+  \node (si) {SI};
+  \node[ff, right=of si] (a) {0};
+  \node[ff, right=of a] (b) {1};
+  \node[ff, right=of b] (c) {2};
+  \node[right=0.3cm of c] (so) {SO};
+  \draw[->,thick] (si) -- (a); \draw[->,thick] (a) -- (b);
+  \draw[->,thick] (b) -- (c); \draw[->,thick] (c) -- (so);
+\end{tikzpicture}
+\end{center}
+\end{frame}

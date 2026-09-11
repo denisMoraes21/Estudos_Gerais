@@ -1,0 +1,23 @@
+\begin{frame}{Modo \textit{Sample} ou \textit{Track}}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Chave fechada}
+        A entrada fica conectada ao capacitor. O capacitor carrega ou descarrega até acompanhar a tensão de entrada.
+      \end{block}
+      \[ V_{out} \approx V_{in} \]
+      Também é chamado de modo \textit{track}, pois a saída ``segue'' a entrada.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \resizebox{\linewidth}{!}{%
+      \begin{tikzpicture}[scale=0.72,>=Latex]
+        \draw[->] (0,0) -- (4.7,0) node[right] {tempo};
+        \draw[->] (0,0) -- (0,3.3) node[above] {tensão};
+        \draw[blue, thick, samples=50, domain=0:4.4] plot (\x,{1.6+0.7*sin(160*\x)});
+        \draw[red, dashed, thick, samples=50, domain=0:4.4] plot (\x,{1.6+0.7*sin(160*\x)});
+        \node[blue] at (3.8,2.9) {$V_{in}$};
+        \node[red] at (3.8,0.55) {$V_{out}$};
+      \end{tikzpicture}%
+      }
+    \end{column}
+  \end{columns}
+\end{frame}

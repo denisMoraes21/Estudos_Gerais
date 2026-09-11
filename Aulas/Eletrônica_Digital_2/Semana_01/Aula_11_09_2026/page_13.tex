@@ -1,0 +1,44 @@
+\begin{frame}{Aplicações do ADC}
+    \begin{columns}
+        \begin{column}{0.48\textwidth}
+            \begin{itemize}
+                \item leitura de sensores;
+                \item medição de bateria;
+                \item termômetros digitais;
+                \item joystick analógico;
+                \item monitoramento industrial.
+            \end{itemize}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{itemize}
+                \item aquisição de áudio;
+                \item multímetros digitais;
+                \item sistemas de automação;
+                \item controle embarcado;
+                \item Internet das Coisas.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.4cm}
+
+    \begin{center}
+        \resizebox{0.9\linewidth}{!}{%
+        \begin{tikzpicture}[
+            bloco/.style={draw, rounded corners, minimum width=2.7cm,
+                          minimum height=1cm, align=center, fill=blue!10},
+            seta/.style={-{Latex[length=3mm]}, thick}
+        ]
+            \node[bloco] (temp) {Sensor de\\temperatura};
+            \node[bloco, right=1cm of temp] (adc) {ADC};
+            \node[bloco, right=1cm of adc] (mcu) {Microcontrolador};
+            \node[bloco, right=1cm of mcu] (display) {Display ou\\rede};
+
+            \draw[seta] (temp) -- (adc);
+            \draw[seta] (adc) -- (mcu);
+            \draw[seta] (mcu) -- (display);
+        \end{tikzpicture}%
+        }
+    \end{center}
+\end{frame}

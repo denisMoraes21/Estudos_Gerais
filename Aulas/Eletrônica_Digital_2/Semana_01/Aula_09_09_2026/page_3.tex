@@ -1,0 +1,27 @@
+\begin{frame}{Definição}
+\begin{block}{Registrador de deslocamento}
+É um circuito sequencial formado por flip-flops, capaz de armazenar bits e
+mover esses bits de uma posição para outra a cada pulso de clock.
+\end{block}
+
+\begin{center}
+\begin{tikzpicture}[>=Latex, node distance=0.35cm, ff/.style={draw, minimum width=0.9cm, minimum height=1cm}]
+  \node (in) {Entrada serial};
+  \node[ff, right=of in] (q0) {$Q_0$};
+  \node[ff, right=of q0] (q1) {$Q_1$};
+  \node[ff, right=of q1] (q2) {$Q_2$};
+  \node[ff, right=of q2] (q3) {$Q_3$};
+  \node[right=of q3] (out) {Saída serial};
+  \node[below=0.8cm of q1] (clk) {Clock comum};
+  \draw[->, thick] (in) -- (q0);
+  \draw[->, thick] (q0) -- (q1);
+  \draw[->, thick] (q1) -- (q2);
+  \draw[->, thick] (q2) -- (q3);
+  \draw[->, thick] (q3) -- (out);
+  \draw[thick] (clk.north) -| (q0.south);
+  \draw[thick] (clk.north) -| (q1.south);
+  \draw[thick] (clk.north) -| (q2.south);
+  \draw[thick] (clk.north) -| (q3.south);
+\end{tikzpicture}
+\end{center}
+\end{frame}

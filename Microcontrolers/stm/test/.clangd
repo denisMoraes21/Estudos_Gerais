@@ -1,5 +1,5 @@
 If:
-  PathExclude: unit_tests/.*
+  PathExclude: (unit_tests|tests/unit)/.*
 CompileFlags:
   Add:
     - -isystem
@@ -43,3 +43,10 @@ CompileFlags:
   CompilationDatabase: CM7/build
 If:
   PathMatch: (Middlewares|Drivers)/.*
+
+---
+
+If:
+  PathMatch: tests/unit/.*
+CompileFlags:
+  CompilationDatabase: tests/unit/build

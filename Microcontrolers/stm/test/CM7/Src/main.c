@@ -32,7 +32,7 @@
 #include "logger.h"
 #include "ring_buffer.h"
 #include "definitions.h"
-#include "ethernet_stack.h"
+#include "network.h"
 #include "stm32h7xx_hal.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
@@ -238,7 +238,7 @@ static void ping_test_task(void *argument)
     {
         if (netif_is_up(&gnetif) && netif_is_link_up(&gnetif))
         {
-            if (ping())
+            if (f_ping())
             {
                 LOG_INFO("Teste de ping concluido com sucesso");
             }

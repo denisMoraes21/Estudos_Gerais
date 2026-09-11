@@ -8,6 +8,13 @@
 extern "C" {
 #endif
 
+#ifndef PING_TARGET_IP
+#define PING_TARGET_IP "192.168.1.10"
+#endif
+
+#define PING_REPLY_TIMEOUT_MS 1000U
+#define PING_PAYLOAD_SIZE 32U
+
 typedef enum {
     NETWORK_MODE_DIRECT = 0,
     NETWORK_MODE_LAN,

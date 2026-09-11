@@ -1,0 +1,29 @@
+\begin{frame}{ADC --- Conversor Analógico para Digital}
+    ADC significa \textit{Analog-to-Digital Converter}.
+
+    \vspace{0.2cm}
+
+    Sua função é transformar uma tensão analógica em um número binário.
+
+    \begin{center}
+        \resizebox{0.9\linewidth}{!}{%
+        \begin{tikzpicture}[
+            bloco/.style={draw, rounded corners, minimum width=3cm,
+                          minimum height=1.2cm, align=center, fill=blue!10},
+            seta/.style={-{Latex[length=3mm]}, thick}
+        ]
+            \node[bloco] (entrada) {Entrada analógica\\$V_{in}$};
+            \node[bloco, right=1.5cm of entrada] (adc) {ADC};
+            \node[bloco, right=1.5cm of adc] (saida) {Saída digital\\$b_{n-1}\ldots b_1b_0$};
+
+            \draw[seta] (entrada) -- (adc);
+            \draw[seta] (adc) -- (saida);
+        \end{tikzpicture}%
+        }
+    \end{center}
+
+    \begin{exampleblock}{Exemplo}
+        Um sensor de temperatura fornece $1{,}65$ V. O ADC mede essa tensão
+        e a representa como um valor numérico para o microcontrolador.
+    \end{exampleblock}
+\end{frame}

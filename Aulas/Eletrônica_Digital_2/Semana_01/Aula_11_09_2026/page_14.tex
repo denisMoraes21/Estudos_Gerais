@@ -1,0 +1,25 @@
+\begin{frame}{DAC --- Conversor Digital para Analógico}
+    DAC significa \textit{Digital-to-Analog Converter}.
+
+    \vspace{0.2cm}
+
+    Sua função é transformar um número binário em uma tensão ou corrente
+    analógica proporcional.
+
+    \begin{center}
+        \resizebox{0.9\linewidth}{!}{%
+        \begin{tikzpicture}[
+            bloco/.style={draw, rounded corners, minimum width=3cm,
+                          minimum height=1.2cm, align=center, fill=blue!10},
+            seta/.style={-{Latex[length=3mm]}, thick}
+        ]
+            \node[bloco] (entrada) {Entrada digital\\$b_{n-1}\ldots b_1b_0$};
+            \node[bloco, right=1.5cm of entrada] (dac) {DAC};
+            \node[bloco, right=1.5cm of dac] (saida) {Saída analógica\\$V_{out}$};
+
+            \draw[seta] (entrada) -- (dac);
+            \draw[seta] (dac) -- (saida);
+        \end{tikzpicture}%
+        }
+    \end{center}
+\end{frame}

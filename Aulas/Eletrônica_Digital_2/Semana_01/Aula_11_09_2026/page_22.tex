@@ -1,0 +1,11 @@
+\begin{frame}{Exemplo: leitura de sensor por microcontrolador}
+  Imagine um sensor de pressão cuja tensão varia entre $0$ e $3{,}3\,$V.
+
+  \begin{enumerate}
+    \item O microcontrolador aciona o início da conversão do ADC.
+    \item O S/H captura, por exemplo, $1{,}65\,$V.
+    \item Durante a conversão, mesmo que o sensor passe para $1{,}70\,$V, o ADC continua vendo aproximadamente $1{,}65\,$V.
+    \item Para um ADC de 12 bits com referência de $3{,}3\,$V:
+    \[ \text{Código} \approx \frac{1{,}65}{3{,}3}\times(2^{12}-1) \approx 2048 \]
+  \end{enumerate}
+\end{frame}

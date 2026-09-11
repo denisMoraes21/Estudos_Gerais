@@ -1,7 +1,7 @@
 - Physical - OK
 - Data - OK
-- Network
-- Transport
-- Session
-- Presentation
-- Application
+- Network - OK
+- Transport - OK
+- Session - NOT
+- Presentation - NOT
+- Application - MQTT

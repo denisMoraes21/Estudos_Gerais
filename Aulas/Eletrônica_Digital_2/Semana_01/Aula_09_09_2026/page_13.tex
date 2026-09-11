@@ -1,0 +1,18 @@
+\begin{frame}{SPI}
+\begin{itemize}
+  \item \textbf{SPI} significa \textit{Serial Peripheral Interface}.
+  \item Um mestre gera o clock \(SCK\) e seleciona o escravo pelo sinal \(CS\).
+  \item \(MOSI\) envia bits do mestre para o escravo.
+  \item \(MISO\) envia bits do escravo para o mestre.
+  \item Cada pulso de \(SCK\) desloca um bit nos registradores dos dois lados.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[>=Latex, node distance=1.5cm]
+\node[draw,minimum width=3cm,minimum height=1.2cm,fill=blue!8,align=center] (m) {Mestre\\Registrador};
+\node[draw,minimum width=3cm,minimum height=1.2cm,fill=green!10,align=center,right=of m] (e) {Escravo\\Registrador};
+\draw[->,thick] (m.north east) -- node[above] {MOSI} (e.north west);
+\draw[->,thick] (e.south west) -- node[below] {MISO} (m.south east);
+\draw[thick] (m.south) -- ++(0,-0.8) node[below] {SCK};
+\end{tikzpicture}
+\end{center}
+\end{frame}

@@ -1,0 +1,29 @@
+\begin{frame}{Resolução de um ADC}
+    A resolução depende do número de bits do conversor.
+
+    \[
+        \text{Número de níveis} = 2^n
+    \]
+
+    Onde $n$ é a quantidade de bits.
+
+    \vspace{0.3cm}
+
+    \begin{table}
+        \centering
+        \begin{tabular}{ccc}
+            \toprule
+            Resolução & Número de níveis & Exemplo de faixa \\
+            \midrule
+            8 bits  & $2^8 = 256$ & 0 a 255 \\
+            10 bits & $2^{10} = 1024$ & 0 a 1023 \\
+            12 bits & $2^{12} = 4096$ & 0 a 4095 \\
+            16 bits & $2^{16} = 65536$ & 0 a 65535 \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \begin{alertblock}{Quanto mais bits}
+        Mais níveis estão disponíveis e mais detalhada será a medição.
+    \end{alertblock}
+\end{frame}
