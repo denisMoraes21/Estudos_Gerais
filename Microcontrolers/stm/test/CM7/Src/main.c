@@ -190,7 +190,7 @@ static void ping_test_task(void *argument) {
 
     for (;;) {
         if (netif_is_up(&gnetif) && netif_is_link_up(&gnetif)) {
-            if (f_ping()) {
+            if (f_ping(PING_TARGET_IP)) {
                 LOG_INFO("Teste de ping concluido com sucesso");
             } else {
                 LOG_WARN("Dispositivo nao respondeu ao ping");
@@ -810,6 +810,43 @@ void StartDefaultTask(void *argument) {
 
     f_data_set_mac(v_mac);
     f_data_show_mac();
+
+    network_config_t config = {
+        .use_dhcp = false,
+        .ip = "192.168.1.21",
+        .netmask = "255.255.255.0",
+        .gateway = "192.168.1.1",
+        .dns = NULL,
+    };
+
+    f_network_init(NETWORK_MODE_LAN, &config);
+
+    f_ping(PING_TARGET_IP);
+    f_wait_ping(PING_TARGET_IP);
+
+    f_network_checkout();
+
+    network_config_t s_dhcp_config = {
+        .use_dhcp = true,
+        .ip = NULL,
+        .netmask = NULL,
+        .gateway = NULL,
+        .dns = NULL,
+    };
+
+    if (f_network_init(NETWORK_MODE_LAN, &s_dhcp_config)) {
+        LOG_INFO("Entering DHCP lease wait");
+        while (!f_network_wait_for_ip(10000U)) {
+            LOG_WARN("Waiting for DHCP lease: IRQ=%lu RX=%lu TX=%lu",
+                     (unsigned long)eth_irq_count,
+                     (unsigned long)eth_rx_complete_count,
+                     (unsigned long)eth_tx_complete_count);
+            osDelay(1000U);
+        }
+        f_network_checkout();
+    } else {
+        LOG_ERROR("Failed to switch to DHCP");
+    }
 
     while (1) {
         osDelay(1000);

@@ -1652,6 +1652,18 @@ INPUT page_18_1.tex
 INPUT ./page_18_1.tex
 INPUT ./page_18_1.tex
 INPUT page_18_1.tex
+INPUT ./page_18_2.tex
+INPUT ./page_18_2.tex
+INPUT ./page_18_2.tex
+INPUT page_18_2.tex
+INPUT ./page_18_2.tex
+INPUT ./page_18_2.tex
+INPUT page_18_2.tex
+INPUT ./images/kahoot.jpg
+INPUT ./images/kahoot.jpg
+INPUT images/kahoot.jpg
+INPUT ./images/kahoot.jpg
+INPUT ./images/kahoot.jpg
 INPUT ./page_19.tex
 INPUT ./page_19.tex
 INPUT ./page_19.tex
@@ -1759,7 +1771,6 @@ INPUT page_27.tex
 INPUT ./images/kahoot.jpg
 INPUT ./images/kahoot.jpg
 INPUT images/kahoot.jpg
-INPUT ./images/kahoot.jpg
 INPUT ./images/kahoot.jpg
 OUTPUT main.nav
 OUTPUT main.toc

@@ -61,6 +61,16 @@ osThreadAttr_t attributes;
 /**
  * LwIP initialization function
  */
+static void ethernet_address_updated(struct netif *netif) {
+    if (ip4_addr_isany_val(*netif_ip4_addr(netif))) {
+        LOG_INFO("Ethernet IPv4 address not assigned");
+        return;
+    }
+    LOG_INFO("Ethernet IPv4: %s", ip4addr_ntoa(netif_ip4_addr(netif)));
+    LOG_INFO("Ethernet netmask: %s", ip4addr_ntoa(netif_ip4_netmask(netif)));
+    LOG_INFO("Ethernet gateway: %s", ip4addr_ntoa(netif_ip4_gw(netif)));
+}
+
 void MX_LWIP_Init(void) {
     /* IP addresses initialization */
     IP_ADDRESS[0] = 192;
@@ -96,6 +106,7 @@ void MX_LWIP_Init(void) {
 
     /* Registers the default network interface */
     netif_set_default(&gnetif);
+    netif_set_status_callback(&gnetif, ethernet_address_updated);
 
     /* We must always bring the network interface up connection or not... */
     netif_set_up(&gnetif);

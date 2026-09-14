@@ -35,7 +35,12 @@ network_mode_t f_network_get_mode(void) { return e_network_mode; }
 #define PING_SUCCESS "Response received"
 #define PING_FAIL "Timeout"
 
-bool f_ping(void) {
+bool f_ping(const char *v_ip) {
+
+    if (v_ip == NULL) {
+        LOG_WARN(PING_IP_ERROR, "NULL");
+        return false;
+    }
 
     if (!f_network_is_ready()) {
         return false;
@@ -70,10 +75,10 @@ bool f_ping(void) {
 
     s_destination.sin_family = AF_INET;
     bool v_is_ip_conversion_failed =
-        inet_aton(PING_TARGET_IP, &s_destination.sin_addr) == 0;
+        inet_aton(v_ip, &s_destination.sin_addr) == 0;
 
     if (v_is_ip_conversion_failed) {
-        LOG_WARN(PING_IP_ERROR, PING_TARGET_IP);
+        LOG_WARN(PING_IP_ERROR, v_ip);
         return false;
     }
 
@@ -100,7 +105,7 @@ bool f_ping(void) {
     if (lwip_sendto(ping_socket_fd, v_request, sizeof(v_request), 0,
                     (struct sockaddr *)&s_destination,
                     sizeof(s_destination)) < 0) {
-        LOG_WARN(PING_ERROR_SEND_ICMP, PING_TARGET_IP, errno);
+        LOG_WARN(PING_ERROR_SEND_ICMP, v_ip, errno);
         lwip_close(ping_socket_fd);
         ping_socket_fd = -1;
         return false;
@@ -156,15 +161,16 @@ bool f_ping(void) {
         }
     }
 
-    LOG_INFO(PING_CODE, PING_TARGET_IP, v_success ? PING_SUCCESS : PING_FAIL);
+    LOG_WARN(PING_CODE, v_ip, v_success ? PING_SUCCESS : PING_FAIL);
     return v_success;
+    
 }
 
 #define PING_TIMEOUT 20000
 #define PING_TIMEOUT_MESSAGE_ERROR "Timeout: Ping connection!"
 #define PING_CONNECTION_MESSAGE_SUCCESS "ETH link=%s IRQ=%lu RX=%lu TX=%lu"
 
-bool f_wait_ping(void) {
+bool f_wait_ping(char *v_ip) {
     uint32_t v_start_time = HAL_GetTick();
 
     while (1) {
@@ -177,7 +183,7 @@ bool f_wait_ping(void) {
         }
 
         // Wait success response
-        if (f_ping()) {
+        if (f_ping(v_ip)) {
             return true;
         }
 
@@ -251,6 +257,20 @@ bool f_network_wait_for_ip(uint32_t v_timeout_ms) {
     return true;
 }
 
+#define NETWORK_TRUE "True"
+#define NETWORK_FALSE "False"
+#define NETWORK_IP "Network has ip: %s"
+#define NETWORK_GATEWAY "Network has gateway: %s"
+#define NETWORK_READY "Network is ready: %s"
+
+void f_network_checkout(void) {
+    LOG_INFO(NETWORK_IP, f_network_has_ip() ? NETWORK_TRUE : NETWORK_FALSE);
+    LOG_INFO(NETWORK_GATEWAY,
+             f_network_has_gateway() ? NETWORK_TRUE : NETWORK_FALSE);
+    LOG_INFO(NETWORK_READY,
+             f_network_is_ready() ? NETWORK_TRUE : NETWORK_FALSE);
+}
+
 typedef struct {
     network_mode_t mode; // string convertion
     bool use_dhcp;
@@ -310,6 +330,17 @@ static void f_network_apply_config(void *v_argument) {
 #define NETWORK_DNS_INVALID_CONFIG "Invalid DNS address"
 #define NETWORK_DNS_DISABLED "DNS support is disabled"
 #define NETWORK_CONFIG_FAILED "Network configuration failed"
+#define NETWORK_CONFIG_SUCCESS "Network configuration applied: mode=%s"
+#define NETWORK_STATIC_CONFIG "Static IPv4: IP=%s, netmask=%s, gateway=%s"
+#define NETWORK_DHCP_STARTED                                                   \
+    "DHCP started: assigned addresses are not confirmed yet"
+#define NETWORK_DNS_CONFIG "Configured DNS: %s"
+
+#define NETWORK_MODE_DIRECT_NAME "DIRECT"
+#define NETWORK_MODE_LAN_NAME "LAN"
+#define NETWORK_MODE_REMOTE_NAME "REMOTE"
+#define NETWORK_GATEWAY_ZERO "0.0.0.0"
+#define NETWORK_DNS_NONE "None specified"
 
 bool f_network_init(network_mode_t v_mode, const network_config_t *s_config) {
 
@@ -405,6 +436,22 @@ bool f_network_init(network_mode_t v_mode, const network_config_t *s_config) {
         LOG_ERROR(NETWORK_CONFIG_FAILED);
         return false;
     }
+
+    const char *v_mode_name =
+        v_mode == NETWORK_MODE_DIRECT ? NETWORK_MODE_DIRECT_NAME
+        : v_mode == NETWORK_MODE_LAN  ? NETWORK_MODE_LAN_NAME
+                                      : NETWORK_MODE_REMOTE_NAME;
+    LOG_INFO(NETWORK_CONFIG_SUCCESS, v_mode_name);
+
+    if (is_dhcp_enabled) {
+        LOG_INFO(NETWORK_DHCP_STARTED);
+    } else {
+        LOG_INFO(NETWORK_STATIC_CONFIG, s_config->ip, s_config->netmask,
+                 is_gateway_informed ? s_config->gateway
+                                     : NETWORK_GATEWAY_ZERO);
+    }
+    LOG_INFO(NETWORK_DNS_CONFIG,
+             is_dns_informed ? s_config->dns : NETWORK_DNS_NONE);
 
     return true;
 }

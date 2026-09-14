@@ -334,7 +334,8 @@ int main(int argc, char **argv) {
     }
     else CASE(ping_success) {
         ready();
-        assert(f_ping());
+        assert(f_ping("192.168.1.42"));
+        assert(destination.sin_addr.s_addr == inet_addr("192.168.1.42"));
         assert(request_size == 40);
         assert(recv_calls == 1);
         assert(request[4] == 0xab && request[5] == 0xcd);
@@ -342,34 +343,39 @@ int main(int argc, char **argv) {
     else CASE(ping_timeout) {
         ready();
         packet_mode = 2;
-        assert(!f_ping());
+        assert(!f_ping(PING_TARGET_IP));
         assert(tick == 1000 && recv_calls == 10);
     }
     else CASE(ping_filter) {
         ready();
         packet_mode = atoi(getenv("PACKET_MODE") ? getenv("PACKET_MODE") : "3");
-        assert(f_ping());
+        assert(f_ping(PING_TARGET_IP));
         assert(recv_calls == 2);
     }
     else CASE(ping_errors) {
-        assert(!f_ping());
+        assert(!f_ping(PING_TARGET_IP));
         ready();
+        assert(!f_ping(NULL));
+        assert(!f_ping(""));
+        assert(!f_ping("invalid-ip"));
+        assert(request_size == 0);
         socket_result = -1;
-        assert(!f_ping());
+        assert(!f_ping(PING_TARGET_IP));
         socket_result = 7;
         sendto_error = 1;
-        assert(!f_ping());
+        assert(!f_ping(PING_TARGET_IP));
         assert(close_calls == 1);
         sendto_error = 0;
         option_error = -1;
-        assert(!f_ping());
+        assert(!f_ping(PING_TARGET_IP));
         assert(close_calls == 2);
     }
     else CASE(ping_wait) {
-        assert(!f_wait_ping());
+        assert(!f_wait_ping(PING_TARGET_IP));
         assert(tick == 20000);
         ready();
-        assert(f_wait_ping());
+        assert(f_wait_ping("192.168.1.42"));
+        assert(destination.sin_addr.s_addr == inet_addr("192.168.1.42"));
     }
     else CASE(transport_validation) {
         assert(!f_transport_connect(NULL, "1.2.3.4", 1883));

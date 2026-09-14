@@ -41,9 +41,11 @@ bool f_network_has_gateway(void);
 
 bool f_network_is_ready(void);
 
-bool f_ping(void);
+bool f_ping(const char *v_ip);
 
-bool f_wait_ping(void);
+bool f_wait_ping(char *v_ip);
+
+void f_network_checkout(void);
 
 #ifdef __cplusplus
 }
