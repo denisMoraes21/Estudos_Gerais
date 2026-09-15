@@ -1,0 +1,22 @@
+\begin{frame}{Modo \textit{Hold}}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \begin{block}{Chave aberta}
+        A entrada é desconectada. O capacitor conserva a carga e a saída permanece próxima ao último valor amostrado.
+      \end{block}
+      \[ V_{out}(t) \approx V_{in}(t_{amostra}) \]
+      Este é o instante adequado para o ADC realizar a conversão.
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \begin{tikzpicture}[scale=0.72,>=Latex]
+        \draw[->] (0,0) -- (4.7,0) node[right] {tempo};
+        \draw[->] (0,0) -- (0,3.3) node[above] {tensão};
+        \draw[blue, thick, samples=50, domain=0:4.4] plot (\x,{1.6+0.7*sin(160*\x)});
+        \draw[red, thick] (0,1.6) -- (1.1,2.25) -- (4.4,2.25);
+        \draw[dashed] (1.1,0) -- (1.1,2.25);
+        \node[blue] at (3.9,2.85) {$V_{in}$};
+        \node[red] at (3.7,2.0) {$V_{out}$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}

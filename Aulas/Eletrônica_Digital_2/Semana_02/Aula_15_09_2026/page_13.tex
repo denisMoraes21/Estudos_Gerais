@@ -1,0 +1,19 @@
+\begin{frame}[t]{Matriz de memória e endereço}
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex, font=\small]
+    \node[draw,fill=darkgreen!10,minimum width=1.6cm,minimum height=.8cm] (a) at (0,0) {Endereço};
+    \node[draw,fill=yellow!18,minimum width=2.3cm,minimum height=1.2cm] (d) at (2.8,0) {Decodificador};
+    \node[above] at (6,1.2) {Matriz de células};
+    \fill[darkgreen!8] (4.5,-1.2) rectangle (7.5,1.2);
+    \fill[darkgreen!30] (4.5,0) rectangle (7.5,.6);
+    \draw[step=.6] (4.5,-1.2) grid (7.5,1.2);
+    \draw (4.5,-1.2) rectangle (7.5,1.2);
+    \draw[->,thick] (a) -- (d);
+    \draw[->,thick] (d.east) -- (4.5,.3);
+    \draw[->,thick] (7.5,.3) -- (8.2,.3) node[right] {Dados};
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+  O decodificador seleciona uma linha da matriz correspondente ao endereço recebido.
+\end{frame}

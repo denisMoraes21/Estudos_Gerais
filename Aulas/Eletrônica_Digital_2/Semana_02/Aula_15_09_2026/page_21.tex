@@ -1,0 +1,12 @@
+\begin{frame}[t]{Cuidados no uso de memória não volátil}
+  \begin{itemize}
+    \item Escritas repetidas desgastam EEPROM e Flash.
+    \item Evite gravar dados a cada ciclo do programa.
+    \item Use validação: versão, checksum ou CRC para detectar dados inválidos.
+    \item Salve configurações somente quando houver mudança relevante.
+    \item Em Flash, planeje setores, páginas e estratégia de apagamento.
+  \end{itemize}
+  \begin{alertblock}{Exemplo}
+    Para registrar temperaturas, alterne as posições em um registro circular ou aumente o intervalo entre gravações.
+  \end{alertblock}
+\end{frame}

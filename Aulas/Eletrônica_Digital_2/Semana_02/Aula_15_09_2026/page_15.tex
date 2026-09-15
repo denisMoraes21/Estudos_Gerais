@@ -1,0 +1,18 @@
+\begin{frame}[t]{Operação de leitura}
+  \begin{enumerate}
+    \item O processador coloca um endereço no barramento.
+    \item Habilita a memória (CS/CE) e a saída (OE).
+    \item A memória coloca a palavra daquele endereço no barramento de dados.
+    \item O processador lê os dados.
+  \end{enumerate}
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex, node distance=2cm]
+    \node[draw, rounded corners, fill=darkgreen!10, minimum width=2.6cm, minimum height=1.1cm] (cpu) {Processador};
+    \node[draw, rounded corners, fill=yellow!18, minimum width=2.6cm, minimum height=1.1cm, right=of cpu] (mem) {Memória};
+    \draw[->,thick] (cpu.north east) -- node[above,font=\small]{endereço + CE/OE} (mem.north west);
+    \draw[->,thick] (mem.south west) -- node[below,font=\small]{dados} (cpu.south east);
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+\end{frame}

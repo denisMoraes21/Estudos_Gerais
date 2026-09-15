@@ -1,0 +1,22 @@
+\begin{frame}[t]{Memória Flash}
+  \begin{block}{Características}
+    Memória não volátil regravável, com grande capacidade e custo baixo por bit.
+  \end{block}
+  \begin{itemize}
+    \item A escrita ocorre normalmente por páginas.
+    \item O apagamento ocorre por blocos ou setores.
+    \item É muito utilizada para armazenar programas e arquivos.
+  \end{itemize}
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex]
+    \foreach \x/\t in {0/Setor 0,2.3/Setor 1,4.6/Setor 2,6.9/Setor 3}{
+      \draw[fill=orange!20] (\x,0) rectangle +(2,1.1);
+      \node at (\x+1,0.7) {\t};
+      \node[font=\scriptsize] at (\x+1,0.32) {várias páginas};
+    }
+    \draw[decorate, decoration={brace,amplitude=5pt}, thick] (0,-0.2) -- (8.9,-0.2) node[midway,below=0.2cm] {apagamento por setor/bloco};
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+\end{frame}

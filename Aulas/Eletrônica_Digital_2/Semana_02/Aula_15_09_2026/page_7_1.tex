@@ -1,0 +1,17 @@
+\begin{frame}[t]{Como SRAM e DRAM armazenam um bit}
+  \begin{block}{SRAM: célula biestável (semelhante a um flip-flop)}
+    Usa transistores realimentados para manter o estado 0 ou 1.
+    A célula típica tem seis transistores e funciona como um
+    \textit{latch}, sem precisar de clock ou de \textit{refresh}.
+  \end{block}
+
+  \begin{block}{DRAM: capacitor e transistor de acesso}
+    Armazena o bit como carga elétrica em um capacitor.
+    Como essa carga diminui com o tempo, precisa de
+    \textit{refresh}: atualização periódica para preservar os dados.
+  \end{block}
+
+  \begin{alertblock}{As duas precisam de alimentação}
+    Sem alimentação, ambas perdem os dados armazenados.
+  \end{alertblock}
+\end{frame}

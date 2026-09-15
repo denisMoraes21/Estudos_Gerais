@@ -1,0 +1,10 @@
+% Link do quiz de memórias.
+\newcommand{\kahootMemoriasURL}{https://play.kahoot.it/v2/?quizId=13453636-cbcf-4ad5-8153-94046d796618&hostId=64b52f0d-4f8a-43b3-9d42-ad9fa5e3a1c6}
+\begin{frame}{Quiz de Revisão}
+    \centering
+    \ifx\kahootMemoriasURL\empty
+        \includegraphics[width=0.9\textwidth,height=0.70\textheight,keepaspectratio]{images/kahoot.jpg}
+    \else
+        \href{\kahootMemoriasURL}{\includegraphics[width=0.9\textwidth,height=0.70\textheight,keepaspectratio]{images/kahoot.jpg}}
+    \fi
+\end{frame}

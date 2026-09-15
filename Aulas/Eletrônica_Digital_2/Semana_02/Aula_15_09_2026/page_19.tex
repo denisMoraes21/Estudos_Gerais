@@ -1,0 +1,17 @@
+\begin{frame}[t]{Aplicação: microcontrolador}
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex]
+    \node[draw, rounded corners, fill=darkgreen!10, minimum width=10cm, minimum height=4.2cm] (mcu) {};
+    \node[above] at (0,2.1) {Microcontrolador};
+    \node[draw, fill=orange!20, minimum width=2.5cm, minimum height=1cm] (flash) at (-3.3,0.7) {\shortstack{Flash\\{\small firmware}}};
+    \node[draw, fill=green!15, minimum width=2.5cm, minimum height=1cm] (ram) at (3.3,0.7) {\shortstack{RAM\\{\small variáveis e buffers}}};
+    \node[draw, fill=yellow!20, minimum width=2.5cm, minimum height=1cm] (eep) at (0,-1) {\shortstack{EEPROM/Flash de dados\\{\small configurações}}};
+    \node[draw, fill=darkgreen!25, minimum width=2.2cm, minimum height=0.8cm] (cpu) at (0,0.7) {CPU};
+    \draw[<->,thick] (cpu) -- (flash);
+    \draw[<->,thick] (cpu) -- (ram);
+    \draw[<->,thick] (cpu) -- (eep);
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+\end{frame}

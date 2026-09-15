@@ -1,0 +1,15 @@
+\begin{frame}[t]{Hierarquia de memória}
+  Quanto mais próxima do processador, maior costuma ser a velocidade e menor a capacidade.
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex]
+    \node[draw, fill=red!18, minimum width=2.3cm, minimum height=0.65cm] at (0,2.4) {Registradores};
+    \node[draw, fill=orange!22, minimum width=3.4cm, minimum height=0.65cm] at (0,1.6) {Cache / SRAM};
+    \node[draw, fill=yellow!25, minimum width=4.7cm, minimum height=0.65cm] at (0,0.8) {Memória principal / DRAM};
+    \node[draw, fill=green!18, minimum width=6cm, minimum height=0.65cm] at (0,0) {Flash, SSD e armazenamento};
+    \draw[->,thick] (3.5,2.4) -- (3.5,0) node[midway,right] {maior capacidade};
+    \draw[->,thick] (-3.5,0) -- (-3.5,2.4) node[midway,left] {maior velocidade};
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+\end{frame}

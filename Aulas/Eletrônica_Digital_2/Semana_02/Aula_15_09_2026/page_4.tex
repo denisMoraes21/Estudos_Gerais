@@ -1,0 +1,19 @@
+\begin{frame}[t]{Bit, célula e palavra}
+  \begin{itemize}
+    \item \textbf{Bit:} menor unidade de informação; vale 0 ou 1.
+    \item \textbf{Célula de memória:} circuito que armazena um ou mais bits.
+    \item \textbf{Palavra (word):} grupo de bits lido ou escrito de uma vez.
+    \item \textbf{Endereço:} número que identifica uma posição da memória.
+  \end{itemize}
+  \begin{center}
+  \begin{memdiagram}
+  \begin{tikzpicture}[>=Latex]
+    \foreach \x/\b in {0/1,0.8/0,1.6/1,2.4/0,3.2/0,4/1,4.8/1,5.6/0}{
+      \draw[fill=darkgreen!10] (\x,0) rectangle +(0.75,0.75);
+      \node at (\x+0.375,0.375) {\b};
+    }
+    \node[below] at (3.2,-0.05) {Uma palavra de 8 bits: \texttt{10100110}};
+  \end{tikzpicture}
+  \end{memdiagram}
+  \end{center}
+\end{frame}
