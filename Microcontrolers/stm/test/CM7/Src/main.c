@@ -80,127 +80,6 @@ extern struct netif gnetif;
 #define SERVER_PORT 5000
 #define RX_BUFFER_SIZE 128
 
-static void tcp_client_task(void *argument) {
-    int socket_fd;
-    int result;
-    int received;
-
-    struct sockaddr_in server_address;
-
-    char tx_buffer[128];
-    char rx_buffer[RX_BUFFER_SIZE];
-
-    (void)argument;
-
-    /*
-     * Aguarda a interface Ethernet e o link físico ficarem ativos.
-     */
-    while (!netif_is_up(&gnetif) || !netif_is_link_up(&gnetif)) {
-        LOG_INFO("Aguardando interface Ethernet...");
-        osDelay(1000);
-    }
-
-    LOG_INFO("Ethernet pronta");
-
-    for (;;) {
-        socket_fd = lwip_socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-        if (socket_fd < 0) {
-            LOG_ERROR("Erro ao criar socket");
-            osDelay(2000);
-            continue;
-        }
-
-        memset(&server_address, 0, sizeof(server_address));
-
-        server_address.sin_family = AF_INET;
-        server_address.sin_port = htons(SERVER_PORT);
-
-        result = inet_aton(SERVER_IP, &server_address.sin_addr);
-
-        if (result == 0) {
-            LOG_ERROR("IP do servidor invalido");
-            lwip_close(socket_fd);
-            osDelay(2000);
-            continue;
-        }
-
-        LOG_INFO("Conectando em %s:%d...", SERVER_IP, SERVER_PORT);
-
-        result = lwip_connect(socket_fd, (struct sockaddr *)&server_address,
-                              sizeof(server_address));
-
-        if (result < 0) {
-            LOG_ERROR("Falha ao conectar. errno = %d", errno);
-
-            lwip_close(socket_fd);
-            osDelay(2000);
-            continue;
-        }
-
-        LOG_INFO("Conectado ao servidor TCP");
-
-        uint32_t counter = 0;
-
-        while (1) {
-            int message_length =
-                snprintf(tx_buffer, sizeof(tx_buffer), "Mensagem STM32: %lu\n",
-                         (unsigned long)counter++);
-
-            result = lwip_send(socket_fd, tx_buffer, message_length, 0);
-
-            if (result < 0) {
-                LOG_ERROR("Erro no envio. errno = %d", errno);
-                break;
-            }
-
-            LOG_INFO("Enviados %d bytes", result);
-
-            received =
-                lwip_recv(socket_fd, rx_buffer, sizeof(rx_buffer) - 1, 0);
-
-            if (received == 0) {
-                LOG_WARN("Servidor encerrou a conexão");
-                break;
-            }
-
-            if (received < 0) {
-                LOG_ERROR("Erro na recepcao. errno = %d", errno);
-                break;
-            }
-
-            rx_buffer[received] = '\0';
-
-            LOG_INFO("Servidor respondeu: %s", rx_buffer);
-
-            osDelay(1000);
-        }
-
-        LOG_INFO("Fechando socket");
-
-        lwip_shutdown(socket_fd, SHUT_RDWR);
-        lwip_close(socket_fd);
-
-        osDelay(2000);
-    }
-}
-
-static void ping_test_task(void *argument) {
-    (void)argument;
-
-    for (;;) {
-        if (netif_is_up(&gnetif) && netif_is_link_up(&gnetif)) {
-            if (f_ping(PING_TARGET_IP)) {
-                LOG_INFO("Teste de ping concluido com sucesso");
-            } else {
-                LOG_WARN("Dispositivo nao respondeu ao ping");
-            }
-        }
-
-        osDelay(5000);
-    }
-}
-
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
@@ -340,40 +219,6 @@ int main(void) {
     Log_Reset_Cause(reset_cause_flags);
     __HAL_RCC_CLEAR_RESET_FLAGS();
     /* USER CODE END 2 */
-
-    // const osThreadAttr_t task1_attributes = {
-    //     .name = "Task1",
-    //     .stack_size = 2048,
-    //     .priority = osPriorityNormal,
-    // };
-
-    // const osThreadAttr_t task2_attributes = {
-    //     .name = "Task2",
-    //     .stack_size = 2048,
-    //     .priority = osPriorityNormal,
-    // };
-
-    // task1Handle = osThreadNew(
-    //         StartTask1,
-    //         NULL,
-    //         &task1_attributes
-    // );
-
-    // if(task1Handle == NULL)
-    // {
-    //     Error_Handler();
-    // }
-
-    // task2Handle = osThreadNew(
-    //         StartTask2,
-    //         NULL,
-    //         &task2_attributes
-    // );
-
-    // if(task2Handle == NULL)
-    // {
-    //     Error_Handler();
-    // }
 
     osKernelInitialize();
 
@@ -789,13 +634,6 @@ static void MX_GPIO_Init(void) {
  */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument) {
-    // const osThreadAttr_t ping_task_attributes = {
-    //   .name = "PingTest",
-    //   .stack_size = 2048,
-    //   .priority = (osPriority_t)osPriorityNormal,
-    // };
-
-    // (void)argument;
 
     /* init code for LWIP */
     MX_LWIP_Init();

@@ -54,17 +54,21 @@ enable_language(C ASM)
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/ethernet
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/mqtt
 )
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/socket.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/data.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/network.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/physical.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/ethernet/transport.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_client.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_service.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_tls.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/data.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/network.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/physical.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/transport.c
 )
 
 # Link directories setup
