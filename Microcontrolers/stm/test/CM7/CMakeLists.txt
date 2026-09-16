@@ -54,6 +54,8 @@ enable_language(C ASM)
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/logger
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/BSP/Components/lan8742
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/ethernet
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/mqtt
 )
@@ -61,6 +63,9 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/logger.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/ring_buffer.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/BSP/Components/lan8742/lan8742.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/socket.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_client.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_service.c

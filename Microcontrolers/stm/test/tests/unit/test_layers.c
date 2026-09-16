@@ -13,7 +13,7 @@ lan8742_Object_t LAN8742;
 unsigned long eth_irq_count, eth_rx_complete_count, eth_tx_complete_count;
 int lock_depth;
 static uint32_t tick, ready_at = UINT32_MAX;
-static int delay_error, phy_fail, phy_invalid, phy_state, phy_reads;
+static int delay_error, phy_fail, phy_invalid, phy_state, phy_reads, phy_zero;
 static int dhcp_calls, dhcp_error, callback_error;
 static int mac_update_error;
 int ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]) {
@@ -53,7 +53,8 @@ HAL_StatusTypeDef HAL_ETH_ReadPHYRegister(ETH_HandleTypeDef *h, uint32_t a,
     (void)a;
     (void)r;
     ++phy_reads;
-    *v = phy_invalid == phy_reads ? 0xffff : 0x1234;
+    *v = phy_zero == phy_reads ? 0 :
+         (phy_invalid == phy_reads ? 0xffff : 0x1234);
     return phy_fail == phy_reads ? -1 : HAL_OK;
 }
 int32_t LAN8742_GetLinkState(lan8742_Object_t *p) {
@@ -226,6 +227,14 @@ int main(int argc, char **argv) {
             phy_reads = 0;
             phy_invalid = i;
             assert(!f_phy_init());
+        }
+    }
+    else CASE(phy_zero_ids) {
+        for (int i = 1; i <= 2; ++i) {
+            phy_reads = 0;
+            phy_zero = i;
+            assert(!f_phy_init());
+            assert(phy_reads == i);
         }
     }
     else CASE(phy_states) {

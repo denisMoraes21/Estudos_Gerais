@@ -45,7 +45,8 @@ static bool f_valid_topic(const char *v_topic) {
 }
 
 #define MQTT_INIT_CONFIG_NULL "MQTT: ponteiro da configuração é NULL"
-#define MQTT_INIT_CLIENT_NULL "MQTT: ponteiro do identificador do cliente é NULL"
+#define MQTT_INIT_CLIENT_NULL                                                  \
+    "MQTT: ponteiro do identificador do cliente é NULL"
 #define MQTT_INIT_CLIENT_EMPTY "MQTT: identificador do cliente vazio"
 #define MQTT_INIT_BROKER_ZERO "MQTT: porta do broker é zero"
 #define MQTT_INIT_BROKER_MISSING "MQTT: endereço do broker não informado"
@@ -206,7 +207,8 @@ static int f_mqtt_map_error(err_t v_error) {
 #define MQTT_CALLBACK_STATUS "MQTT: status da conexão com o broker=%d"
 #define MQTT_CALLBACK_CONNECTION_ACCEPTED "MQTT: conexão aceita pelo broker"
 #define MQTT_CALLBACK_ERROR_TIMEOUT "MQTT: tempo de espera da conexão esgotado"
-#define MQTT_CALLBACK_ERROR_REFUSED "MQTT: conexão recusada pelo broker (status=%d)"
+#define MQTT_CALLBACK_ERROR_REFUSED                                            \
+    "MQTT: conexão recusada pelo broker (status=%d)"
 
 static void f_mqtt_connection_callback(mqtt_client_t *p_mqtt, void *p_argument,
                                        mqtt_connection_status_t v_status) {
@@ -245,9 +247,11 @@ static void f_mqtt_connection_callback(mqtt_client_t *p_mqtt, void *p_argument,
 }
 
 #define MQTT_CONN_CLIENT_CREATION "MQTT: cliente criado"
-#define MQTT_CONN_CLIENT_ERROR_MEMORY "MQTT: memória insuficiente para criar o cliente"
+#define MQTT_CONN_CLIENT_ERROR_MEMORY                                          \
+    "MQTT: memória insuficiente para criar o cliente"
 #define MQTT_CONN_FAILED "MQTT: falha imediata ao iniciar conexão (lwIP=%d)"
-#define MQTT_CONN_STARTED "MQTT: tentativa de conexão iniciada; aguardando o broker"
+#define MQTT_CONN_STARTED                                                      \
+    "MQTT: tentativa de conexão iniciada; aguardando o broker"
 
 static int f_mqtt_connect_address(const ip_addr_t *p_address) {
 
@@ -292,7 +296,8 @@ static int f_mqtt_connect_address(const ip_addr_t *p_address) {
 
 #if LWIP_DNS
 
-#define MQTT_DNS_CANCELLED "MQTT: resultado DNS descartado após cancelamento da conexão"
+#define MQTT_DNS_CANCELLED                                                     \
+    "MQTT: resultado DNS descartado após cancelamento da conexão"
 #define MQTT_DNS_LOOKUP_FAILED "MQTT: falha na resolução DNS do broker"
 #define MQTT_DNS_RESOLVED "MQTT: endereço do broker resolvido por DNS"
 
@@ -323,7 +328,8 @@ static void f_mqtt_dns_callback(const char *p_name, const ip_addr_t *p_address,
 #define MQTT_CORE_ERROR_BUSY "MQTT: conexão ativa ou tentativa pendente"
 #define MQTT_CORE_TLS_UNAVAILABLE "MQTT: transporte TLS indisponível"
 #define MQTT_CORE_DNS_PENDING "MQTT: aguardando resolução DNS do broker"
-#define MQTT_CORE_DNS_ERROR "MQTT: não foi possível resolver o endereço do broker"
+#define MQTT_CORE_DNS_ERROR                                                    \
+    "MQTT: não foi possível resolver o endereço do broker"
 
 static void f_mqtt_connect_core(void *p_argument) {
 
@@ -348,7 +354,8 @@ static void f_mqtt_connect_core(void *p_argument) {
     f_mqtt_set_state(APP_MQTT_STATE_CONNECTING, APP_MQTT_OK);
     ip_addr_t s_address;
 
-    const bool v_is_broker_ip_literal = ipaddr_aton(s_config.broker_hostname, &s_address);
+    const bool v_is_broker_ip_literal =
+        ipaddr_aton(s_config.broker_hostname, &s_address);
 
     if (v_is_broker_ip_literal) {
         *p_result = f_mqtt_connect_address(&s_address);
@@ -381,7 +388,8 @@ static void f_mqtt_connect_core(void *p_argument) {
 }
 
 #define MQTT_CONNECT_LWIP_ERROR "MQTT: falha ao encaminhar conexão ao lwIP"
-#define MQTT_CONNECT_LWIP_SUCCESS "MQTT: solicitação de conexão processada (resultado=%d)"
+#define MQTT_CONNECT_LWIP_SUCCESS                                              \
+    "MQTT: solicitação de conexão processada (resultado=%d)"
 
 int f_mqtt_connect(void) {
     int v_result = APP_MQTT_ERR_NETWORK;
@@ -396,7 +404,8 @@ int f_mqtt_connect(void) {
     return v_result;
 }
 
-#define MQTT_DISCONNECT_REQUESTED "MQTT: encerramento do cliente solicitado ao lwIP"
+#define MQTT_DISCONNECT_REQUESTED                                              \
+    "MQTT: encerramento do cliente solicitado ao lwIP"
 #define MQTT_DISCONNECTED "MQTT: cliente desconectado"
 
 static void f_mqtt_disconnect_core(void *p_argument) {
@@ -417,7 +426,8 @@ static void f_mqtt_disconnect_core(void *p_argument) {
     }
 }
 
-#define MQTT_DISCONNECTED_LWIP_ERROR "MQTT: falha ao encaminhar desconexão ao lwIP"
+#define MQTT_DISCONNECTED_LWIP_ERROR                                           \
+    "MQTT: falha ao encaminhar desconexão ao lwIP"
 #define MQTT_DISCONNECT_LWIP "MQTT: solicitação de desconexão processada"
 
 void f_mqtt_disconnect(void) {
@@ -449,8 +459,10 @@ uint8_t f_mqtt_get_state(void) {
     return v_result;
 }
 
-#define MQTT_PUBLISH_ERR_ARG "MQTT: tópico, payload, tamanho ou QoS inválido para publicação"
-#define MQTT_PUBLISH_ERR_IMPLEMENTATION "MQTT: publicação ainda não implementada"
+#define MQTT_PUBLISH_ERR_ARG                                                   \
+    "MQTT: tópico, payload, tamanho ou QoS inválido para publicação"
+#define MQTT_PUBLISH_ERR_IMPLEMENTATION                                        \
+    "MQTT: publicação ainda não implementada"
 #define MQTT_PUBLISH_ERR_CONN "MQTT: publicação recusada; cliente desconectado"
 
 int f_mqtt_publish(const char *topic, const void *payload, size_t length,
@@ -472,14 +484,14 @@ int f_mqtt_publish(const char *topic, const void *payload, size_t length,
     const bool v_is_payload_too_large = length > APP_MQTT_PAYLOAD_MAX_LEN;
     const bool v_is_qos_invalid = qos > APP_MQTT_QOS_1;
 
-    if (v_has_plus_in_topic ||
-        v_has_hash_in_topic || v_is_payload_missing || v_is_payload_too_large ||
-        v_is_qos_invalid) {
+    if (v_has_plus_in_topic || v_has_hash_in_topic || v_is_payload_missing ||
+        v_is_payload_too_large || v_is_qos_invalid) {
         LOG_ERROR(MQTT_PUBLISH_ERR_ARG);
         return APP_MQTT_ERR_ARGUMENT;
     }
 
-    const bool v_is_client_connected = f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
+    const bool v_is_client_connected =
+        f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
 
     if (v_is_client_connected) {
         LOG_ERROR(MQTT_PUBLISH_ERR_IMPLEMENTATION);
@@ -491,8 +503,10 @@ int f_mqtt_publish(const char *topic, const void *payload, size_t length,
 }
 
 #define MQTT_SUBSCRIBE_ERR_ARG "MQTT: tópico ou QoS inválido para assinatura"
-#define MQTT_SUBSCRIBE_ERR_IMPLEMENTATION "MQTT: assinatura ainda não implementada"
-#define MQTT_SUBSCRIBE_ERR_CONN "MQTT: assinatura recusada; cliente desconectado"
+#define MQTT_SUBSCRIBE_ERR_IMPLEMENTATION                                      \
+    "MQTT: assinatura ainda não implementada"
+#define MQTT_SUBSCRIBE_ERR_CONN                                                \
+    "MQTT: assinatura recusada; cliente desconectado"
 
 int f_mqtt_subscribe(const char *topic, uint8_t qos,
                      app_mqtt_request_cb_t callback, void *argument) {
@@ -506,7 +520,8 @@ int f_mqtt_subscribe(const char *topic, uint8_t qos,
         LOG_ERROR(MQTT_SUBSCRIBE_ERR_ARG);
         return APP_MQTT_ERR_ARGUMENT;
     }
-    const bool v_is_client_connected = f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
+    const bool v_is_client_connected =
+        f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
 
     if (v_is_client_connected) {
         LOG_ERROR(MQTT_SUBSCRIBE_ERR_IMPLEMENTATION);
@@ -517,9 +532,12 @@ int f_mqtt_subscribe(const char *topic, uint8_t qos,
     return APP_MQTT_ERR_NOT_CONNECTED;
 }
 
-#define MQTT_UNSUBSCRIBE_ERR_ARG "MQTT: tópico inválido para cancelar assinatura"
-#define MQTT_UNSUBSCRIBE_ERR_IMPLEMENTATION "MQTT: cancelamento de assinatura ainda não implementado"
-#define MQTT_UNSUBSCRIBE_ERR_CONN "MQTT: cancelamento de assinatura recusado; cliente desconectado"
+#define MQTT_UNSUBSCRIBE_ERR_ARG                                               \
+    "MQTT: tópico inválido para cancelar assinatura"
+#define MQTT_UNSUBSCRIBE_ERR_IMPLEMENTATION                                    \
+    "MQTT: cancelamento de assinatura ainda não implementado"
+#define MQTT_UNSUBSCRIBE_ERR_CONN                                              \
+    "MQTT: cancelamento de assinatura recusado; cliente desconectado"
 
 int f_mqtt_unsubscribe(const char *topic, app_mqtt_request_cb_t callback,
                        void *argument) {
@@ -533,7 +551,8 @@ int f_mqtt_unsubscribe(const char *topic, app_mqtt_request_cb_t callback,
         return APP_MQTT_ERR_ARGUMENT;
     }
 
-    const bool v_is_client_connected = f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
+    const bool v_is_client_connected =
+        f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED;
 
     if (v_is_client_connected) {
         LOG_ERROR(MQTT_UNSUBSCRIBE_ERR_IMPLEMENTATION);

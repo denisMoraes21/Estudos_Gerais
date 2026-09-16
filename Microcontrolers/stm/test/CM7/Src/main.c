@@ -1,3 +1,4 @@
+/* USER CODE BEGIN Header */
 /**
  ******************************************************************************
  * @file           : main.c
@@ -14,29 +15,24 @@
  *
  ******************************************************************************
  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
-#include "lwip.h"
-#include "lwip/inet.h"
-#include "lwip/netdb.h"
-#include "lwip/sockets.h"
+#include "mbedtls.h"
 
-#include "lan8742.h"
-#include "task.h"
-#include <stdarg.h>
-#include <stdio.h>
-#include <string.h>
-
-/* USER CODE END Includes */
-
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
 #include "data.h"
-#include "definitions.h"
+#include "ethernetif.h"
 #include "logger.h"
+#include "lwip.h"
 #include "network.h"
 #include "physical.h"
-#include "ring_buffer.h"
-#include "stm32h7xx_hal.h"
+#include <stdio.h>
+
+/* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
@@ -69,16 +65,13 @@
 
 I2C_HandleTypeDef hi2c4;
 
+RNG_HandleTypeDef hrng;
+
 SPI_HandleTypeDef hspi2;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart3;
-extern struct netif gnetif;
-
-#define SERVER_IP "192.168.1.10"
-#define SERVER_PORT 5000
-#define RX_BUFFER_SIZE 128
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -88,36 +81,35 @@ const osThreadAttr_t defaultTask_attributes = {
     .priority = (osPriority_t)osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
-extern lan8742_Object_t LAN8742;
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MPU_Config(void);
-static void Log_Reset_Cause(uint32_t flags);
 static void MX_GPIO_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_I2C4_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_RNG_Init(void);
 void StartDefaultTask(void *argument);
 
-osThreadId_t task1Handle;
-osThreadId_t task2Handle;
 /* USER CODE BEGIN PFP */
+
+void StartTask1(void *argument);
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
 
 void StartTask1(void *argument) {
     for (;;) {
         LOG_INFO("Task 1");
-        /* USER CODE END PFP */
-
         osDelay(500);
     }
 }
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 
 void StartTask2(void *argument) {
     for (;;) {
@@ -174,129 +166,126 @@ void ESP32_ReadSensor(void) {
  */
 int main(void) {
 
-    const uint32_t reset_cause_flags = RCC->RSR;
+    /* USER CODE BEGIN 1 */
 
+    /* USER CODE END 1 */
+/* USER CODE BEGIN Boot_Mode_Sequence_0 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
     int32_t timeout;
-#endif
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+       /* USER CODE END Boot_Mode_Sequence_0 */
 
+    /* MPU
+     * Configuration--------------------------------------------------------*/
     MPU_Config();
 
+/* USER CODE BEGIN Boot_Mode_Sequence_1 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-
+    /* Wait until CPU2 boots and enters in stop mode or timeout*/
     timeout = 0xFFFF;
     while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0))
         ;
     if (timeout < 0) {
         Error_Handler();
     }
-#endif
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+       /* USER CODE END Boot_Mode_Sequence_1 */
+    /* MCU
+     * Configuration--------------------------------------------------------*/
 
+    /* Reset of all peripherals, Initializes the Flash interface and the
+     * Systick. */
     HAL_Init();
 
-    SystemClock_Config();
+    /* USER CODE BEGIN Init */
 
+    /* USER CODE END Init */
+
+    /* Configure the system clock */
+    SystemClock_Config();
+/* USER CODE BEGIN Boot_Mode_Sequence_2 */
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
+    /* When system initialization is finished, Cortex-M7 will release Cortex-M4
+    by means of HSEM notification */
+    /*HW semaphore Clock enable*/
     __HAL_RCC_HSEM_CLK_ENABLE();
+    /*Take HSEM */
     HAL_HSEM_FastTake(HSEM_ID_0);
+    /*Release HSEM in order to notify the CPU2(CM4)*/
     HAL_HSEM_Release(HSEM_ID_0, 0);
+    /* wait until CPU2 wakes up from stop mode */
     timeout = 0xFFFF;
     while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0))
         ;
     if (timeout < 0) {
         Error_Handler();
     }
-#endif
+#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
+       /* USER CODE END Boot_Mode_Sequence_2 */
 
+    /* USER CODE BEGIN SysInit */
+
+    /* USER CODE END SysInit */
+
+    /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_USART3_UART_Init();
     MX_USART1_UART_Init();
     MX_SPI2_Init();
     MX_I2C4_Init();
     MX_USART2_UART_Init();
+    MX_RNG_Init();
+    /* Call PreOsInit function */
+    MX_MBEDTLS_Init();
+    /* USER CODE BEGIN 2 */
 
-    logger_init();
-    Log_Reset_Cause(reset_cause_flags);
-    __HAL_RCC_CLEAR_RESET_FLAGS();
     /* USER CODE END 2 */
 
+    /* Init scheduler */
     osKernelInitialize();
 
+    /* USER CODE BEGIN RTOS_MUTEX */
+    /* add mutexes, ... */
+    /* USER CODE END RTOS_MUTEX */
+
+    /* USER CODE BEGIN RTOS_SEMAPHORES */
+    /* add semaphores, ... */
+    /* USER CODE END RTOS_SEMAPHORES */
+
+    /* USER CODE BEGIN RTOS_TIMERS */
+    /* start timers, add new ones, ... */
+    /* USER CODE END RTOS_TIMERS */
+
+    /* USER CODE BEGIN RTOS_QUEUES */
+    /* add queues, ... */
+    /* USER CODE END RTOS_QUEUES */
+
+    /* Create the thread(s) */
+    /* creation of defaultTask */
     defaultTaskHandle =
         osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-    if (defaultTaskHandle == NULL) {
-        LOG_ERROR("Falha ao criar defaultTask");
-        Error_Handler();
-    }
+    /* USER CODE BEGIN RTOS_THREADS */
+    /* add threads, ... */
+    /* USER CODE END RTOS_THREADS */
 
-    LOG_INFO("Iniciando Ethernet/FreeRTOS");
+    /* USER CODE BEGIN RTOS_EVENTS */
+    /* add events, ... */
+    /* USER CODE END RTOS_EVENTS */
+
+    /* Start scheduler */
     osKernelStart();
 
+    /* We should never get here as control is now taken by the scheduler */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
     while (1) {
-        LOG_ERROR("Olá");
-        uint8_t mensagem[] = "Teste RS485\r\n";
+        /* USER CODE END WHILE */
 
-        HAL_UART_Transmit(&huart2, mensagem, sizeof(mensagem) - 1,
-                          HAL_MAX_DELAY);
-        // ESP32_ReadSensor();
-        // uint8_t txData[] = {0xAA, 0x55, 0x12, 0x34};
-        // uint8_t rx[4] = {0};
-        // LOG_INFO("PT-BR -> Cliente: BYD, Projeto: VOLTA, Descrição: BMS");
-        // HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-
-        // HAL_Delay(100);
-
-        // HAL_StatusTypeDef ret = HAL_SPI_TransmitReceive(
-        // &hspi2,
-        // txData,
-        // rx,
-        // sizeof(txData),
-        // 1000
-        // );
-
-        // HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-
-        // HAL_Delay(100);
-
-        // LOG_INFO("HAL status = %d", ret);
-        // LOG_INFO("SPI2->SR   = 0x%08lX", SPI2->SR);
-        // LOG_INFO("SPI2->CR1  = 0x%08lX", SPI2->CR1);
-        // LOG_INFO("SPI2->CFG1 = 0x%08lX", SPI2->CFG1);
-        // LOG_INFO("SPI2->CFG2 = 0x%08lX", SPI2->CFG2);
-
-        // if (ret == HAL_OK)
-        // {
-        //     LOG_INFO("Recebidos %d bytes", 4);
-
-        //     LOG_INFO("RX: %02X %02X %02X %02X",
-        //      rx[0], rx[1], rx[2], rx[3]);
-        // }
-        // else
-        // {
-        //     LOG_ERROR("SPI erro %d", ret);
-        // }
-        HAL_Delay(1000); // <-- 1 segundo
+        /* USER CODE BEGIN 3 */
     }
-}
-
-static void Log_Reset_Cause(uint32_t flags) {
-    LOG_WARN("Reset flags RCC_RSR=0x%08lX", (unsigned long)flags);
-
-    if ((flags & RCC_RSR_BORRSTF) != 0U)
-        LOG_WARN("Reset: brown-out/alimentacao");
-    if ((flags & RCC_RSR_PINRSTF) != 0U)
-        LOG_WARN("Reset: pino NRST");
-    if ((flags & RCC_RSR_PORRSTF) != 0U)
-        LOG_WARN("Reset: power-on");
-    if ((flags & RCC_RSR_SFT1RSTF) != 0U)
-        LOG_WARN("Reset: software CM7");
-    if ((flags & RCC_RSR_IWDG1RSTF) != 0U)
-        LOG_WARN("Reset: watchdog independente CM7");
-    if ((flags & RCC_RSR_WWDG1RSTF) != 0U)
-        LOG_WARN("Reset: window watchdog CM7");
-    if ((flags & RCC_RSR_LPWR1RSTF) != 0U)
-        LOG_WARN("Reset: low-power CM7");
+    /* USER CODE END 3 */
 }
 
 /**
@@ -321,11 +310,13 @@ void SystemClock_Config(void) {
     /** Initializes the RCC Oscillators according to the specified parameters
      * in the RCC_OscInitTypeDef structure.
      */
-    RCC_OscInitStruct.OscillatorType =
-        RCC_OSCILLATORTYPE_HSI | RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48 |
+                                       RCC_OSCILLATORTYPE_HSI |
+                                       RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
     RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
     RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = 23;
@@ -400,6 +391,30 @@ static void MX_I2C4_Init(void) {
     /* USER CODE BEGIN I2C4_Init 2 */
 
     /* USER CODE END I2C4_Init 2 */
+}
+
+/**
+ * @brief RNG Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_RNG_Init(void) {
+
+    /* USER CODE BEGIN RNG_Init 0 */
+
+    /* USER CODE END RNG_Init 0 */
+
+    /* USER CODE BEGIN RNG_Init 1 */
+
+    /* USER CODE END RNG_Init 1 */
+    hrng.Instance = RNG;
+    hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
+    if (HAL_RNG_Init(&hrng) != HAL_OK) {
+        Error_Handler();
+    }
+    /* USER CODE BEGIN RNG_Init 2 */
+
+    /* USER CODE END RNG_Init 2 */
 }
 
 /**
@@ -626,6 +641,10 @@ static void MX_GPIO_Init(void) {
     /* USER CODE END MX_GPIO_Init_2 */
 }
 
+/* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
  * @brief  Function implementing the defaultTask thread.
@@ -638,7 +657,11 @@ void StartDefaultTask(void *argument) {
     /* init code for LWIP */
     MX_LWIP_Init();
 
-    f_phy_init();
+    if (!f_phy_init()) {
+        LOG_ERROR("Identificacao PHY invalida; verifique clocks ETH, MDC/MDIO e reset do PHY");
+        osThreadExit();
+        return;
+    }
     f_phy_wait_for_link();
     f_phy_show_speed();
     f_data_init();
@@ -664,27 +687,27 @@ void StartDefaultTask(void *argument) {
 
     f_network_checkout();
 
-    network_config_t s_dhcp_config = {
-        .use_dhcp = true,
-        .ip = NULL,
-        .netmask = NULL,
-        .gateway = NULL,
-        .dns = NULL,
-    };
+    // network_config_t s_dhcp_config = {
+    //     .use_dhcp = true,
+    //     .ip = NULL,
+    //     .netmask = NULL,
+    //     .gateway = NULL,
+    //     .dns = NULL,
+    // };
 
-    if (f_network_init(NETWORK_MODE_LAN, &s_dhcp_config)) {
-        LOG_INFO("Entering DHCP lease wait");
-        while (!f_network_wait_for_ip(10000U)) {
-            LOG_WARN("Waiting for DHCP lease: IRQ=%lu RX=%lu TX=%lu",
-                     (unsigned long)eth_irq_count,
-                     (unsigned long)eth_rx_complete_count,
-                     (unsigned long)eth_tx_complete_count);
-            osDelay(1000U);
-        }
-        f_network_checkout();
-    } else {
-        LOG_ERROR("Failed to switch to DHCP");
-    }
+    // if (f_network_init(NETWORK_MODE_LAN, &s_dhcp_config)) {
+    //     LOG_INFO("Entering DHCP lease wait");
+    //     while (!f_network_wait_for_ip(10000U)) {
+    //         LOG_WARN("Waiting for DHCP lease: IRQ=%lu RX=%lu TX=%lu",
+    //                  (unsigned long)eth_irq_count,
+    //                  (unsigned long)eth_rx_complete_count,
+    //                  (unsigned long)eth_tx_complete_count);
+    //         osDelay(1000U);
+    //     }
+    //     f_network_checkout();
+    // } else {
+    //     LOG_ERROR("Failed to switch to DHCP");
+    // }
 
     while (1) {
         osDelay(1000);
@@ -820,21 +843,6 @@ void MPU_Config(void) {
     MPU_InitStruct.SubRegionDisable = 0x87;
     MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
     MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
-    MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
-    MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
-    MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;
-    MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;
-
-    HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
-    /* SRAM D2 usada pelos descritores, buffers RX e heap do LwIP. */
-    MPU_InitStruct.Enable = MPU_REGION_ENABLE;
-    MPU_InitStruct.Number = MPU_REGION_NUMBER1;
-    MPU_InitStruct.BaseAddress = 0x30000000;
-    MPU_InitStruct.Size = MPU_REGION_SIZE_64KB;
-    MPU_InitStruct.SubRegionDisable = 0x00;
-    MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;
-    MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
     MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
     MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;
     MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;

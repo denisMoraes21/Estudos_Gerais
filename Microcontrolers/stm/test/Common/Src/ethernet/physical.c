@@ -41,7 +41,8 @@ bool f_phy_init(void) {
         &heth, v_phy_address, v_phy_first_id_register, p_phy_fisrt_id_value);
 
     if (v_read_phy_first_register != HAL_OK ||
-        v_phy_fisrt_id_value == v_mdio_not_responding_value) {
+        v_phy_fisrt_id_value == v_mdio_not_responding_value ||
+        v_phy_fisrt_id_value == 0U) {
         LOG_ERROR(PHY_READ_ID_FIRST_ERROR);
         return false;
     }
@@ -50,7 +51,8 @@ bool f_phy_init(void) {
         &heth, v_phy_address, v_phy_second_id_register, p_phy_second_id_value);
 
     if (v_read_phy_second_register != HAL_OK ||
-        v_phy_second_id_value == v_mdio_not_responding_value) {
+        v_phy_second_id_value == v_mdio_not_responding_value ||
+        v_phy_second_id_value == 0U) {
         LOG_ERROR(PHY_READ_ID_SECOND_ERROR);
         return false;
     }
