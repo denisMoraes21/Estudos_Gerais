@@ -7,7 +7,9 @@ estado e desconexão. Os fontes estão no CMake do CM7.
 ## Uso
 
 Chamar de uma tarefa FreeRTOS, depois de inicializar o lwIP e configurar a rede.
-Não há inicialização automática no `main.c`.
+O `main.c` inclui um teste após `f_network_checkout()`: conecta sem TLS e
+publica uma vez em `/bms`, com QoS 1 e sem retain. O JSON usa valores
+simulados de tensão (V) e corrente (A). Ajuste `mqtt_config` para o broker real.
 
 ```c
 static void on_mqtt_state(uint8_t state, int result, void *argument)
@@ -74,9 +76,11 @@ para validar certificados, memória e validação da cadeia e do hostname/SNI
 antes do handshake. A API MQTT local recebe IP; será necessário integrar a
 configuração do hostname no transporte TLS antes de iniciar a negociação.
 
-Publicação, assinatura, cancelamento de assinatura e recepção de mensagens ainda
-não foram implementados. Operações de publicação/assinatura retornam
-NOT_IMPLEMENTED quando conectado, ou NOT_CONNECTED quando desconectado.
+`f_mqtt_publish()` implementa QoS 0/1, copia tópico/payload para o lwIP antes
+de retornar e sincroniza com o core. OK indica enfileiramento; no QoS 1,
+o callback confirma o PUBACK do broker. Desconexão cancela callbacks pendentes
+com NOT_CONNECTED. O argumento do callback deve permanecer válido.
+Assinatura, cancelamento de assinatura e recepção continuam pendentes.
 `mqtt_service.c` continua sendo a interface provisória do serviço: seleciona
 MQTTS, mas ainda não cria tarefa, filas, telemetria ou reconexão automática.
 

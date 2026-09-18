@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #define LWIP_DNS 1
+#define ERR_TIMEOUT (-3)
 #define ERR_OK 0
 #define ERR_MEM (-1)
 #define ERR_VAL (-6)
@@ -32,5 +33,8 @@ mqtt_client_t *mqtt_client_new(void);
 err_t mqtt_client_connect(mqtt_client_t *, const ip_addr_t *, uint16_t,
                           mqtt_connection_cb_t, void *,
                           const struct mqtt_connect_client_info_t *);
+typedef void (*mqtt_request_cb_t)(void *, err_t);
+err_t mqtt_publish(mqtt_client_t *, const char *, const void *, uint16_t,
+                   uint8_t, uint8_t, mqtt_request_cb_t, void *);
 void mqtt_disconnect(mqtt_client_t *);
 #endif

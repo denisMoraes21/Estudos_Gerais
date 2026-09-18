@@ -54,3 +54,7 @@ ping -n -q -I enp0s31f6 -c 20 -i 0.2 -W 1 -M do -s 1472 192.168.1.21
 Esses comandos de ping pressupõem a interface do computador em
 `192.168.1.10/24` e a placa em `192.168.1.21`. O segundo tamanho testa um
 pacote IPv4 de 1500 bytes sem fragmentação.
+
+O bloco `USER CODE 1` de `CM7/Inc/lwipopts.h` reserva um temporizador
+adicional ao total interno do lwIP (`MEMP_NUM_SYS_TIMEOUT`) para o cliente
+MQTT. Preserve essa reserva: ela permite agendar keep-alive e timeouts.

@@ -146,7 +146,7 @@ static void tcp_client_task(void *argument)
 
             if (received == 0)
             {
-                LOG_WARN("Servidor encerrou a conexão");
+                LOG_WARN("Servidor encerrou a conexao");
                 break;
             }
 

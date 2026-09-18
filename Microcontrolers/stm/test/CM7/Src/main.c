@@ -30,6 +30,8 @@
 #include "ethernetif.h"
 #include "logger.h"
 #include "lwip.h"
+#include "mqtt_client.h"
+#include "mqtt_topics.h"
 #include "network.h"
 #include "physical.h"
 #include <stdio.h>
@@ -632,6 +634,14 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+static void f_bms_publish_done(int result, void *argument) {
+    (void)argument;
+    if (result == APP_MQTT_OK) {
+        LOG_INFO("MQTT: broker confirmou o JSON em /bms");
+    } else {
+        LOG_ERROR("MQTT: falha na publicacao em /bms (%d)", result);
+    }
+}
 
 /* Preserve the failure location for inspection even if UART is unavailable. */
 const char *volatile error_file;
@@ -712,6 +722,34 @@ void StartDefaultTask(void *argument) {
     f_wait_ping(PING_TARGET_IP);
 
     f_network_checkout();
+
+    static const app_mqtt_config_t mqtt_config = {
+        .broker_hostname = "192.168.1.10",
+        .broker_port = APP_MQTT_PLAIN_BROKER_PORT,
+        .client_id = APP_MQTT_DEVICE_ID,
+        .keep_alive_s = APP_MQTT_KEEP_ALIVE_S,
+    };
+
+    int mqtt_result = f_mqtt_init(&mqtt_config);
+    if (mqtt_result == APP_MQTT_OK) {
+        mqtt_result = f_mqtt_connect();
+    }
+    if (mqtt_result == APP_MQTT_OK) {
+        mqtt_result = f_mqtt_wait_connect();
+    }
+
+    static const char payload[] = "{\"tensao\":12.6,\"corrente\":1.5}";
+    if (mqtt_result == APP_MQTT_OK) {
+        mqtt_result =
+            f_mqtt_publish("/bms", payload, sizeof(payload) - 1U,
+                           APP_MQTT_QOS_1, false, f_bms_publish_done, NULL);
+    } else {
+        f_mqtt_disconnect();
+    }
+
+    if (mqtt_result != APP_MQTT_OK) {
+        LOG_ERROR("MQTT: teste /bms falhou (%d)", mqtt_result);
+    }
 
     while (1) {
         osDelay(2000);

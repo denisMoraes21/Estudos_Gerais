@@ -46,9 +46,15 @@ int f_mqtt_init_tls(const app_mqtt_config_t *v_config);
  * Repeated calls while connecting/connected return BUSY.
  * Calls wait only for dispatch/core access, not for the broker response. */
 int f_mqtt_connect(void);
+/* Waits up to 10 seconds from an application task, yielding between checks.
+ * Returns OK, NOT_CONNECTED or TIMEOUT. Timeout does not cancel the attempt. */
+int f_mqtt_wait_connect(void);
 /* Cancels an attempt or disconnects. Pending DNS must finish before reuse. */
 void f_mqtt_disconnect(void);
 uint8_t f_mqtt_get_state(void);
+/* Copies topic/payload into lwIP before returning. OK means queued;
+ * callback reports completion (QoS 1: broker PUBACK). On disconnect, pending
+ * callbacks receive NOT_CONNECTED. Callback argument must remain valid. */
 int f_mqtt_publish(const char *topic, const void *payload, size_t length,
                    uint8_t qos, bool retain,
                    app_mqtt_request_cb_t callback, void *argument);

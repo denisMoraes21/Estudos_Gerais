@@ -129,6 +129,9 @@
 #define CHECKSUM_CHECK_ICMP6 0
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
+
+/* One extra cyclic timer for the single MQTT client (keep-alive/timeouts). */
+#define MEMP_NUM_SYS_TIMEOUT (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 1)
 /* Linker-reserved heap, outside the DMA RX pool and TX buffers. */
 extern unsigned char lwip_heap[];
 #undef LWIP_RAM_HEAP_POINTER
