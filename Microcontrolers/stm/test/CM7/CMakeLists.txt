@@ -26,7 +26,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 set(STM32_MCU_FLAGS  "-mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard " )
 
 #Linker options
-set(STM32_LINKER_SCRIPT stm32h745xx_flash_CM7.ld)
+set(STM32_LINKER_SCRIPT Linker/ethernet_flash_CM7.ld)
 set(STM32_LINKER_OPTION  )
 
 # Set the project name
@@ -42,6 +42,13 @@ set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND PROPERTY LINK_DEPENDS
 
 # Include mx-generated
 include("mx-generated.cmake")
+
+# CubeMX owns these templates; compile the maintained Ethernet port instead.
+get_target_property(application_sources ${CMAKE_PROJECT_NAME} SOURCES)
+list(REMOVE_ITEM application_sources
+    "${CMAKE_CURRENT_SOURCE_DIR}/Src/ethernetif.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Src/lwip.c")
+set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY SOURCES "${application_sources}")
 
 
 # In order to use CMake for cross-compiling
@@ -67,6 +74,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/ethernetif_port.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/lwip_port.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/logger.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/ring_buffer.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Drivers/BSP/Components/lan8742/lan8742.c

@@ -26,7 +26,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 set(STM32_MCU_FLAGS  "-mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard" )
 
 #Linker options
-set(STM32_LINKER_SCRIPT stm32h745xx_flash_CM4.ld)
+set(STM32_LINKER_SCRIPT Linker/ethernet_flash_CM4.ld)
 set(STM32_LINKER_OPTION  )
 
 # Set the project name
@@ -58,11 +58,14 @@ enable_language(C ASM)
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Inc/logger
 )
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/logger.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/logger/ring_buffer.c
 )
 
 # Link directories setup

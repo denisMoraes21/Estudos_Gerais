@@ -55,9 +55,11 @@
 
 /* USER CODE END FunctionPrototypes */
 
-/* Private application code --------------------------------------------------*/
-/* USER CODE BEGIN Application */
+/* Hook prototypes */
+void vApplicationStackOverflowHook(xTaskHandle xTask, char *pcTaskName);
+void vApplicationMallocFailedHook(void);
 
+/* USER CODE BEGIN 4 */
 void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
 {
   (void)task;
@@ -67,7 +69,9 @@ void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
   {
   }
 }
+/* USER CODE END 4 */
 
+/* USER CODE BEGIN 5 */
 void vApplicationMallocFailedHook(void)
 {
   LOG_ERROR("FreeRTOS malloc falhou");
@@ -76,6 +80,10 @@ void vApplicationMallocFailedHook(void)
   {
   }
 }
+/* USER CODE END 5 */
+
+/* Private application code --------------------------------------------------*/
+/* USER CODE BEGIN Application */
 
 /* USER CODE END Application */
 

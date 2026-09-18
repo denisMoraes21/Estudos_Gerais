@@ -48,7 +48,7 @@ int mbedtls_hardware_poll( void *Data, unsigned char *Output, size_t Len, size_t
     }
     else
     {
-      Error_HandlerAt(__FILE__, __LINE__, __func__);
+      Error_Handler();
     }
   }
 

@@ -30,12 +30,6 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
-/* ICMP replies copy zero-copy RX pbufs into the lwIP heap. The default
- * 1600 bytes cannot hold a full-MTU reply alongside stack allocations.
- * Fits the linker reservation 0x30008000..0x3000D000 (20 KiB). */
-#define MEM_SIZE (16 * 1024)
-#define LWIP_DHCP 1
-#define LWIP_NETIF_STATUS_CALLBACK 1
 
 /* USER CODE END 0 */
 
@@ -63,14 +57,16 @@
 #define LWIP_DNS 1
 /*----- Value in opt.h for MEM_ALIGNMENT: 1 -----*/
 #define MEM_ALIGNMENT 4
+/*----- Default Value for MEM_SIZE: 1600 ---*/
+#define MEM_SIZE 16384
 /*----- Default Value for H7 devices: 0x30004000 -----*/
-/* Reserved by the linker, outside the Ethernet RX pool. */
-extern unsigned char lwip_heap[];
-#define LWIP_RAM_HEAP_POINTER lwip_heap
+#define LWIP_RAM_HEAP_POINTER 0x30008000
 /*----- Value supported for H7 devices: 1 -----*/
 #define LWIP_SUPPORT_CUSTOM_PBUF 1
 /*----- Value in opt.h for LWIP_ETHERNET: LWIP_ARP || PPPOE_SUPPORT -*/
 #define LWIP_ETHERNET 1
+/*----- Default Value for LWIP_RAW: 0 ---*/
+#define LWIP_RAW 1
 /*----- Value in opt.h for LWIP_DNS_SECURE: (LWIP_DNS_SECURE_RAND_XID | LWIP_DNS_SECURE_NO_MULTIPLE_OUTSTANDING | LWIP_DNS_SECURE_RAND_SRC_PORT) -*/
 #define LWIP_DNS_SECURE 7
 /*----- Value in opt.h for TCP_SND_QUEUELEN: (4*TCP_SND_BUF + (TCP_MSS - 1))/TCP_MSS -----*/
@@ -81,10 +77,11 @@ extern unsigned char lwip_heap[];
 #define TCP_SNDQUEUELOWAT 5
 /*----- Value in opt.h for TCP_WND_UPDATE_THRESHOLD: LWIP_MIN(TCP_WND/4, TCP_MSS*4) -----*/
 #define TCP_WND_UPDATE_THRESHOLD 536
+/*----- Default Value for LWIP_NETIF_STATUS_CALLBACK: 0 ---*/
+#define LWIP_NETIF_STATUS_CALLBACK 1
 /*----- Value in opt.h for LWIP_NETIF_LINK_CALLBACK: 0 -----*/
 #define LWIP_NETIF_LINK_CALLBACK 1
 /*----- Value in opt.h for TCPIP_THREAD_STACKSIZE: 0 -----*/
-/* DHCP processing and address logging need additional task stack. */
 #define TCPIP_THREAD_STACKSIZE 4096
 /*----- Value in opt.h for TCPIP_THREAD_PRIO: 1 -----*/
 #define TCPIP_THREAD_PRIO 24
@@ -98,12 +95,16 @@ extern unsigned char lwip_heap[];
 #define DEFAULT_THREAD_STACKSIZE 1024
 /*----- Value in opt.h for DEFAULT_THREAD_PRIO: 1 -----*/
 #define DEFAULT_THREAD_PRIO 3
+/*----- Default Value for DEFAULT_RAW_RECVMBOX_SIZE: 0 ---*/
+#define DEFAULT_RAW_RECVMBOX_SIZE 6
 /*----- Value in opt.h for DEFAULT_UDP_RECVMBOX_SIZE: 0 -----*/
 #define DEFAULT_UDP_RECVMBOX_SIZE 6
 /*----- Value in opt.h for DEFAULT_TCP_RECVMBOX_SIZE: 0 -----*/
 #define DEFAULT_TCP_RECVMBOX_SIZE 6
 /*----- Value in opt.h for DEFAULT_ACCEPTMBOX_SIZE: 0 -----*/
 #define DEFAULT_ACCEPTMBOX_SIZE 6
+/*----- Default Value for LWIP_SO_RCVTIMEO: 0 ---*/
+#define LWIP_SO_RCVTIMEO 1
 /*----- Value in opt.h for RECV_BUFSIZE_DEFAULT: INT_MAX -----*/
 #define RECV_BUFSIZE_DEFAULT 2000000000
 /*----- Value in opt.h for LWIP_USE_EXTERNAL_MBEDTLS: 0 -----*/
@@ -128,17 +129,10 @@ extern unsigned char lwip_heap[];
 #define CHECKSUM_CHECK_ICMP6 0
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
-
-/* Responder a ICMP Echo Request (ping) em IPv4. */
-#define LWIP_IPV4 1
-#define LWIP_ICMP 1
-#define LWIP_RAW 1
-
-/* Fila de recepcao usada pelos sockets raw (ICMP). O padrao do LwIP e 0. */
-#define DEFAULT_RAW_RECVMBOX_SIZE 6
-
-/* Necessario para SO_RCVTIMEO impedir bloqueio indefinido no recvfrom(). */
-#define LWIP_SO_RCVTIMEO 1
+/* Linker-reserved heap, outside the DMA RX pool and TX buffers. */
+extern unsigned char lwip_heap[];
+#undef LWIP_RAM_HEAP_POINTER
+#define LWIP_RAM_HEAP_POINTER lwip_heap
 
 /* USER CODE END 1 */
 

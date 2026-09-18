@@ -24,6 +24,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "FreeRTOS.h"
+#include "cmsis_os2.h"
 #include "data.h"
 #include "ethernetif.h"
 #include "logger.h"
@@ -203,11 +205,11 @@ int main(void) {
 
     /* Configure the system clock */
     SystemClock_Config();
-/* USER CODE BEGIN Boot_Mode_Sequence_2 */
+    /* USER CODE BEGIN Boot_Mode_Sequence_2 */
     /* Release CM4 in StartDefaultTask, after all CM7 peripheral GPIOs,
      * including Ethernet, are configured. HAL GPIO register updates are
      * read-modify-write and must not race CM4's peripheral initialization. */
-/* USER CODE END Boot_Mode_Sequence_2 */
+    /* USER CODE END Boot_Mode_Sequence_2 */
 
     /* USER CODE BEGIN SysInit */
 
@@ -224,6 +226,8 @@ int main(void) {
     /* Call PreOsInit function */
     MX_MBEDTLS_Init();
     /* USER CODE BEGIN 2 */
+    /* Ethernet owns D2 SRAM1 and initializes before CM4 leaves STOP. */
+    __HAL_RCC_D2SRAM1_CLK_ENABLE();
 
     /* USER CODE END 2 */
 
@@ -314,7 +318,7 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     RCC_OscInitStruct.PLL.PLLFRACN = 0;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
 
     /** Initializes the CPU, AHB and APB buses clocks
@@ -331,7 +335,7 @@ void SystemClock_Config(void) {
     RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
 }
 
@@ -359,20 +363,20 @@ static void MX_I2C4_Init(void) {
     hi2c4.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
     hi2c4.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
     if (HAL_I2C_Init(&hi2c4) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
 
     /** Configure Analogue filter
      */
     if (HAL_I2CEx_ConfigAnalogFilter(&hi2c4, I2C_ANALOGFILTER_ENABLE) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
 
     /** Configure Digital filter
      */
     if (HAL_I2CEx_ConfigDigitalFilter(&hi2c4, 0) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN I2C4_Init 2 */
 
@@ -396,7 +400,7 @@ static void MX_RNG_Init(void) {
     hrng.Instance = RNG;
     hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
     if (HAL_RNG_Init(&hrng) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN RNG_Init 2 */
 
@@ -443,7 +447,7 @@ static void MX_SPI2_Init(void) {
     hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
     hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
     if (HAL_SPI_Init(&hspi2) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN SPI2_Init 2 */
 
@@ -476,18 +480,18 @@ static void MX_USART1_UART_Init(void) {
     huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_UART_Init(&huart1) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN USART1_Init 2 */
 
@@ -520,18 +524,18 @@ static void MX_USART2_UART_Init(void) {
     huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_RS485Ex_Init(&huart2, UART_DE_POLARITY_HIGH, 0, 0) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN USART2_Init 2 */
 
@@ -564,18 +568,18 @@ static void MX_USART3_UART_Init(void) {
     huart3.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_UART_Init(&huart3) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart3, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart3, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     if (HAL_UARTEx_DisableFifoMode(&huart3) != HAL_OK) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        Error_Handler();
     }
     /* USER CODE BEGIN USART3_Init 2 */
 
@@ -658,12 +662,7 @@ void Error_HandlerAt(const char *file, uint32_t line, const char *function) {
  */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument) {
-
-    /* Ethernet buffers are in D2 SRAM1. Keep it clocked while CM4 is
-     * still waiting in STOP for the peripheral initialization to finish. */
-    __HAL_RCC_D2SRAM1_CLK_ENABLE();
-
-    /* init code for LWIP */
+    /* USER CODE BEGIN 5 */
     MX_LWIP_Init();
 
 #if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
@@ -709,8 +708,8 @@ void StartDefaultTask(void *argument) {
 
     f_network_init(NETWORK_MODE_LAN, &config);
 
-    // f_ping(PING_TARGET_IP);
-    // f_wait_ping(PING_TARGET_IP);
+    f_ping(PING_TARGET_IP);
+    f_wait_ping(PING_TARGET_IP);
 
     f_network_checkout();
 
@@ -757,7 +756,6 @@ void Error_Handler(void) {
     Error_HandlerAt("unknown", 0U, "Error_Handler");
     /* USER CODE END Error_Handler_Debug */
 }
-
 #ifdef USE_FULL_ASSERT
 /**
  * @brief  Reports the name of the source file and the source line number
