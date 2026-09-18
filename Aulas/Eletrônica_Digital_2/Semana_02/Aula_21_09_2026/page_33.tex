@@ -1,0 +1,13 @@
+\begin{frame}[fragile,t]{Executando com GHDL e GTKWave}
+\small No terminal, dentro da pasta \texttt{exemplos}, com as ferramentas instaladas:\begin{lstlisting}
+ghdl -a --std=08 porta_and.vhd tb_porta_and.vhd
+ghdl -e --std=08 tb_porta_and
+ghdl -r --std=08 tb_porta_and --assert-level=error --vcd=and.vcd
+gtkwave and.vcd
+\end{lstlisting}\begin{itemize}
+\item \texttt{-a}: analisa os arquivos; \texttt{-e}: elabora o topo.
+\item \texttt{-r}: executa; \texttt{--vcd}: grava formas de onda.
+\item \texttt{--assert-level=error}: interrompe ao detectar erro.
+\item Resultado esperado: quatro casos verificados e término em 40 ns.
+\end{itemize}
+\end{frame}

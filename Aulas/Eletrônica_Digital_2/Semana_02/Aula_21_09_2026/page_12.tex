@@ -1,0 +1,13 @@
+\begin{frame}[t]{Tipos e valores básicos}
+\footnotesize
+\begin{tabularx}{\textwidth}{lX}
+\toprule Tipo & Uso\\\midrule
+\texttt{std\_logic} & Um sinal lógico: \texttt{'0'}, \texttt{'1'} e outros estados.\\
+\texttt{std\_logic\_vector(3 downto 0)} & Barramento de quatro bits, como \texttt{"1010"}.\\
+\texttt{unsigned}, \texttt{signed} & Vetores numéricos do pacote \texttt{ieee.numeric\_std}.\\
+\texttt{integer} & Número inteiro; pode ter intervalo limitado.\\
+\texttt{boolean} & Valores \texttt{true} e \texttt{false}.\\\bottomrule
+\end{tabularx}
+\begin{block}{Estados úteis na simulação}\texttt{'U'}: não inicializado; \texttt{'X'}: valor desconhecido; \texttt{'Z'}: alta impedância. São parte dos nove valores de \texttt{std\_logic}.\end{block}
+
+\end{frame}

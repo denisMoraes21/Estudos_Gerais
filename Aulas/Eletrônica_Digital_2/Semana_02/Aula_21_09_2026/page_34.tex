@@ -1,0 +1,16 @@
+\begin{frame}[t]{Formas de onda esperadas da AND}
+\begin{center}
+\begin{tikzpicture}[x=0.19cm,y=0.55cm]
+\foreach \x in {0,10,20,30,40} {\draw[gray!40] (\x,-0.3)--(\x,4.5);\node[below,font=\scriptsize] at (\x,-0.3) {\x};}
+\node[left] at (0,4) {a};\node[left] at (0,2.5) {b};\node[left] at (0,1) {y};
+\draw[thick,darkgreen] (0,3.6)--(20,3.6)--(20,4.3)--(40,4.3);
+\draw[thick,darkgreen] (0,2.1)--(10,2.1)--(10,2.8)--(20,2.8)--(20,2.1)--(30,2.1)--(30,2.8)--(40,2.8);
+\draw[thick,darkgreen] (0,0.6)--(30,0.6)--(30,1.3)--(40,1.3);
+\node[right,font=\small] at (40,-0.3) {ns};
+\end{tikzpicture}
+\end{center}
+\footnotesize
+\begin{center}\begin{tabular}{cccc}\toprule Intervalo (ns)&a&b&y\\\midrule
+0--10&0&0&0\\10--20&0&1&0\\20--30&1&0&0\\30--40&1&1&1\\\bottomrule\end{tabular}\end{center}
+\scriptsize Diagrama idealizado após estabilização; omite ciclos delta e o estado inicial U de y.
+\end{frame}

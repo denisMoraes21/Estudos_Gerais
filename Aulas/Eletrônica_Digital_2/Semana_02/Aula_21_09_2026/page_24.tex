@@ -1,0 +1,10 @@
+\begin{frame}[t]{Máquina de estados: controle de uma esteira}
+\begin{block}{FSM — Finite State Machine}Circuito sequencial cujo comportamento depende do estado atual e das entradas.\end{block}
+\begin{itemize}
+\item \textbf{PARADO}: motor desligado, aguardando \texttt{iniciar=1}.
+\item \textbf{MOVENDO}: motor ligado até \texttt{sensor=1}.
+\item \textbf{CONCLUIDO}: motor desligado e \texttt{pronto=1}.
+\item Permanece concluído enquanto \texttt{iniciar=1}; retorna a parado quando \texttt{iniciar=0}.
+\end{itemize}
+\small Modelo didático: entradas já sincronizadas com o clock. Reset síncrono leva a PARADO. As saídas dependem apenas do estado: máquina de Moore.
+\end{frame}

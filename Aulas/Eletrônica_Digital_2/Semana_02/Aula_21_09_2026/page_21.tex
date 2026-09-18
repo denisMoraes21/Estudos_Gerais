@@ -1,0 +1,19 @@
+\begin{frame}[t]{Contador binário de 4 bits}
+\small
+\begin{block}{Comportamento}Conta de 0 a 15 nas bordas de subida do clock e retorna a 0 após 15.\end{block}
+\begin{itemize}
+\item \texttt{rst=1}: zera o contador na próxima borda de subida.
+\item \texttt{rst=0} e \texttt{en=1}: incrementa o valor armazenado.
+\item \texttt{rst=0} e \texttt{en=0}: mantém a contagem.
+\item \texttt{unsigned(3 downto 0)} representa um número sem sinal.
+\end{itemize}
+\begin{center}\footnotesize
+\begin{tabular}{c|cc|c}
+Borda & rst & en & q após a borda\\\hline
+1 & 1 & 0 & 0000\\
+2 & 0 & 1 & 0001\\
+3 & 0 & 1 & 0010\\
+4 & 0 & 0 & 0010\\
+5 & 0 & 1 & 0011
+\end{tabular}\end{center}
+\end{frame}

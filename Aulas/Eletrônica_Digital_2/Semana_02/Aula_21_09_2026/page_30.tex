@@ -1,0 +1,13 @@
+\begin{frame}[t]{Simulação básica: o papel do testbench}
+\begin{center}\begin{tikzpicture}[>=Stealth,node distance=0.6cm,every node/.style={draw,align=center,font=\small,minimum height=1cm}]
+\node (a) {Estímulos\\entradas};
+\node[right=of a] (b) {DUT\\circuito testado};
+\node[right=of b] (c) {Verificação\\saídas};
+\draw[->] (a)--(b);\draw[->] (b)--(c);
+\end{tikzpicture}\end{center}\begin{itemize}
+\item DUT: Design Under Test, o circuito sob teste.
+\item O testbench normalmente possui uma entity sem portas.
+\item Instancia o DUT, aplica entradas e compara saídas com o esperado.
+\item Esperas representam tempo simulado, não tempo real de execução.
+\end{itemize}
+\end{frame}

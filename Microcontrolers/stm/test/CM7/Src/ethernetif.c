@@ -53,7 +53,7 @@ static uint8_t MACAddr[6] = {0x02, 0x00, 0x00, 0x00, 0x00, 0x01};
 /* USER CODE BEGIN OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Stack size of the interface thread */
 #define INTERFACE_THREAD_STACK_SIZE (4096)
-#define TX_CLEANUP_THREAD_STACK_SIZE (512)
+#define TX_CLEANUP_THREAD_STACK_SIZE (2048)
 /* USER CODE END OS_THREAD_STACK_SIZE_WITH_RTOS */
 /* Network interface name */
 #define IFNAME0 's'
@@ -141,6 +141,49 @@ __attribute__((section(".Rx_PoolSection"))) extern u8_t memp_memory_RX_POOL_base
 #endif
 
 /* USER CODE BEGIN 2 */
+/* Read-only failure diagnostics for the onboard LAN8740A (MDIO address 1).
+ * A failed MDIO transaction while SWR is stuck does not prove PHY failure.
+ */
+static void ethernetif_log_init_failure(ETH_HandleTypeDef *eth) {
+    static const uint32_t regs[] = {2U, 3U, 0U, 1U, 18U};
+    static const char * const names[] = {"ID1", "ID2", "BCR", "BSR", "SMR"};
+
+    LOG_ERROR("ETH GPIO: PA1 mode=%lu AF=%lu PC3 mode=%lu AF=%lu",
+              (unsigned long)((GPIOA->MODER >> 2U) & 3U),
+              (unsigned long)((GPIOA->AFR[0] >> 4U) & 15U),
+              (unsigned long)((GPIOC->MODER >> 6U) & 3U),
+              (unsigned long)((GPIOC->AFR[0] >> 12U) & 15U));
+
+    /* HAL_ETH_Init exits before setting the MDC divider on reset timeout. */
+    HAL_ETH_SetMDIOClockRange(eth);
+    for (unsigned int i = 0; i < sizeof(regs) / sizeof(regs[0]); ++i) {
+        uint32_t value = 0U;
+        HAL_StatusTypeDef status = HAL_ETH_ReadPHYRegister(eth, 1U, regs[i], &value);
+        if (status != HAL_OK) {
+            LOG_ERROR("ETH MDIO: addr=1 %s leitura falhou status=%lu MDIOAR=0x%08lX",
+                      names[i], (unsigned long)status,
+                      (unsigned long)eth->Instance->MACMDIOAR);
+            break;
+        }
+        LOG_ERROR("ETH PHY: addr=1 %s=0x%04lX", names[i],
+                  (unsigned long)(value & 0xFFFFU));
+    }
+}
+
+/* Separate DMA buffers from the lwIP heap; the linker checks their bounds. */
+uint8_t lwip_heap[MEM_SIZE + 64U]
+    __attribute__((section(".LwipHeapSection"), aligned(32)));
+static uint8_t Tx_Buff[ETH_TX_DESC_CNT][ETH_RX_BUFFER_SIZE]
+    __attribute__((section(".Tx_BuffSection"), aligned(32)));
+static osMutexId_t TxMutex;
+static osThreadId_t RxThread, TxThread;
+static uint32_t tcpip_stack_free;
+static osSemaphoreId_t LinkUpdateDone;
+/* Diagnostic stages: 0=idle; TX: 1=mutex, 2=release, 3=copy, 4=HAL;
+ * RX: 1=HAL read, 2=TCP/IP delivery; cleanup: 1=mutex, 2=release. */
+volatile uint32_t eth_tx_stage, eth_rx_stage, eth_cleanup_stage;
+volatile uint32_t eth_link_updates;
+
 
 /* USER CODE END 2 */
 
@@ -217,7 +260,13 @@ static void ethernetif_tx_cleanup(void *argument) {
     for (;;) {
         /* O timeout tambem recupera uma eventual sinalizacao TX perdida. */
         (void)osSemaphoreAcquire(TxPktSemaphore, 100U);
-        HAL_ETH_ReleaseTxPacket(eth_handle);
+        eth_cleanup_stage = 1U;
+        if (osMutexAcquire(TxMutex, osWaitForever) == osOK) {
+            eth_cleanup_stage = 2U;
+            HAL_ETH_ReleaseTxPacket(eth_handle);
+            osMutexRelease(TxMutex);
+            eth_cleanup_stage = 0U;
+        }
     }
 }
 
@@ -227,12 +276,16 @@ err_t ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]) {
         return ERR_ARG;
     }
 
+    if (TxMutex == NULL || osMutexAcquire(TxMutex, osWaitForever) != osOK) {
+        return ERR_IF;
+    }
     /* Serialize with EthLink, EthIf and EthTxClean during the hardware update. */
     taskENTER_CRITICAL();
     const uint32_t was_started = (heth.gState == HAL_ETH_STATE_STARTED);
     if ((heth.gState != HAL_ETH_STATE_READY && !was_started) ||
         (was_started && HAL_ETH_Stop_IT(&heth) != HAL_OK)) {
         taskEXIT_CRITICAL();
+        osMutexRelease(TxMutex);
         return ERR_IF;
     }
 
@@ -245,6 +298,7 @@ err_t ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]) {
 
     const HAL_StatusTypeDef status = was_started ? HAL_ETH_Start_IT(&heth) : HAL_OK;
     taskEXIT_CRITICAL();
+    osMutexRelease(TxMutex);
     if (status != HAL_OK) {
         return ERR_IF;
     }
@@ -301,6 +355,29 @@ static void low_level_init(struct netif *netif)
 
   hal_eth_init_status = HAL_ETH_Init(&heth);
 
+/* USER CODE BEGIN ETH_INIT_DIAGNOSTICS */
+  /* Stop before creating workers that would access an uninitialized MAC. */
+  if (hal_eth_init_status != HAL_OK) {
+    LOG_ERROR("HAL_ETH_Init: status=%lu error=0x%08lX DMAMR=0x%08lX",
+              (unsigned long)hal_eth_init_status,
+              (unsigned long)heth.ErrorCode,
+              (unsigned long)heth.Instance->DMAMR);
+    LOG_ERROR("ETH: mode=%s HCLK=%lu AHB1ENR=0x%08lX PMCR=0x%08lX",
+              heth.Init.MediaInterface == HAL_ETH_MII_MODE ? "MII" : "RMII",
+              (unsigned long)HAL_RCC_GetHCLKFreq(),
+              (unsigned long)RCC->AHB1ENR,
+              (unsigned long)SYSCFG->PMCR);
+    if ((heth.ErrorCode & HAL_ETH_ERROR_TIMEOUT) != 0U &&
+        (heth.Instance->DMAMR & ETH_DMAMR_SWR) != 0U) {
+      LOG_ERROR("ETH: timeout no reset DMA (SWR=1); verificar clocks do PHY, "
+                "reset/alimentacao e pinos MII/RMII");
+    }
+    ethernetif_log_init_failure(&heth);
+    Error_HandlerAt(__FILE__, __LINE__, __func__);
+    return;
+  }
+/* USER CODE END ETH_INIT_DIAGNOSTICS */
+
   /* End ETH HAL Init */
 
   /* Initialize the RX POOL */
@@ -337,17 +414,24 @@ static void low_level_init(struct netif *netif)
 
   /* create the task that handles the ETH_MAC */
 /* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
+    TxMutex = osMutexNew(NULL);
+    if (TxMutex == NULL) {
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
+        return;
+    }
     memset(&attributes, 0x0, sizeof(osThreadAttr_t));
     attributes.name = "EthIf";
     attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
     attributes.priority = osPriorityRealtime;
-    osThreadNew(ethernetif_input, netif, &attributes);
+    RxThread = osThreadNew(ethernetif_input, netif, &attributes);
+    if (RxThread == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
 
     memset(&attributes, 0x0, sizeof(osThreadAttr_t));
     attributes.name = "EthTxClean";
     attributes.stack_size = TX_CLEANUP_THREAD_STACK_SIZE;
     attributes.priority = osPriorityHigh;
-    osThreadNew(ethernetif_tx_cleanup, &heth, &attributes);
+    TxThread = osThreadNew(ethernetif_tx_cleanup, &heth, &attributes);
+    if (TxThread == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
 /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
 /* USER CODE BEGIN low_level_init Code 1 for User BSP */
@@ -371,7 +455,7 @@ static void low_level_init(struct netif *netif)
   }
   else
   {
-    Error_Handler();
+    Error_HandlerAt(__FILE__, __LINE__, __func__);
   }
 #endif /* LWIP_ARP || LWIP_ETHERNET */
 
@@ -398,73 +482,67 @@ static void low_level_init(struct netif *netif)
 
 static err_t low_level_output(struct netif *netif, struct pbuf *p)
 {
-  uint32_t i = 0U;
-  struct pbuf *q = NULL;
-  err_t errval = ERR_OK;
-  ETH_BufferTypeDef Txbuffer[ETH_TX_DESC_CNT] = {0};
-  ETH_TxPacketConfig tx_config;
-
-  memset(Txbuffer, 0 , ETH_TX_DESC_CNT*sizeof(ETH_BufferTypeDef));
-
-  /* Set Tx packet config common parameters */
-  memset(&tx_config, 0 , sizeof(ETH_TxPacketConfig));
-  tx_config.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
-  tx_config.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
-  tx_config.CRCPadCtrl = ETH_CRC_PAD_INSERT;
-
-  for(q = p; q != NULL; q = q->next)
-  {
-    if(i >= ETH_TX_DESC_CNT)
-      return ERR_IF;
-
-    Txbuffer[i].buffer = q->payload;
-    Txbuffer[i].len = q->len;
-
-    if(i>0)
-    {
-      Txbuffer[i-1].next = &Txbuffer[i];
+    (void)netif;
+    if (p == NULL || p->tot_len == 0U || p->tot_len > ETH_RX_BUFFER_SIZE) {
+        return ERR_BUF;
     }
-
-    if(q->next == NULL)
-    {
-      Txbuffer[i].next = NULL;
-    }
-
-    i++;
-  }
-
-  tx_config.Length = p->tot_len;
-  tx_config.TxBuffer = Txbuffer;
-  tx_config.pData = p;
-
-  pbuf_ref(p);
-
-  do
-  {
-    if(HAL_ETH_Transmit_IT(&heth, &tx_config) == HAL_OK)
-    {
-      errval = ERR_OK;
-    }
-    else
-    {
-
-      if(HAL_ETH_GetError(&heth) & HAL_ETH_ERROR_BUSY)
-      {
-        /* Wait for descriptors to become available */
-        osSemaphoreAcquire(TxPktSemaphore, ETHIF_TX_TIMEOUT);
+    const uint32_t started = HAL_GetTick();
+    do {
+        eth_tx_stage = 1U;
+        if (osMutexAcquire(TxMutex, ETHIF_TX_TIMEOUT) != osOK) {
+            return ERR_TIMEOUT;
+        }
+        eth_tx_stage = 2U;
         HAL_ETH_ReleaseTxPacket(&heth);
-        errval = ERR_BUF;
-      }
-      else
-      {
-        /* Other error */
-        pbuf_free(p);
-        errval =  ERR_IF;
-      }
-    }
-  }while(errval == ERR_BUF);
-
-  return errval;
+        const uint32_t index = heth.TxDescList.CurTxDesc;
+        ETH_DMADescTypeDef *desc = &DMATxDscrTab[index];
+        /* Never overwrite a buffer still owned by DMA or awaiting cleanup. */
+        if ((desc->DESC3 & ETH_DMATXNDESCRF_OWN) != 0U ||
+            heth.TxDescList.PacketAddress[index] != NULL) {
+            osMutexRelease(TxMutex);
+            osDelay(1U);
+            continue;
+        }
+        eth_tx_stage = 3U;
+        if (pbuf_copy_partial(p, Tx_Buff[index], p->tot_len, 0U) != p->tot_len) {
+            osMutexRelease(TxMutex);
+            return ERR_IF;
+        }
+        /* D-cache is disabled at boot. Cleaning its uninitialized ECC
+         * can BusFault; only maintain the cache when it is enabled. */
+        if ((SCB->CCR & SCB_CCR_DC_Msk) != 0U) {
+            SCB_CleanDCache_by_Addr((uint32_t *)Tx_Buff[index],
+                                  (p->tot_len + 31U) & ~31U);
+        }
+        /* Complete CPU writes before handing the buffer to Ethernet DMA,
+         * including when no cache maintenance was necessary. */
+        __DSB();
+        ETH_BufferTypeDef buffer = {
+            .buffer = Tx_Buff[index], .len = p->tot_len, .next = NULL
+        };
+        ETH_TxPacketConfig config = {0};
+        config.Attributes = ETH_TX_PACKETS_FEATURES_CSUM | ETH_TX_PACKETS_FEATURES_CRCPAD;
+        config.ChecksumCtrl = ETH_CHECKSUM_IPHDR_PAYLOAD_INSERT_PHDR_CALC;
+        config.CRCPadCtrl = ETH_CRC_PAD_INSERT;
+        config.Length = p->tot_len;
+        config.TxBuffer = &buffer;
+        config.pData = p;
+        pbuf_ref(p);
+        eth_tx_stage = 4U;
+        const HAL_StatusTypeDef status = HAL_ETH_Transmit_IT(&heth, &config);
+        if (status != HAL_OK) {
+            pbuf_free(p);
+            LOG_ERROR("ETH TX: state=%lu HAL=0x%08lx DMA=0x%08lx used=%lu",
+                      (unsigned long)heth.gState,
+                      (unsigned long)HAL_ETH_GetError(&heth),
+                      (unsigned long)HAL_ETH_GetDMAError(&heth),
+                      (unsigned long)heth.TxDescList.BuffersInUse);
+        }
+        osMutexRelease(TxMutex);
+        eth_tx_stage = 0U;
+        return status == HAL_OK ? ERR_OK : ERR_IF;
+    } while (HAL_GetTick() - started < ETHIF_TX_TIMEOUT);
+    return ERR_TIMEOUT;
 }
 
 /**
@@ -507,14 +585,17 @@ void ethernetif_input(void* argument)
     {
       do
       {
+        eth_rx_stage = 1U;
         p = low_level_input( netif );
         if (p != NULL)
         {
+          eth_rx_stage = 2U;
           if (netif->input( p, netif) != ERR_OK )
           {
             pbuf_free(p);
           }
         }
+        eth_rx_stage = 0U;
       } while(p!=NULL);
     }
   }
@@ -696,10 +777,9 @@ int32_t ETH_PHY_IO_GetTick(void) { return HAL_GetTick(); }
   * @brief  Check the ETH link state then update ETH driver and netif link accordingly.
   * @retval None
   */
-void ethernet_link_thread(void* argument)
+/* Execute netif/DHCP changes in the lwIP TCP/IP thread. */
+static void ethernetif_update_link(void *argument)
 {
-
-/* USER CODE BEGIN ETH link init */
     ETH_MACConfigTypeDef MACConf = {0};
     int32_t PHYLinkState = 0;
     uint32_t linkchanged = 0U, speed = 0U, duplex = 0U;
@@ -707,65 +787,95 @@ void ethernet_link_thread(void* argument)
     struct netif *netif = (struct netif *)argument;
 
 
-/* USER CODE END ETH link init */
+    linkchanged = 0U;
+    PHYLinkState = LAN8742_GetLinkState(&LAN8742);
 
-  for(;;)
-  {
-
-/* USER CODE BEGIN ETH link Thread core code for User BSP */
-        linkchanged = 0U;
-        PHYLinkState = LAN8742_GetLinkState(&LAN8742);
-
-        if (netif_is_link_up(netif) &&
-            (PHYLinkState <= LAN8742_STATUS_LINK_DOWN)) {
-            HAL_ETH_Stop_IT(&heth);
-            netif_set_down(netif);
-            netif_set_link_down(netif);
-        } else if (!netif_is_link_up(netif) &&
-                   (PHYLinkState > LAN8742_STATUS_LINK_DOWN)) {
-            switch (PHYLinkState) {
-            case LAN8742_STATUS_100MBITS_FULLDUPLEX:
-                duplex = ETH_FULLDUPLEX_MODE;
-                speed = ETH_SPEED_100M;
-                linkchanged = 1;
-                break;
-            case LAN8742_STATUS_100MBITS_HALFDUPLEX:
-                duplex = ETH_HALFDUPLEX_MODE;
-                speed = ETH_SPEED_100M;
-                linkchanged = 1;
-                break;
-            case LAN8742_STATUS_10MBITS_FULLDUPLEX:
-                duplex = ETH_FULLDUPLEX_MODE;
-                speed = ETH_SPEED_10M;
-                linkchanged = 1;
-                break;
-            case LAN8742_STATUS_10MBITS_HALFDUPLEX:
-                duplex = ETH_HALFDUPLEX_MODE;
-                speed = ETH_SPEED_10M;
-                linkchanged = 1;
-                break;
-            default:
-                break;
-            }
-
-            if (linkchanged) {
-                /* Get MAC Config MAC */
-                HAL_ETH_GetMACConfig(&heth, &MACConf);
-                MACConf.DuplexMode = duplex;
-                MACConf.Speed = speed;
-                HAL_ETH_SetMACConfig(&heth, &MACConf);
-                HAL_ETH_Start_IT(&heth);
-                netif_set_up(netif);
-                netif_set_link_up(netif);
-            }
+    if (netif_is_link_up(netif) &&
+        (PHYLinkState <= LAN8742_STATUS_LINK_DOWN)) {
+        if (osMutexAcquire(TxMutex, ETHIF_TX_TIMEOUT) != osOK) { return; }
+        HAL_StatusTypeDef status = HAL_ETH_Stop_IT(&heth);
+        osMutexRelease(TxMutex);
+        if (status != HAL_OK) { return; }
+        netif_set_down(netif);
+        netif_set_link_down(netif);
+    } else if (!netif_is_link_up(netif) &&
+               (PHYLinkState > LAN8742_STATUS_LINK_DOWN)) {
+        switch (PHYLinkState) {
+        case LAN8742_STATUS_100MBITS_FULLDUPLEX:
+            duplex = ETH_FULLDUPLEX_MODE;
+            speed = ETH_SPEED_100M;
+            linkchanged = 1;
+            break;
+        case LAN8742_STATUS_100MBITS_HALFDUPLEX:
+            duplex = ETH_HALFDUPLEX_MODE;
+            speed = ETH_SPEED_100M;
+            linkchanged = 1;
+            break;
+        case LAN8742_STATUS_10MBITS_FULLDUPLEX:
+            duplex = ETH_FULLDUPLEX_MODE;
+            speed = ETH_SPEED_10M;
+            linkchanged = 1;
+            break;
+        case LAN8742_STATUS_10MBITS_HALFDUPLEX:
+            duplex = ETH_HALFDUPLEX_MODE;
+            speed = ETH_SPEED_10M;
+            linkchanged = 1;
+            break;
+        default:
+            break;
         }
 
+        if (linkchanged) {
+            if (osMutexAcquire(TxMutex, ETHIF_TX_TIMEOUT) != osOK) { return; }
+            /* Get MAC Config MAC */
+            HAL_ETH_GetMACConfig(&heth, &MACConf);
+            MACConf.DuplexMode = duplex;
+            MACConf.Speed = speed;
+            HAL_ETH_SetMACConfig(&heth, &MACConf);
+            HAL_StatusTypeDef status = HAL_ETH_Start_IT(&heth);
+            osMutexRelease(TxMutex);
+            if (status != HAL_OK) { return; }
+            netif_set_up(netif);
+            netif_set_link_up(netif);
+        }
+    }
 
 
-/* USER CODE END ETH link Thread core code for User BSP */
 
-    osDelay(100);
-  }
+}
+
+static void ethernetif_update_link_callback(void *argument)
+{
+    ethernetif_update_link(argument);
+    eth_link_updates++;
+    tcpip_stack_free = osThreadGetStackSpace(osThreadGetId());
+    osSemaphoreRelease(LinkUpdateDone);
+}
+
+void ethernet_link_thread(void *argument)
+{
+    LinkUpdateDone = osSemaphoreNew(1U, 0U, NULL);
+    if (LinkUpdateDone == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
+    uint32_t last_report = HAL_GetTick();
+    LOG_INFO("EthLink iniciada: pilha=4096 bytes");
+    for (;;) {
+        if (tcpip_callback(ethernetif_update_link_callback, argument) != ERR_OK) {
+            LOG_ERROR("Falha ao atualizar link na tarefa TCP/IP");
+        } else {
+            /* Keep only one update in flight and wait for its stack sample. */
+            osSemaphoreAcquire(LinkUpdateDone, osWaitForever);
+        }
+        if (HAL_GetTick() - last_report >= 2000U) {
+            last_report = HAL_GetTick();
+            LOG_INFO("Pilha minima livre (bytes): Link=%lu TX=%lu RX=%lu TCPIP=%lu heap=%lu",
+                     (unsigned long)osThreadGetStackSpace(osThreadGetId()),
+                     (unsigned long)osThreadGetStackSpace(TxThread),
+                     (unsigned long)osThreadGetStackSpace(RxThread),
+                     (unsigned long)tcpip_stack_free,
+                     (unsigned long)xPortGetFreeHeapSize());
+        }
+        osDelay(100U);
+    }
 }
 
 void HAL_ETH_RxAllocateCallback(uint8_t **buff)
@@ -819,9 +929,11 @@ void HAL_ETH_RxLinkCallback(void **pStart, void **pEnd, uint8_t *buff, uint16_t 
         p->tot_len += Length;
     }
 
-    /* Invalidate data cache because Rx DMA's writing to physical memory makes
-     * it stale. */
-    SCB_InvalidateDCache_by_Addr((uint32_t *)buff, Length);
+    /* DMA can leave stale cache lines only when D-cache is enabled. */
+    if ((SCB->CCR & SCB_CCR_DC_Msk) != 0U) {
+        SCB_InvalidateDCache_by_Addr((uint32_t *)buff, Length);
+    }
+    __DSB();
 
 /* USER CODE END HAL ETH RxLinkCallback */
 }
@@ -836,5 +948,44 @@ void HAL_ETH_TxFreeCallback(uint32_t * buff)
 }
 
 /* USER CODE BEGIN 8 */
+void ethernetif_log_status(void)
+{
+    LOG_INFO("ETH vivo: state=%lu IRQ=%lu RX=%lu TX=%lu link_updates=%lu",
+             (unsigned long)heth.gState, (unsigned long)eth_irq_count,
+             (unsigned long)eth_rx_complete_count, (unsigned long)eth_tx_complete_count,
+             (unsigned long)eth_link_updates);
+    LOG_INFO("ETH etapas: tx=%lu rx=%lu clean=%lu used=%lu HAL=0x%08lx DMA=0x%08lx",
+             (unsigned long)eth_tx_stage, (unsigned long)eth_rx_stage,
+             (unsigned long)eth_cleanup_stage, (unsigned long)heth.TxDescList.BuffersInUse,
+             (unsigned long)HAL_ETH_GetError(&heth), (unsigned long)HAL_ETH_GetDMAError(&heth));
+    LOG_INFO("ETH regs: MACCR=0x%08lx DMACSR=0x%08lx RXCR=0x%08lx TXCR=0x%08lx",
+             (unsigned long)heth.Instance->MACCR,
+             (unsigned long)heth.Instance->DMACSR,
+             (unsigned long)heth.Instance->DMACRCR,
+             (unsigned long)heth.Instance->DMACTCR);
+    /* These are hardware counters, independent of the RX interrupt callback.
+     * MTL missed/overflow counters clear on read; interpret them per sample.
+     */
+    LOG_INFO("ETH MAC: filter=0x%08lx crc=%lu align=%lu missed=0x%08lx",
+             (unsigned long)heth.Instance->MACPFR,
+             (unsigned long)heth.Instance->MMCRCRCEPR,
+             (unsigned long)heth.Instance->MMCRAEPR,
+             (unsigned long)heth.Instance->MTLRQMPOCR);
+    uint32_t owned = 0U, ioc = 0U;
+    for (uint32_t i = 0U; i < ETH_RX_DESC_CNT; ++i) {
+        const uint32_t flags = DMARxDscrTab[i].DESC3;
+        if ((flags & ETH_DMARXNDESCRF_OWN) != 0U) { owned |= 1UL << i; }
+        if ((flags & ETH_DMARXNDESCRF_IOC) != 0U) { ioc |= 1UL << i; }
+    }
+    LOG_INFO("ETH RX ring: own=0x%lx ioc=0x%lx alloc=%u build=%lu IRQen=0x%08lx",
+             (unsigned long)owned, (unsigned long)ioc, (unsigned int)RxAllocStatus,
+             (unsigned long)heth.RxDescList.RxBuildDescCnt,
+             (unsigned long)heth.Instance->DMACIER);
+    LOG_INFO("ETH RX DMA: base=0x%08lx tail=0x%08lx current=0x%08lx",
+             (unsigned long)heth.Instance->DMACRDLAR,
+             (unsigned long)heth.Instance->DMACRDTPR,
+             (unsigned long)heth.Instance->DMACCARDR);
+}
+
 
 /* USER CODE END 8 */

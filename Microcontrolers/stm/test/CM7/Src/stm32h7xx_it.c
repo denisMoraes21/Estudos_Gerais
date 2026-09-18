@@ -44,6 +44,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+volatile uint32_t fault_cfsr, fault_hfsr, fault_bfar, fault_mmfar;
+
 extern ETH_HandleTypeDef heth;
 
 /* USER CODE END PV */
@@ -88,6 +90,10 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
+  fault_cfsr = SCB->CFSR;
+  fault_hfsr = SCB->HFSR;
+  fault_bfar = SCB->BFAR;
+  fault_mmfar = SCB->MMFAR;
 
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
@@ -103,6 +109,10 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+  fault_cfsr = SCB->CFSR;
+  fault_hfsr = SCB->HFSR;
+  fault_bfar = SCB->BFAR;
+  fault_mmfar = SCB->MMFAR;
 
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
@@ -118,6 +128,10 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
+  fault_cfsr = SCB->CFSR;
+  fault_hfsr = SCB->HFSR;
+  fault_bfar = SCB->BFAR;
+  fault_mmfar = SCB->MMFAR;
 
   /* USER CODE END BusFault_IRQn 0 */
   while (1)

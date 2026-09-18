@@ -1,0 +1,9 @@
+\begin{frame}[t]{Interpretando o flip-flop}
+\begin{itemize}
+\item \texttt{rising\_edge(clk)} detecta a borda de subida do clock.
+\item O reset é \textbf{síncrono}: só atua na borda de subida.
+\item Na borda: se \texttt{rst=1}, \texttt{q} recebe zero; caso contrário, recebe \texttt{d}.
+\item Entre bordas, q preserva o valor armazenado.
+\item Sem reset ou inicialização, q pode começar como U na simulação.
+\end{itemize}\begin{exampleblock}{Previsão}Se d mudar de 0 para 1 entre duas bordas, q só capturará 1 na próxima borda de subida, com rst=0.\end{exampleblock}
+\end{frame}

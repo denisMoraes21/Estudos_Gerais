@@ -1,0 +1,12 @@
+\begin{frame}[t]{Esteira: diagrama de estados}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,node distance=0.85cm,every node/.style={font=\small},st/.style={draw,rounded corners,align=center,minimum width=3.3cm,minimum height=0.85cm}]
+\node[st] (p) {PARADO\\motor=0; pronto=0};
+\node[st,below=of p] (m) {MOVENDO\\motor=1; pronto=0};
+\node[st,below=of m] (c) {CONCLUIDO\\motor=0; pronto=1};
+\draw[->] (p)--node[right]{iniciar=1}(m);
+\draw[->] (m)--node[right]{sensor=1}(c);
+\draw[->] (c.west)--++(-1,0)|-node[pos=0.3,left]{iniciar=0}(p.west);
+\end{tikzpicture}\end{center}
+\small As transições ocorrem na borda de subida. Sem a condição indicada, mantém-se o estado. Reset tem prioridade e leva qualquer estado a PARADO.
+\end{frame}

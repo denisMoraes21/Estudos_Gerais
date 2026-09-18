@@ -1,0 +1,19 @@
+\begin{frame}[fragile,t]{Esteira em VHDL: interface e estados}
+\begin{lstlisting}
+library ieee;
+use ieee.std_logic_1164.all;
+entity controle_esteira is
+  port (clk, rst, iniciar, sensor : in std_logic;
+        motor, pronto : out std_logic);
+end entity;
+architecture rtl of controle_esteira is
+  type estado_t is (PARADO, MOVENDO, CONCLUIDO);
+  signal estado : estado_t;
+begin
+\end{lstlisting}\begin{itemize}
+\item O tipo enumerado dá nomes aos estados do controle.
+\item O sinal \texttt{estado} armazena o estado atual.
+\item A síntese determina uma codificação binária para os estados.
+\end{itemize}
+\small O processo e as saídas a seguir completam esta arquitetura.
+\end{frame}

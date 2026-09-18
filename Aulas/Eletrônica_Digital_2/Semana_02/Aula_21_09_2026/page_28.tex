@@ -1,0 +1,24 @@
+\begin{frame}[fragile,t]{Esteira em VHDL: transições}
+\begin{lstlisting}[basicstyle=\ttfamily\fontsize{7}{8}\selectfont]
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        estado <= PARADO;
+      else
+        case estado is
+          when PARADO =>
+            if iniciar = '1' then estado <= MOVENDO;
+            end if;
+          when MOVENDO =>
+            if sensor = '1' then estado <= CONCLUIDO;
+            end if;
+          when CONCLUIDO =>
+            if iniciar = '0' then estado <= PARADO;
+            end if;
+        end case;
+      end if;
+    end if;
+  end process;
+\end{lstlisting}
+\end{frame}

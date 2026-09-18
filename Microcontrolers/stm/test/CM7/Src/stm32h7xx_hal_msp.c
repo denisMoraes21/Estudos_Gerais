@@ -99,7 +99,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
     PeriphClkInitStruct.I2c4ClockSelection = RCC_I2C4CLKSOURCE_D3PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -176,7 +176,7 @@ void HAL_RNG_MspInit(RNG_HandleTypeDef* hrng)
     PeriphClkInitStruct.RngClockSelection = RCC_RNGCLKSOURCE_HSI48;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /* Peripheral clock enable */
@@ -233,7 +233,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /* Peripheral clock enable */
@@ -322,7 +322,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PeriphClkInitStruct.Usart16ClockSelection = RCC_USART16CLKSOURCE_D2PCLK2;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /* Peripheral clock enable */
@@ -363,7 +363,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /* Peripheral clock enable */
@@ -398,7 +398,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+      Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /* Peripheral clock enable */
@@ -535,7 +535,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *ethHandle) {
         GPIO_InitStruct.Pin = MII_TXD3_Pin;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
         GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
         HAL_GPIO_Init(MII_TXD3_GPIO_Port, &GPIO_InitStruct);
 
@@ -556,7 +556,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *ethHandle) {
         GPIO_InitStruct.Pin = MII_TXD2_Pin | MII_TX_CLK_Pin;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
-        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
         GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
         HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 

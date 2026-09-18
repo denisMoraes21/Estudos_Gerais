@@ -1,0 +1,18 @@
+\begin{frame}[fragile,t]{Esteira em VHDL: saídas e sequência}
+\begin{lstlisting}
+  motor  <= '1' when estado = MOVENDO else '0';
+  pronto <= '1' when estado = CONCLUIDO else '0';
+end architecture;
+\end{lstlisting}\small
+\begin{center}\begin{tabular}{c|ccc|l|cc}
+ & \multicolumn{3}{c|}{Entradas antes da borda} & \multicolumn{3}{c}{Após a borda}\\
+Borda & rst & iniciar & sensor & Estado & motor & pronto\\\hline
+1 & 1 & 0 & 0 & PARADO & 0 & 0\\
+2 & 0 & 1 & 0 & MOVENDO & 1 & 0\\
+3 & 0 & 1 & 0 & MOVENDO & 1 & 0\\
+4 & 0 & 1 & 1 & CONCLUIDO & 0 & 1\\
+5 & 0 & 1 & 0 & CONCLUIDO & 0 & 1\\
+6 & 0 & 0 & 0 & PARADO & 0 & 0
+\end{tabular}\end{center}
+As saídas refletem o novo estado após as atualizações dos sinais na simulação.
+\end{frame}

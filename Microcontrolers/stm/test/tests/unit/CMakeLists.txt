@@ -23,3 +23,11 @@ target_include_directories(test_mqtt_connection PRIVATE
     mqtt_mocks ../../Common/Inc/mqtt ../../Common/Inc/logger)
 target_compile_options(test_mqtt_connection PRIVATE -Wall -Wextra -Werror -UNDEBUG)
 add_test(NAME mqtt_connection COMMAND test_mqtt_connection)
+
+add_executable(test_logger test_logger.c
+    ../../Common/Src/logger/logger.c ../../Common/Src/logger/ring_buffer.c)
+target_include_directories(test_logger PRIVATE logger_mocks ../../Common/Inc/logger)
+target_compile_definitions(test_logger PRIVATE CORE_CM7)
+target_compile_options(test_logger PRIVATE -Wall -Wextra -Werror -UNDEBUG)
+add_test(NAME logger_bounded_output COMMAND test_logger)
+set_tests_properties(logger_bounded_output PROPERTIES TIMEOUT 2)

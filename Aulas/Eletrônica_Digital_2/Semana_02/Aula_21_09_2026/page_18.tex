@@ -1,0 +1,14 @@
+\begin{frame}[fragile,t]{Cuidado: atribuição incompleta infere memória}
+\begin{lstlisting}
+process(all)
+begin
+  if habilita = '1' then
+    y <= a;
+  end if;
+end process;
+\end{lstlisting}\begin{itemize}
+\item Quando \texttt{habilita} não é \texttt{1}, a saída mantém seu valor anterior.
+\item Na síntese, esse comportamento pode inferir um latch.
+\item Para lógica combinacional, atribua todas as saídas em todos os caminhos: use else ou valores padrão.
+\end{itemize}
+\end{frame}

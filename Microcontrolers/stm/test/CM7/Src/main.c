@@ -186,7 +186,7 @@ int main(void) {
     while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) != RESET) && (timeout-- > 0))
         ;
     if (timeout < 0) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 #endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
        /* USER CODE END Boot_Mode_Sequence_1 */
@@ -218,7 +218,7 @@ int main(void) {
     while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0))
         ;
     if (timeout < 0) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 #endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
        /* USER CODE END Boot_Mode_Sequence_2 */
@@ -328,7 +328,7 @@ void SystemClock_Config(void) {
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     RCC_OscInitStruct.PLL.PLLFRACN = 0;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /** Initializes the CPU, AHB and APB buses clocks
@@ -345,7 +345,7 @@ void SystemClock_Config(void) {
     RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 }
 
@@ -373,20 +373,20 @@ static void MX_I2C4_Init(void) {
     hi2c4.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
     hi2c4.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
     if (HAL_I2C_Init(&hi2c4) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /** Configure Analogue filter
      */
     if (HAL_I2CEx_ConfigAnalogFilter(&hi2c4, I2C_ANALOGFILTER_ENABLE) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
 
     /** Configure Digital filter
      */
     if (HAL_I2CEx_ConfigDigitalFilter(&hi2c4, 0) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN I2C4_Init 2 */
 
@@ -410,7 +410,7 @@ static void MX_RNG_Init(void) {
     hrng.Instance = RNG;
     hrng.Init.ClockErrorDetection = RNG_CED_ENABLE;
     if (HAL_RNG_Init(&hrng) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN RNG_Init 2 */
 
@@ -457,7 +457,7 @@ static void MX_SPI2_Init(void) {
     hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
     hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
     if (HAL_SPI_Init(&hspi2) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN SPI2_Init 2 */
 
@@ -490,18 +490,18 @@ static void MX_USART1_UART_Init(void) {
     huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_UART_Init(&huart1) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN USART1_Init 2 */
 
@@ -534,18 +534,18 @@ static void MX_USART2_UART_Init(void) {
     huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_RS485Ex_Init(&huart2, UART_DE_POLARITY_HIGH, 0, 0) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN USART2_Init 2 */
 
@@ -578,18 +578,18 @@ static void MX_USART3_UART_Init(void) {
     huart3.Init.ClockPrescaler = UART_PRESCALER_DIV1;
     huart3.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     if (HAL_UART_Init(&huart3) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetTxFifoThreshold(&huart3, UART_TXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_SetRxFifoThreshold(&huart3, UART_RXFIFO_THRESHOLD_1_8) !=
         HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     if (HAL_UARTEx_DisableFifoMode(&huart3) != HAL_OK) {
-        Error_Handler();
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
     }
     /* USER CODE BEGIN USART3_Init 2 */
 
@@ -643,6 +643,25 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 
+/* Preserve the failure location for inspection even if UART is unavailable. */
+const char *volatile error_file;
+const char *volatile error_function;
+volatile uint32_t error_line;
+
+void Error_HandlerAt(const char *file, uint32_t line, const char *function) {
+    error_file = file;
+    error_line = line;
+    error_function = function;
+    if (huart3.gState == HAL_UART_STATE_READY && __get_IPSR() == 0U &&
+        __get_PRIMASK() == 0U && __get_BASEPRI() == 0U) {
+        printf("Error_Handler: %s:%lu (%s)\r\n", file, (unsigned long)line,
+               function);
+    }
+    __disable_irq();
+    while (1) {
+    }
+}
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -658,7 +677,8 @@ void StartDefaultTask(void *argument) {
     MX_LWIP_Init();
 
     if (!f_phy_init()) {
-        LOG_ERROR("Identificacao PHY invalida; verifique clocks ETH, MDC/MDIO e reset do PHY");
+        LOG_ERROR("Identificacao PHY invalida; verifique clocks ETH, MDC/MDIO "
+                  "e reset do PHY");
         osThreadExit();
         return;
     }
@@ -682,8 +702,8 @@ void StartDefaultTask(void *argument) {
 
     f_network_init(NETWORK_MODE_LAN, &config);
 
-    f_ping(PING_TARGET_IP);
-    f_wait_ping(PING_TARGET_IP);
+    // f_ping(PING_TARGET_IP);
+    // f_wait_ping(PING_TARGET_IP);
 
     f_network_checkout();
 
@@ -710,118 +730,9 @@ void StartDefaultTask(void *argument) {
     // }
 
     while (1) {
-        osDelay(1000);
+        osDelay(2000);
+        ethernetif_log_status();
     }
-
-    /* USER CODE BEGIN 5 */
-    // LOG_INFO("Ethernet inicializada: IP 192.168.1.20");
-
-    // if (osThreadNew(ping_test_task, NULL, &ping_task_attributes) == NULL)
-    // {
-    //   LOG_ERROR("Falha ao criar tarefa de ping");
-    // }
-
-    // /* O processamento de RX e ICMP e feito pelas tarefas do LwIP. */
-    // for (;;)
-    // {
-    //   LOG_INFO("ETH link=%s IRQ=%lu RX=%lu TX=%lu",
-    //            netif_is_link_up(&gnetif) ? "UP" : "DOWN",
-    //            (unsigned long)eth_irq_count,
-    //            (unsigned long)eth_rx_complete_count,
-    //            (unsigned long)eth_tx_complete_count);
-
-    //   osDelay(5000);
-    // }
-
-    /* Infinite loop */
-    // LOG_INFO("===== LWIP INICIALIZADO =====");
-
-    // if (socket_init() != osOK)
-    // {
-    //     LOG_ERROR("Nao foi possivel inicializar o cliente TCP");
-    // }
-
-    // // printf("Teste printf\r\n");
-
-    //   for (;;)
-    //   {
-    //       // LOG_INFO("--------------------------------");
-
-    //       // LOG_INFO("Interface: %c%c%d",
-    //       //          gnetif.name[0],
-    //       //          gnetif.name[1],
-    //       //          gnetif.num);
-
-    //       LOG_INFO("Link: %s",
-    //                netif_is_link_up(&gnetif) ? "UP" : "DOWN");
-
-    //       LOG_INFO("Interface: %s",
-    //                netif_is_up(&gnetif) ? "UP" : "DOWN");
-
-    //       LOG_INFO("IP      : %s",
-    //                ip4addr_ntoa(netif_ip4_addr(&gnetif)));
-
-    //       LOG_INFO("Mascara : %s",
-    //                ip4addr_ntoa(netif_ip4_netmask(&gnetif)));
-
-    //       LOG_INFO("Gateway : %s",
-    //                ip4addr_ntoa(netif_ip4_gw(&gnetif)));
-
-    //       LOG_INFO("MAC: %02X:%02X:%02X:%02X:%02X:%02X",
-    //                gnetif.hwaddr[0],
-    //                gnetif.hwaddr[1],
-    //                gnetif.hwaddr[2],
-    //                gnetif.hwaddr[3],
-    //                gnetif.hwaddr[4],
-    //                gnetif.hwaddr[5]);
-
-    //       // LOG_INFO("MTU: %u", gnetif.mtu);
-
-    //       // LOG_INFO("Flags = 0x%04X", gnetif.flags);
-
-    //       if (gnetif.flags & NETIF_FLAG_ETHARP)
-    //           LOG_INFO("ARP habilitado");
-
-    //       if (gnetif.flags & NETIF_FLAG_BROADCAST)
-    //           LOG_INFO("Broadcast habilitado");
-
-    //       if (gnetif.flags & NETIF_FLAG_ETHERNET)
-    //           LOG_INFO("Ethernet habilitada");
-
-    //           LOG_INFO("RX packets : %u", lwip_stats.link.recv);
-    //       LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
-    //       LOG_INFO("RX errors  : %u", lwip_stats.link.drop);
-    //       LOG_INFO("RX mem err : %u", lwip_stats.link.memerr);
-
-    //       LOG_INFO("ARP recv   : %u", lwip_stats.etharp.recv);
-    //       LOG_INFO("ARP xmit   : %u", lwip_stats.etharp.xmit);
-
-    //       LOG_INFO("IP recv    : %u", lwip_stats.ip.recv);
-    //       LOG_INFO("IP sent    : %u", lwip_stats.ip.xmit);
-
-    //       LOG_INFO("ICMP recv  : %u", lwip_stats.icmp.recv);
-    //       LOG_INFO("ICMP sent  : %u", lwip_stats.icmp.xmit);
-    //       int32_t state = LAN8742_GetLinkState(&LAN8742);
-
-    //       LOG_INFO("PHY State = %ld", state);
-
-    //       // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
-
-    //       osDelay(2000);
-
-    //       // LOG_INFO("Kernel tick = %lu", osKernelGetTickCount());
-    //       LOG_INFO("RX packets : %u", lwip_stats.link.recv);
-    //       LOG_INFO("TX packets : %u", lwip_stats.link.xmit);
-    //       LOG_INFO("ETH IRQ    : %lu", eth_irq_count);
-    //       LOG_INFO("ETH RX cb  : %lu", eth_rx_complete_count);
-    //       LOG_INFO("ETH TX cb  : %lu", eth_tx_complete_count);
-    //       UBaseType_t watermark = uxTaskGetStackHighWaterMark(NULL);
-
-    //       LOG_INFO("Stack livre = %lu words (%lu bytes)",
-    //               watermark,
-    //               watermark * sizeof(StackType_t));
-
-    // }
 
     /* USER CODE END 5 */
 }
@@ -859,16 +770,10 @@ void MPU_Config(void) {
  */
 void Error_Handler(void) {
     /* USER CODE BEGIN Error_Handler_Debug */
-    /* User can add his own implementation to report the HAL error return state
-     */
-    printf("Error_Handler\r\n");
-
-    HAL_Delay(1000);
-    __disable_irq();
-    while (1) {
-    }
+    Error_HandlerAt("unknown", 0U, "Error_Handler");
     /* USER CODE END Error_Handler_Debug */
 }
+
 #ifdef USE_FULL_ASSERT
 /**
  * @brief  Reports the name of the source file and the source line number

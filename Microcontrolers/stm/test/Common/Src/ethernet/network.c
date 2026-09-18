@@ -161,7 +161,11 @@ bool f_ping(const char *v_ip) {
         }
     }
 
-    LOG_WARN(PING_CODE, v_ip, v_success ? PING_SUCCESS : PING_FAIL);
+    if (v_success) {
+        LOG_INFO(PING_CODE, v_ip, PING_SUCCESS);
+    } else {
+        LOG_WARN(PING_CODE, v_ip, PING_FAIL);
+    }
     return v_success;
     
 }
@@ -187,8 +191,9 @@ bool f_wait_ping(char *v_ip) {
             return true;
         }
 
-        if (!f_phy_is_link_up()) {
-            LOG_INFO(PING_CONNECTION_MESSAGE_SUCCESS, "DOWN",
+        {
+            LOG_INFO(PING_CONNECTION_MESSAGE_SUCCESS,
+                     netif_is_link_up(&gnetif) ? "UP" : "DOWN",
                      (unsigned long)eth_irq_count,
                      (unsigned long)eth_rx_complete_count,
                      (unsigned long)eth_tx_complete_count);

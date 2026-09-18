@@ -53,6 +53,10 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+void Error_HandlerAt(const char *file, uint32_t line, const char *function);
+extern const char * volatile error_file;
+extern const char * volatile error_function;
+extern volatile uint32_t error_line;
 
 /* USER CODE END EFP */
 

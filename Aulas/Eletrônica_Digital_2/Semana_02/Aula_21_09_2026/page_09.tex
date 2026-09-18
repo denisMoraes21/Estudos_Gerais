@@ -1,0 +1,10 @@
+\begin{frame}[t]{Duas partes essenciais}
+\begin{block}{Entity — interface}Define o nome do circuito e suas portas: entradas e saídas.\end{block}
+\begin{block}{Architecture — implementação}Descreve como as saídas são produzidas e declara sinais internos.\end{block}
+\begin{center}\begin{tikzpicture}[>=Stealth]
+\node[draw,minimum width=4cm,minimum height=1.4cm,align=center] (m) {\texttt{porta\_and}\\\small arquitetura: $y=a\land b$};
+\draw[->] (-4,0.35)--(m.west |- 0,0.35) node[pos=0,left] {$a$};
+\draw[->] (-4,-0.35)--(m.west |- 0,-0.35) node[pos=0,left] {$b$};
+\draw[->] (m.east)--(4,0) node[right] {$y$};
+\end{tikzpicture}\end{center}
+\end{frame}

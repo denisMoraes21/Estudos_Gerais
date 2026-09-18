@@ -1,0 +1,14 @@
+\begin{frame}[fragile,t]{Modelagem combinacional: multiplexador 2:1}
+\begin{lstlisting}
+library ieee;
+use ieee.std_logic_1164.all;
+entity mux2 is
+  port (a, b, sel : in std_logic;
+        y : out std_logic);
+end entity;
+architecture rtl of mux2 is
+begin
+  y <= a when sel = '0' else b;
+end architecture;
+\end{lstlisting}\small Para seleção binária: \texttt{sel=0} escolhe \texttt{a}; \texttt{sel=1} escolhe \texttt{b}. A expressão também escolhe \texttt{b} para outros valores de \texttt{sel}.
+\end{frame}

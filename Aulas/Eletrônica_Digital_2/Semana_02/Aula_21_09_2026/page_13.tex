@@ -1,0 +1,11 @@
+\begin{frame}[fragile,t]{Concorrência: circuitos operam em paralelo}
+\begin{lstlisting}
+s1 <= a and b;
+s2 <= c or d;
+y  <= s1 xor s2;
+\end{lstlisting}\begin{itemize}
+\item As três atribuições descrevem lógica que existe simultaneamente.
+\item A ordem textual dessas atribuições concorrentes não determina uma sequência de execução.
+\item Sinais intermediários são declarados antes do begin da arquitetura.
+\end{itemize}\begin{block}{Tempo de simulação}Sem atraso explícito, atualizações se propagam por ciclos delta: etapas de simulação sem avanço do tempo físico.\end{block}
+\end{frame}

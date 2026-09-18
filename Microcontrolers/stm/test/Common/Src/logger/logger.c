@@ -21,6 +21,8 @@
 extern UART_HandleTypeDef huart3;
 
 static RingBuffer rb;
+static volatile bool processing;
+#define LOGGER_UART_TIMEOUT_MS 20U
 
 static const char *level_to_string(log_level_t level) {
     switch (level) {
@@ -106,12 +108,7 @@ void log_write(log_level_t level, const char *fmt, ...) {
         buffer[len] = '\0';
     }
 
-    for (size_t i = 0; i < strlen(buffer); i++) {
-        rb_push(&rb, buffer[i]);
-    }
-
-    // Comentar essa linha se quiser mandar o buffer só no final do ciclo
-    logger_process();
+    logger_write_raw(buffer, (int)len);
 }
 
 /**
@@ -121,26 +118,53 @@ void log_write(log_level_t level, const char *fmt, ...) {
  * after transmission.
  */
 void logger_process(void) {
-    // Separate by semaphore to access hardware
+    /* UART timeouts need the tick; never wait inside an ISR/critical section. */
+    if (__get_IPSR() != 0U || __get_PRIMASK() != 0U || __get_BASEPRI() != 0U) {
+        return;
+    }
+    uint32_t mask = __get_PRIMASK();
+    __disable_irq();
+    if (processing) {
+        __set_PRIMASK(mask);
+        return;
+    }
+    processing = true;
+    __set_PRIMASK(mask);
+
     if (HAL_HSEM_Take(HSEM_ID_1, PROCID) == HAL_OK) {
-        uint8_t c;
+        for (unsigned int i = 0; i < RB_SIZE; ++i) {
+            uint8_t c;
+            mask = __get_PRIMASK();
+            __disable_irq();
+            bool available = rb_pop(&rb, &c);
+            __set_PRIMASK(mask);
+            if (!available) { break; }
 
-        while (rb_pop(&rb, &c)) {
-            // SWV
-            ITM_SendChar(c);
-
-            // UART
-            HAL_UART_Transmit(&huart3, &c, 1, HAL_MAX_DELAY);
+            /* SWV is best effort: ITM_SendChar spins forever if its port is full. */
+            if ((ITM->TCR & ITM_TCR_ITMENA_Msk) != 0U &&
+                (ITM->TER & 1U) != 0U && ITM->PORT[0].u32 != 0U) {
+                ITM->PORT[0].u8 = c;
+            }
+            if (HAL_UART_Transmit(&huart3, &c, 1, LOGGER_UART_TIMEOUT_MS) != HAL_OK) {
+                break;
+            }
         }
-
         HAL_HSEM_Release(HSEM_ID_1, PROCID);
     }
+    mask = __get_PRIMASK();
+    __disable_irq();
+    processing = false;
+    __set_PRIMASK(mask);
 }
 
 void logger_write_raw(const char *data, int len) {
-    for (int i = 0; i < len; i++) {
-        rb_push(&rb, data[i]);
+    if (data == NULL || len <= 0) { return; }
+    /* Serialize producers and preserve a caller's interrupt mask. */
+    uint32_t mask = __get_PRIMASK();
+    __disable_irq();
+    for (int i = 0; i < len; ++i) {
+        if (!rb_push(&rb, data[i])) { break; }
     }
-
+    __set_PRIMASK(mask);
     logger_process();
 }

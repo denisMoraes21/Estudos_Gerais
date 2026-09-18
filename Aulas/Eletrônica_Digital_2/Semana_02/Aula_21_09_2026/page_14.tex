@@ -1,0 +1,13 @@
+\begin{frame}[fragile,t]{Sinal e variável}
+\begin{lstlisting}
+signal s : std_logic; -- declaracao na arquitetura
+-- Dentro de um process:
+-- variable v : std_logic;
+-- v := a;   -- atualiza a variavel imediatamente
+-- s <= a;   -- agenda a atualizacao do sinal
+\end{lstlisting}\begin{itemize}
+\item \textbf{Sinal}: conecta partes do modelo; atribuição com \texttt{<=}.
+\item \textbf{Variável}: usada em cálculos dentro do processo; atribuição com \texttt{:=}.
+\item Ler um sinal logo após atribuí-lo no mesmo processo ainda pode retornar seu valor anterior.
+\end{itemize}
+\end{frame}

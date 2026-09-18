@@ -1,0 +1,18 @@
+\begin{frame}[fragile,t]{Testbench da AND: interface e instanciação}
+\begin{lstlisting}
+library ieee;
+use ieee.std_logic_1164.all;
+entity tb_porta_and is
+end entity;
+architecture sim of tb_porta_and is
+  signal a, b : std_logic := '0';
+  signal y : std_logic;
+begin
+  dut: entity work.porta_and(rtl)
+    port map (a => a, b => b, y => y);
+\end{lstlisting}\begin{itemize}
+\item \texttt{work}: biblioteca de trabalho do projeto.
+\item \texttt{port map}: associa portas do DUT aos sinais do testbench.
+\item O processo de estímulos vem a seguir, na mesma arquitetura.
+\end{itemize}
+\end{frame}

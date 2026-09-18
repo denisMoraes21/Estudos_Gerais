@@ -1,0 +1,12 @@
+\begin{frame}[t]{Do requisito ao circuito}
+\begin{center}
+\begin{tikzpicture}[node distance=0.45cm, every node/.style={draw,rounded corners,align=center,font=\small,text width=8cm},>=Stealth]
+\node (a) {Requisito e tabela-verdade};
+\node (b) [below=of a] {Descrição em VHDL};
+\node (c) [below=of b] {Simulação funcional e correção};
+\node (d) [below=of c] {Síntese e implementação};
+\node (e) [below=of d] {Verificação de temporização e teste no hardware};
+\draw[->] (a)--(b);\draw[->] (b)--(c);\draw[->] (c)--(d);\draw[->] (d)--(e);
+\end{tikzpicture}
+\end{center}
+\end{frame}

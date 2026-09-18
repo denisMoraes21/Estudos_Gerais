@@ -1,0 +1,15 @@
+\begin{frame}[fragile,t]{O mesmo multiplexador com process}
+\begin{lstlisting}
+architecture comportamental of mux2 is
+begin
+  process(all)
+  begin
+    if sel = '0' then
+      y <= a;
+    else
+      y <= b;
+    end if;
+  end process;
+end architecture;
+\end{lstlisting}\small \texttt{process(all)} (VHDL-2008) reage aos sinais lidos. Dentro do processo, comandos seguem a ordem textual; o processo opera concorrentemente com os demais blocos.
+\end{frame}

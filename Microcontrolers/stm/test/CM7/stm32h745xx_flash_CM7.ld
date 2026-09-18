@@ -42,7 +42,9 @@ FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
 /* Ethernet DMA cannot access the Cortex-M7 DTCM at 0x20000000.
  * Keep descriptors and lwIP RX buffers in the D2 SRAM domain. */
-RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 288K
+/* First 64K belongs to CM7 Ethernet; CM4 starts at alias 0x10010000.
+ * Keep in sync with RAM in the CM4 linker script. */
+RAM_D2 (xrw)   : ORIGIN = 0x30000000, LENGTH = 64K
 ITCMRAM (xrw)      : ORIGIN = 0x00000000, LENGTH = 64K
 }
 /* Highest address of the user mode stack */
@@ -241,6 +243,16 @@ SECTIONS
     . = ABSOLUTE(0x30000200);
     KEEP(*(.Rx_PoolSection))
   } >RAM_D2
+
+  .LwipHeapSection 0x30008000 (NOLOAD) :
+  {
+    KEEP(*(.LwipHeapSection))
+  } >RAM_D2
+
+  ASSERT(ADDR(.Rx_PoolSection) + SIZEOF(.Rx_PoolSection) <= ADDR(.LwipHeapSection),
+         "Ethernet RX pool overlaps lwIP heap")
+  ASSERT(ADDR(.LwipHeapSection) + SIZEOF(.LwipHeapSection) <= 0x3000D000,
+         "lwIP heap overlaps Ethernet TX buffers")
 
   /* Buffers TX copiados para memoria acessivel pelo DMA Ethernet. */
   .Tx_BuffSection (NOLOAD) :

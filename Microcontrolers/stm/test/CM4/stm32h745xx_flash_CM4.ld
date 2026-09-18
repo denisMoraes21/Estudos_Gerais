@@ -39,7 +39,10 @@ ENTRY(Reset_Handler)
 MEMORY
 {
 FLASH (rx)      : ORIGIN = 0x08100000, LENGTH = 1024K
-RAM (xrw)      : ORIGIN = 0x10000000, LENGTH = 288K
+/* D2 SRAM aliases 0x10000000 (CM4) and 0x30000000 (CM7).
+ * Reserve its first 64K exclusively for CM7 Ethernet DMA and lwIP.
+ * Keep in sync with RAM_D2 in the CM7 linker script. */
+RAM (xrw)      : ORIGIN = 0x10010000, LENGTH = 224K
 }
 /* Highest address of the user mode stack */
 _estack = 0x10048000;    /* end of RAM */
