@@ -141,48 +141,13 @@ __attribute__((section(".Rx_PoolSection"))) extern u8_t memp_memory_RX_POOL_base
 #endif
 
 /* USER CODE BEGIN 2 */
-/* Read-only failure diagnostics for the onboard LAN8740A (MDIO address 1).
- * A failed MDIO transaction while SWR is stuck does not prove PHY failure.
- */
-static void ethernetif_log_init_failure(ETH_HandleTypeDef *eth) {
-    static const uint32_t regs[] = {2U, 3U, 0U, 1U, 18U};
-    static const char * const names[] = {"ID1", "ID2", "BCR", "BSR", "SMR"};
-
-    LOG_ERROR("ETH GPIO: PA1 mode=%lu AF=%lu PC3 mode=%lu AF=%lu",
-              (unsigned long)((GPIOA->MODER >> 2U) & 3U),
-              (unsigned long)((GPIOA->AFR[0] >> 4U) & 15U),
-              (unsigned long)((GPIOC->MODER >> 6U) & 3U),
-              (unsigned long)((GPIOC->AFR[0] >> 12U) & 15U));
-
-    /* HAL_ETH_Init exits before setting the MDC divider on reset timeout. */
-    HAL_ETH_SetMDIOClockRange(eth);
-    for (unsigned int i = 0; i < sizeof(regs) / sizeof(regs[0]); ++i) {
-        uint32_t value = 0U;
-        HAL_StatusTypeDef status = HAL_ETH_ReadPHYRegister(eth, 1U, regs[i], &value);
-        if (status != HAL_OK) {
-            LOG_ERROR("ETH MDIO: addr=1 %s leitura falhou status=%lu MDIOAR=0x%08lX",
-                      names[i], (unsigned long)status,
-                      (unsigned long)eth->Instance->MACMDIOAR);
-            break;
-        }
-        LOG_ERROR("ETH PHY: addr=1 %s=0x%04lX", names[i],
-                  (unsigned long)(value & 0xFFFFU));
-    }
-}
-
 /* Separate DMA buffers from the lwIP heap; the linker checks their bounds. */
 uint8_t lwip_heap[MEM_SIZE + 64U]
     __attribute__((section(".LwipHeapSection"), aligned(32)));
 static uint8_t Tx_Buff[ETH_TX_DESC_CNT][ETH_RX_BUFFER_SIZE]
     __attribute__((section(".Tx_BuffSection"), aligned(32)));
 static osMutexId_t TxMutex;
-static osThreadId_t RxThread, TxThread;
-static uint32_t tcpip_stack_free;
 static osSemaphoreId_t LinkUpdateDone;
-/* Diagnostic stages: 0=idle; TX: 1=mutex, 2=release, 3=copy, 4=HAL;
- * RX: 1=HAL read, 2=TCP/IP delivery; cleanup: 1=mutex, 2=release. */
-volatile uint32_t eth_tx_stage, eth_rx_stage, eth_cleanup_stage;
-volatile uint32_t eth_link_updates;
 
 
 /* USER CODE END 2 */
@@ -211,9 +176,6 @@ lan8742_IOCtx_t LAN8742_IOCtx = {ETH_PHY_IO_Init, ETH_PHY_IO_DeInit,
 
 static void ethernetif_tx_cleanup(void *argument);
 
-volatile uint32_t eth_irq_count;
-volatile uint32_t eth_rx_complete_count;
-volatile uint32_t eth_tx_complete_count;
 
 /* USER CODE END 3 */
 
@@ -227,7 +189,6 @@ void pbuf_free_custom(struct pbuf *p);
   */
 void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef *handlerEth)
 {
-  eth_rx_complete_count++;
   osSemaphoreRelease(RxPktSemaphore);
 }
 /**
@@ -237,7 +198,6 @@ void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef *handlerEth)
   */
 void HAL_ETH_TxCpltCallback(ETH_HandleTypeDef *handlerEth)
 {
-  eth_tx_complete_count++;
   osSemaphoreRelease(TxPktSemaphore);
 }
 /**
@@ -260,12 +220,9 @@ static void ethernetif_tx_cleanup(void *argument) {
     for (;;) {
         /* O timeout tambem recupera uma eventual sinalizacao TX perdida. */
         (void)osSemaphoreAcquire(TxPktSemaphore, 100U);
-        eth_cleanup_stage = 1U;
         if (osMutexAcquire(TxMutex, osWaitForever) == osOK) {
-            eth_cleanup_stage = 2U;
             HAL_ETH_ReleaseTxPacket(eth_handle);
             osMutexRelease(TxMutex);
-            eth_cleanup_stage = 0U;
         }
     }
 }
@@ -362,17 +319,6 @@ static void low_level_init(struct netif *netif)
               (unsigned long)hal_eth_init_status,
               (unsigned long)heth.ErrorCode,
               (unsigned long)heth.Instance->DMAMR);
-    LOG_ERROR("ETH: mode=%s HCLK=%lu AHB1ENR=0x%08lX PMCR=0x%08lX",
-              heth.Init.MediaInterface == HAL_ETH_MII_MODE ? "MII" : "RMII",
-              (unsigned long)HAL_RCC_GetHCLKFreq(),
-              (unsigned long)RCC->AHB1ENR,
-              (unsigned long)SYSCFG->PMCR);
-    if ((heth.ErrorCode & HAL_ETH_ERROR_TIMEOUT) != 0U &&
-        (heth.Instance->DMAMR & ETH_DMAMR_SWR) != 0U) {
-      LOG_ERROR("ETH: timeout no reset DMA (SWR=1); verificar clocks do PHY, "
-                "reset/alimentacao e pinos MII/RMII");
-    }
-    ethernetif_log_init_failure(&heth);
     Error_HandlerAt(__FILE__, __LINE__, __func__);
     return;
   }
@@ -423,14 +369,14 @@ static void low_level_init(struct netif *netif)
     attributes.name = "EthIf";
     attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
     attributes.priority = osPriorityRealtime;
-    RxThread = osThreadNew(ethernetif_input, netif, &attributes);
+    osThreadId_t RxThread = osThreadNew(ethernetif_input, netif, &attributes);
     if (RxThread == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
 
     memset(&attributes, 0x0, sizeof(osThreadAttr_t));
     attributes.name = "EthTxClean";
     attributes.stack_size = TX_CLEANUP_THREAD_STACK_SIZE;
     attributes.priority = osPriorityHigh;
-    TxThread = osThreadNew(ethernetif_tx_cleanup, &heth, &attributes);
+    osThreadId_t TxThread = osThreadNew(ethernetif_tx_cleanup, &heth, &attributes);
     if (TxThread == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
 /* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
@@ -488,11 +434,9 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
     }
     const uint32_t started = HAL_GetTick();
     do {
-        eth_tx_stage = 1U;
         if (osMutexAcquire(TxMutex, ETHIF_TX_TIMEOUT) != osOK) {
             return ERR_TIMEOUT;
         }
-        eth_tx_stage = 2U;
         HAL_ETH_ReleaseTxPacket(&heth);
         const uint32_t index = heth.TxDescList.CurTxDesc;
         ETH_DMADescTypeDef *desc = &DMATxDscrTab[index];
@@ -503,7 +447,6 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
             osDelay(1U);
             continue;
         }
-        eth_tx_stage = 3U;
         if (pbuf_copy_partial(p, Tx_Buff[index], p->tot_len, 0U) != p->tot_len) {
             osMutexRelease(TxMutex);
             return ERR_IF;
@@ -528,7 +471,6 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
         config.TxBuffer = &buffer;
         config.pData = p;
         pbuf_ref(p);
-        eth_tx_stage = 4U;
         const HAL_StatusTypeDef status = HAL_ETH_Transmit_IT(&heth, &config);
         if (status != HAL_OK) {
             pbuf_free(p);
@@ -539,7 +481,6 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
                       (unsigned long)heth.TxDescList.BuffersInUse);
         }
         osMutexRelease(TxMutex);
-        eth_tx_stage = 0U;
         return status == HAL_OK ? ERR_OK : ERR_IF;
     } while (HAL_GetTick() - started < ETHIF_TX_TIMEOUT);
     return ERR_TIMEOUT;
@@ -585,17 +526,14 @@ void ethernetif_input(void* argument)
     {
       do
       {
-        eth_rx_stage = 1U;
         p = low_level_input( netif );
         if (p != NULL)
         {
-          eth_rx_stage = 2U;
           if (netif->input( p, netif) != ERR_OK )
           {
             pbuf_free(p);
           }
         }
-        eth_rx_stage = 0U;
       } while(p!=NULL);
     }
   }
@@ -847,8 +785,6 @@ static void ethernetif_update_link(void *argument)
 static void ethernetif_update_link_callback(void *argument)
 {
     ethernetif_update_link(argument);
-    eth_link_updates++;
-    tcpip_stack_free = osThreadGetStackSpace(osThreadGetId());
     osSemaphoreRelease(LinkUpdateDone);
 }
 
@@ -856,23 +792,12 @@ void ethernet_link_thread(void *argument)
 {
     LinkUpdateDone = osSemaphoreNew(1U, 0U, NULL);
     if (LinkUpdateDone == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
-    uint32_t last_report = HAL_GetTick();
-    LOG_INFO("EthLink iniciada: pilha=4096 bytes");
     for (;;) {
         if (tcpip_callback(ethernetif_update_link_callback, argument) != ERR_OK) {
             LOG_ERROR("Falha ao atualizar link na tarefa TCP/IP");
         } else {
-            /* Keep only one update in flight and wait for its stack sample. */
+            /* Keep only one link update in flight. */
             osSemaphoreAcquire(LinkUpdateDone, osWaitForever);
-        }
-        if (HAL_GetTick() - last_report >= 2000U) {
-            last_report = HAL_GetTick();
-            LOG_INFO("Pilha minima livre (bytes): Link=%lu TX=%lu RX=%lu TCPIP=%lu heap=%lu",
-                     (unsigned long)osThreadGetStackSpace(osThreadGetId()),
-                     (unsigned long)osThreadGetStackSpace(TxThread),
-                     (unsigned long)osThreadGetStackSpace(RxThread),
-                     (unsigned long)tcpip_stack_free,
-                     (unsigned long)xPortGetFreeHeapSize());
         }
         osDelay(100U);
     }
@@ -948,44 +873,4 @@ void HAL_ETH_TxFreeCallback(uint32_t * buff)
 }
 
 /* USER CODE BEGIN 8 */
-void ethernetif_log_status(void)
-{
-    LOG_INFO("ETH vivo: state=%lu IRQ=%lu RX=%lu TX=%lu link_updates=%lu",
-             (unsigned long)heth.gState, (unsigned long)eth_irq_count,
-             (unsigned long)eth_rx_complete_count, (unsigned long)eth_tx_complete_count,
-             (unsigned long)eth_link_updates);
-    LOG_INFO("ETH etapas: tx=%lu rx=%lu clean=%lu used=%lu HAL=0x%08lx DMA=0x%08lx",
-             (unsigned long)eth_tx_stage, (unsigned long)eth_rx_stage,
-             (unsigned long)eth_cleanup_stage, (unsigned long)heth.TxDescList.BuffersInUse,
-             (unsigned long)HAL_ETH_GetError(&heth), (unsigned long)HAL_ETH_GetDMAError(&heth));
-    LOG_INFO("ETH regs: MACCR=0x%08lx DMACSR=0x%08lx RXCR=0x%08lx TXCR=0x%08lx",
-             (unsigned long)heth.Instance->MACCR,
-             (unsigned long)heth.Instance->DMACSR,
-             (unsigned long)heth.Instance->DMACRCR,
-             (unsigned long)heth.Instance->DMACTCR);
-    /* These are hardware counters, independent of the RX interrupt callback.
-     * MTL missed/overflow counters clear on read; interpret them per sample.
-     */
-    LOG_INFO("ETH MAC: filter=0x%08lx crc=%lu align=%lu missed=0x%08lx",
-             (unsigned long)heth.Instance->MACPFR,
-             (unsigned long)heth.Instance->MMCRCRCEPR,
-             (unsigned long)heth.Instance->MMCRAEPR,
-             (unsigned long)heth.Instance->MTLRQMPOCR);
-    uint32_t owned = 0U, ioc = 0U;
-    for (uint32_t i = 0U; i < ETH_RX_DESC_CNT; ++i) {
-        const uint32_t flags = DMARxDscrTab[i].DESC3;
-        if ((flags & ETH_DMARXNDESCRF_OWN) != 0U) { owned |= 1UL << i; }
-        if ((flags & ETH_DMARXNDESCRF_IOC) != 0U) { ioc |= 1UL << i; }
-    }
-    LOG_INFO("ETH RX ring: own=0x%lx ioc=0x%lx alloc=%u build=%lu IRQen=0x%08lx",
-             (unsigned long)owned, (unsigned long)ioc, (unsigned int)RxAllocStatus,
-             (unsigned long)heth.RxDescList.RxBuildDescCnt,
-             (unsigned long)heth.Instance->DMACIER);
-    LOG_INFO("ETH RX DMA: base=0x%08lx tail=0x%08lx current=0x%08lx",
-             (unsigned long)heth.Instance->DMACRDLAR,
-             (unsigned long)heth.Instance->DMACRDTPR,
-             (unsigned long)heth.Instance->DMACCARDR);
-}
-
-
 /* USER CODE END 8 */

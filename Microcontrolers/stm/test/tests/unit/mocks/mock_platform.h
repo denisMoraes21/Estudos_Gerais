@@ -50,8 +50,6 @@ struct netif {
 extern struct netif gnetif;
 extern ETH_HandleTypeDef heth;
 extern lan8742_Object_t LAN8742;
-extern unsigned long eth_irq_count, eth_rx_complete_count,
-    eth_tx_complete_count;
 #define netif_is_up(n) ((n)->up)
 #define netif_is_link_up(n) ((n)->link)
 #define netif_ip4_addr(n) (&(n)->ip)

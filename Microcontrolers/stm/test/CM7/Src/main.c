@@ -204,24 +204,10 @@ int main(void) {
     /* Configure the system clock */
     SystemClock_Config();
 /* USER CODE BEGIN Boot_Mode_Sequence_2 */
-#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
-    /* When system initialization is finished, Cortex-M7 will release Cortex-M4
-    by means of HSEM notification */
-    /*HW semaphore Clock enable*/
-    __HAL_RCC_HSEM_CLK_ENABLE();
-    /*Take HSEM */
-    HAL_HSEM_FastTake(HSEM_ID_0);
-    /*Release HSEM in order to notify the CPU2(CM4)*/
-    HAL_HSEM_Release(HSEM_ID_0, 0);
-    /* wait until CPU2 wakes up from stop mode */
-    timeout = 0xFFFF;
-    while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0))
-        ;
-    if (timeout < 0) {
-        Error_HandlerAt(__FILE__, __LINE__, __func__);
-    }
-#endif /* DUAL_CORE_BOOT_SYNC_SEQUENCE */
-       /* USER CODE END Boot_Mode_Sequence_2 */
+    /* Release CM4 in StartDefaultTask, after all CM7 peripheral GPIOs,
+     * including Ethernet, are configured. HAL GPIO register updates are
+     * read-modify-write and must not race CM4's peripheral initialization. */
+/* USER CODE END Boot_Mode_Sequence_2 */
 
     /* USER CODE BEGIN SysInit */
 
@@ -673,8 +659,29 @@ void Error_HandlerAt(const char *file, uint32_t line, const char *function) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument) {
 
+    /* Ethernet buffers are in D2 SRAM1. Keep it clocked while CM4 is
+     * still waiting in STOP for the peripheral initialization to finish. */
+    __HAL_RCC_D2SRAM1_CLK_ENABLE();
+
     /* init code for LWIP */
     MX_LWIP_Init();
+
+#if defined(DUAL_CORE_BOOT_SYNC_SEQUENCE)
+    /* CM4 can now configure its own pins without overwriting concurrent
+     * CM7 read-modify-write updates to the same GPIO port registers. */
+    __DSB();
+    __HAL_RCC_HSEM_CLK_ENABLE();
+    if (HAL_HSEM_FastTake(HSEM_ID_0) != HAL_OK) {
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
+    }
+    HAL_HSEM_Release(HSEM_ID_0, 0);
+    int32_t timeout = 0xFFFF;
+    while ((__HAL_RCC_GET_FLAG(RCC_FLAG_D2CKRDY) == RESET) && (timeout-- > 0))
+        ;
+    if (timeout < 0) {
+        Error_HandlerAt(__FILE__, __LINE__, __func__);
+    }
+#endif
 
     if (!f_phy_init()) {
         LOG_ERROR("Identificacao PHY invalida; verifique clocks ETH, MDC/MDIO "
@@ -707,31 +714,8 @@ void StartDefaultTask(void *argument) {
 
     f_network_checkout();
 
-    // network_config_t s_dhcp_config = {
-    //     .use_dhcp = true,
-    //     .ip = NULL,
-    //     .netmask = NULL,
-    //     .gateway = NULL,
-    //     .dns = NULL,
-    // };
-
-    // if (f_network_init(NETWORK_MODE_LAN, &s_dhcp_config)) {
-    //     LOG_INFO("Entering DHCP lease wait");
-    //     while (!f_network_wait_for_ip(10000U)) {
-    //         LOG_WARN("Waiting for DHCP lease: IRQ=%lu RX=%lu TX=%lu",
-    //                  (unsigned long)eth_irq_count,
-    //                  (unsigned long)eth_rx_complete_count,
-    //                  (unsigned long)eth_tx_complete_count);
-    //         osDelay(1000U);
-    //     }
-    //     f_network_checkout();
-    // } else {
-    //     LOG_ERROR("Failed to switch to DHCP");
-    // }
-
     while (1) {
         osDelay(2000);
-        ethernetif_log_status();
     }
 
     /* USER CODE END 5 */

@@ -27,9 +27,6 @@
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
 
-extern volatile uint32_t eth_irq_count;
-extern volatile uint32_t eth_rx_complete_count;
-extern volatile uint32_t eth_tx_complete_count;
 /* Called in the LwIP TCP/IP thread after ethernetif_init(). */
 err_t ethernetif_set_mac(struct netif *netif, const uint8_t mac[6]);
 
@@ -46,7 +43,6 @@ u32_t sys_jiffies(void);
 u32_t sys_now(void);
 
 /* USER CODE BEGIN 1 */
-void ethernetif_log_status(void);
 
 /* USER CODE END 1 */
 #endif

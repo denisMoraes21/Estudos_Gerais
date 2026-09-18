@@ -172,7 +172,7 @@ bool f_ping(const char *v_ip) {
 
 #define PING_TIMEOUT 20000
 #define PING_TIMEOUT_MESSAGE_ERROR "Timeout: Ping connection!"
-#define PING_CONNECTION_MESSAGE_SUCCESS "ETH link=%s IRQ=%lu RX=%lu TX=%lu"
+#define PING_CONNECTION_MESSAGE_SUCCESS "Waiting for ping response: ETH link=%s"
 
 bool f_wait_ping(char *v_ip) {
     uint32_t v_start_time = HAL_GetTick();
@@ -191,13 +191,8 @@ bool f_wait_ping(char *v_ip) {
             return true;
         }
 
-        {
-            LOG_INFO(PING_CONNECTION_MESSAGE_SUCCESS,
-                     netif_is_link_up(&gnetif) ? "UP" : "DOWN",
-                     (unsigned long)eth_irq_count,
-                     (unsigned long)eth_rx_complete_count,
-                     (unsigned long)eth_tx_complete_count);
-        }
+        LOG_INFO(PING_CONNECTION_MESSAGE_SUCCESS,
+                 netif_is_link_up(&gnetif) ? "UP" : "DOWN");
         osDelay(1000);
     }
 

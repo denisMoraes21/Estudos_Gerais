@@ -10,7 +10,6 @@
 struct netif gnetif;
 ETH_HandleTypeDef heth;
 lan8742_Object_t LAN8742;
-unsigned long eth_irq_count, eth_rx_complete_count, eth_tx_complete_count;
 int lock_depth;
 static uint32_t tick, ready_at = UINT32_MAX;
 static int delay_error, phy_fail, phy_invalid, phy_state, phy_reads, phy_zero;

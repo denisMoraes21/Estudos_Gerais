@@ -46,8 +46,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-volatile uint32_t freertos_failure_reason; /* 1: stack overflow, 2: allocation */
-TaskHandle_t volatile freertos_failed_task;
 
 
 /* USER CODE END Variables */
@@ -62,8 +60,7 @@ TaskHandle_t volatile freertos_failed_task;
 
 void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
 {
-  freertos_failure_reason = 1U;
-  freertos_failed_task = task;
+  (void)task;
   LOG_ERROR("Stack overflow: %s", task_name != NULL ? task_name : "?");
   taskDISABLE_INTERRUPTS();
   for (;;)
@@ -73,8 +70,6 @@ void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
 
 void vApplicationMallocFailedHook(void)
 {
-  freertos_failure_reason = 2U;
-  freertos_failed_task = xTaskGetCurrentTaskHandle();
   LOG_ERROR("FreeRTOS malloc falhou");
   taskDISABLE_INTERRUPTS();
   for (;;)

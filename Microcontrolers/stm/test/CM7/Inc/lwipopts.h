@@ -30,6 +30,10 @@
 
 /* Within 'USER CODE' section, code will be kept by default at each generation */
 /* USER CODE BEGIN 0 */
+/* ICMP replies copy zero-copy RX pbufs into the lwIP heap. The default
+ * 1600 bytes cannot hold a full-MTU reply alongside stack allocations.
+ * Fits the linker reservation 0x30008000..0x3000D000 (20 KiB). */
+#define MEM_SIZE (16 * 1024)
 #define LWIP_DHCP 1
 #define LWIP_NETIF_STATUS_CALLBACK 1
 
