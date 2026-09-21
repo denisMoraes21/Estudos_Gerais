@@ -1,0 +1,16 @@
+\begin{frame}{Reproduzir antes de corrigir}
+\small
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+Campo & Registro do defeito \\
+\midrule
+Entrada & Vetor \texttt{\{28, 30, 32\}}, limite 30. \\
+Esperado & 2, porque 30 e 32 atingem o limite. \\
+Observado & 1. \\
+Caso reduzido & Vetor \texttt{\{30\}}, limite 30: esperado 1, observado 0. \\
+Hipótese & A comparação desconsidera a igualdade. \\
+\bottomrule
+\end{tabularx}
+\vspace{0.4cm}
+O caso reduzido isola a fronteira da decisão e dispensa sensores, portas seriais e temporização.
+\end{frame}

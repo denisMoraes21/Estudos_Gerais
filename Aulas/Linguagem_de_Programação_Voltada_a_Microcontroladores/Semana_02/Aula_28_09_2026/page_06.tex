@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Índices: o limite é responsabilidade do programa}
+\begin{lstlisting}
+int leituras[5] = {26, 28, 30, 32, 34};
+int indice = 4;
+if (indice >= 0 && indice < 5) {
+    printf("Leitura: %d\n", leituras[indice]);
+} else {
+    printf("Indice invalido\n");
+}
+\end{lstlisting}
+\begin{alertblock}{Acesso fora dos limites}
+\texttt{leituras[5]} e \texttt{leituras[-1]} são inválidos. Em C, esse acesso tem comportamento indefinido: não existe garantia de erro visível, proteção automática ou resultado previsível.
+\end{alertblock}
+Para um vetor de capacidade $N$, o intervalo válido é $0 \leq i < N$.
+\end{frame}

@@ -1,0 +1,18 @@
+\begin{frame}{GDB: comandos para investigar uma hipótese}
+\small
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+Comando & Uso \\
+\midrule
+\texttt{list} & Exibir linhas próximas da posição atual. \\
+\texttt{next} & Avançar uma linha sem entrar em uma chamada. \\
+\texttt{step} & Avançar entrando em função quando aplicável. \\
+\texttt{print total} & Mostrar o valor atual, após a inicialização. \\
+\texttt{display i} & Mostrar automaticamente, quando estiver no escopo. \\
+\texttt{backtrace} & Examinar a sequência de chamadas ativas. \\
+\texttt{continue} & Retomar até a próxima parada ou o fim. \\
+\texttt{quit} & Encerrar o depurador. \\
+\bottomrule
+\end{tabularx}
+\small Observe a seta da próxima linha: uma atribuição nessa linha ainda pode não ter sido executada.
+\end{frame}

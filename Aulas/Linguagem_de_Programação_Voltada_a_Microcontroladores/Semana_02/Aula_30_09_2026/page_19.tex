@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Entrada inválida: validar na fronteira do sistema}
+\begin{lstlisting}
+bool temperatura_valida(int temperatura_c)
+{
+    return temperatura_c >= -40 && temperatura_c <= 125;
+}
+\end{lstlisting}
+\small Faixa \textbf{didática} adotada neste exemplo; não representa todo sensor.
+\begin{itemize}
+\item $-40$ e 125 são aceitos; $-41$ e 126 são rejeitados.
+\item Leituras rejeitadas não seguem para a decisão de alarme.
+\item Não teste a função de contagem com um ponteiro inválido ou tamanho inventado: isso viola seu contrato.
+\end{itemize}
+\small Texto não numérico deve ser rejeitado na conversão de entrada, antes desta função que já recebe um inteiro.
+\end{frame}

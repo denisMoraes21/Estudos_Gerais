@@ -1,0 +1,14 @@
+\begin{frame}[fragile]{Valores que devem permanecer fixos}
+\begin{lstlisting}
+const double tensao_referencia_v = 3.3;
+const int capacidade_tanque_l = 500;
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{const} impede uma nova atribuição pelo nome da variável.
+\item Um nome comunica o significado de um valor de configuração.
+\item Inicialize o objeto \texttt{const} na declaração.
+\end{itemize}
+\begin{alertblock}{Exemplo de erro de compilação}
+\texttt{capacidade\_tanque\_l = 700;} tenta modificar um objeto declarado como \texttt{const}.
+\end{alertblock}
+\end{frame}

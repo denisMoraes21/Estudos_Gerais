@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Experimento: conhecer o ambiente de execução}
+\begin{lstlisting}
+#include <limits.h>
+#include <stdio.h>
+
+int main(void) {
+    printf("Bits por byte: %d\n", CHAR_BIT);
+    printf("Bytes de int: %zu\n", sizeof(int));
+    printf("Limites de int: %d a %d\n",
+           INT_MIN, INT_MAX);
+    printf("Bytes de double: %zu\n", sizeof(double));
+    return 0;
+}
+\end{lstlisting}
+\small
+\textbf{Execute:} \texttt{exemplos/02\_ambiente.c}. Anote a saída e identifique quais resultados podem mudar em outra plataforma. \texttt{\%zu} é o formato usado para o resultado de \texttt{sizeof}.
+\end{frame}

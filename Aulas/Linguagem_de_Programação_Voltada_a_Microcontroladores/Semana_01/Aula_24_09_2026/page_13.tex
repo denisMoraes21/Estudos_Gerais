@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Comparação em uma medição simulada}
+\begin{lstlisting}
+double temperatura_c = 65.0;
+const double limite_c = 60.0;
+bool acima_limite = temperatura_c > limite_c;
+bool no_limite = temperatura_c == limite_c;
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{acima\_limite} recebe verdadeiro.
+\item \texttt{no\_limite} recebe falso.
+\item Comparar não altera o valor da temperatura.
+\end{itemize}
+\begin{alertblock}{Escolha do requisito}
+``Acima de 60'' usa \texttt{>}; ``a partir de 60'' usa \texttt{>=}. A fronteira faz parte da especificação.
+\end{alertblock}
+\end{frame}

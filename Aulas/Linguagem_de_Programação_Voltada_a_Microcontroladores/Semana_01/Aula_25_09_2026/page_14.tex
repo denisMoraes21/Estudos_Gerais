@@ -1,0 +1,20 @@
+\begin{frame}{Rastreio de while}
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+ciclo no teste & \texttt{ciclo <= 3} & Saída & ciclo após corpo \\
+\midrule
+1 & verdadeiro & Leitura 1 & 2 \\
+2 & verdadeiro & Leitura 2 & 3 \\
+3 & verdadeiro & Leitura 3 & 4 \\
+4 & falso & nenhuma & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item Foram três execuções do corpo e quatro avaliações da condição.
+\item Depois do laço, a saída é \texttt{Fim: ciclo = 4}.
+\item Se \texttt{ciclo} começasse em 4, o corpo não executaria nenhuma vez.
+\end{itemize}
+\textbf{Atividade oral:} troque \texttt{<= 3} por \texttt{< 3}. Quantas leituras serão exibidas? Duas.
+\end{frame}

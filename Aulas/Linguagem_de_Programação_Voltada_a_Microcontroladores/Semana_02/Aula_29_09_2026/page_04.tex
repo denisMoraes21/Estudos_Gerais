@@ -1,0 +1,15 @@
+\begin{frame}{Uma função transforma entradas em resultado}
+\begin{center}
+\begin{tikzpicture}[node distance=0.5cm, every node/.style={align=center,font=\small}]
+\node[draw,rounded corners,text width=2.2cm] (entrada) {Temperatura: 32\\Limite: 30};
+\node[draw,fill=green!10,right=of entrada,text width=3cm] (processo) {\texttt{alarme\_ativo}\\comparar com o limite};
+\node[draw,rounded corners,right=of processo,text width=2.1cm] (saida) {Resultado\\\texttt{true}};
+\draw[-{Latex}] (entrada)--(processo);
+\draw[-{Latex}] (processo)--(saida);
+\end{tikzpicture}
+\end{center}
+\begin{block}{Separar decisão de ação}
+A função calcula se há alarme. Outra parte do programa imprime a mensagem ou, futuramente, aciona uma saída digital.
+\end{block}
+\small Assim, podemos testar a regra sem conectar o equipamento.
+\end{frame}

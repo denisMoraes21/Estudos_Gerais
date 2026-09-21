@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{5.2 Operações básicas: consultar e atualizar}
+\begin{lstlisting}
+int contagem[3] = {10, 20, 30};
+contagem[1] = 25; /* substitui a segunda posicao */
+contagem[2] += 1; /* incrementa a terceira */
+for (int i = 0; i < 3; i++) {
+    printf("%d\n", contagem[i]);
+}
+\end{lstlisting}
+\begin{itemize}
+\item Estado final: \texttt{\{10, 25, 31\}}.
+\item Atribuir a um elemento não modifica os demais.
+\item Consultar um elemento não o remove do vetor.
+\end{itemize}
+\begin{block}{Antes de alterar uma posição}
+Valide qualquer índice vindo de uma entrada externa. Use a mesma capacidade na declaração e na condição do laço.
+\end{block}
+\end{frame}

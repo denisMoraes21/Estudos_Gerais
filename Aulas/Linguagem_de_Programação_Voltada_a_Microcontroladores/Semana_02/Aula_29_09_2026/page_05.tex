@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{6.1 — Anatomia de uma função em C}
+\begin{lstlisting}
+#include <stdbool.h>
+
+bool alarme_ativo(int temperatura_c, int limite_c)
+{
+    return temperatura_c >= limite_c;
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{bool}: tipo do valor devolvido.
+\item \texttt{alarme\_ativo}: nome; os parâmetros ficam entre parênteses.
+\item \texttt{temperatura\_c} e \texttt{limite\_c}: entradas locais.
+\item \texttt{return}: devolve um valor e encerra esta chamada.
+\end{itemize}
+\end{frame}

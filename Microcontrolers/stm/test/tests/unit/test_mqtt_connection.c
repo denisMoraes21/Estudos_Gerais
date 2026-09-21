@@ -82,6 +82,36 @@ err_t mqtt_publish(mqtt_client_t *mqtt, const char *topic, const void *payload,
     publish_argument = argument;
     return publish_result;
 }
+static mqtt_incoming_publish_cb_t incoming_publish;
+static mqtt_incoming_data_cb_t incoming_data;
+static void *incoming_arg;
+static unsigned received_messages;
+static size_t received_length;
+static char received_payload[APP_MQTT_PAYLOAD_MAX_LEN];
+void mqtt_set_inpub_callback(mqtt_client_t *mqtt, mqtt_incoming_publish_cb_t pub,
+                             mqtt_incoming_data_cb_t data, void *arg) {
+    assert(in_core && mqtt == &client);
+    incoming_publish = pub;
+    incoming_data = data;
+    incoming_arg = arg;
+}
+err_t mqtt_subscribe(mqtt_client_t *mqtt, const char *topic, uint8_t qos,
+                     mqtt_request_cb_t callback, void *arg) {
+    assert(in_core && mqtt == &client);
+    assert(strcmp(topic, "/bms/resposta") == 0 && qos == APP_MQTT_QOS_1);
+    publish_callback = callback;
+    publish_argument = arg;
+    return publish_result;
+}
+static void on_message(const char *topic, const void *payload, size_t length,
+                        void *argument) {
+    (void)argument;
+    assert(in_core && strcmp(topic, "/bms/resposta") == 0);
+    assert(length <= sizeof(received_payload));
+    memcpy(received_payload, payload, length);
+    received_length = length;
+    ++received_messages;
+}
 void mqtt_disconnect(mqtt_client_t *mqtt) {
     assert(in_core && mqtt == &client);
     ++disconnect_calls;
@@ -135,6 +165,7 @@ int main(void) {
     app_mqtt_config_t invalid = config;
     invalid.broker_hostname = NULL;
     assert(f_mqtt_init(&invalid) == APP_MQTT_ERR_ARGUMENT);
+    config.on_message = on_message;
     assert(f_mqtt_init(&config) == APP_MQTT_OK);
 
     allocation_failure = true;
@@ -146,6 +177,8 @@ int main(void) {
     assert(f_mqtt_get_state() == APP_MQTT_STATE_CONNECTING);
     assert(f_mqtt_connect() == APP_MQTT_ERR_BUSY);
     assert(f_mqtt_init(NULL) == APP_MQTT_ERR_BUSY);
+    assert(f_mqtt_subscribe("/bms/resposta", APP_MQTT_QOS_1, NULL, NULL)
+           == APP_MQTT_ERR_NOT_CONNECTED);
     /* Timeout must terminate, including tick-counter wraparound. */
     now_ms = UINT32_MAX - 499U;
     assert(f_mqtt_wait_connect() == APP_MQTT_ERR_TIMEOUT);
@@ -165,6 +198,30 @@ int main(void) {
     publish_callback(publish_argument, ERR_OK);
     in_core = false;
     assert(publish_completed == 1 && publish_status == APP_MQTT_OK);
+    assert(f_mqtt_subscribe("bad+topic", APP_MQTT_QOS_1, NULL, NULL)
+           == APP_MQTT_ERR_ARGUMENT);
+    assert(f_mqtt_subscribe("/bms/resposta", APP_MQTT_QOS_1,
+                            on_publish, &publish_completed) == APP_MQTT_OK);
+    in_core = true;
+    publish_callback(publish_argument, ERR_OK);
+    assert(publish_completed == 2 && publish_status == APP_MQTT_OK);
+    publish_completed = 1; /* Preserve the publication assertions below. */
+    incoming_publish(incoming_arg, "/bms/resposta", 5);
+    incoming_data(incoming_arg, (const uint8_t *)"he", 2, 0);
+    assert(received_messages == 0);
+    incoming_data(incoming_arg, (const uint8_t *)"llo", 3, MQTT_DATA_FLAG_LAST);
+    assert(received_messages == 1 && received_length == 5);
+    assert(memcmp(received_payload, "hello", 5) == 0);
+    incoming_publish(incoming_arg, "/bms/resposta", APP_MQTT_PAYLOAD_MAX_LEN + 1);
+    incoming_data(incoming_arg, (const uint8_t *)"x", 1, MQTT_DATA_FLAG_LAST);
+    assert(received_messages == 1);
+    incoming_publish(incoming_arg, "/bms/resposta", 0);
+    incoming_data(incoming_arg, NULL, 0, MQTT_DATA_FLAG_LAST);
+    assert(received_messages == 2 && received_length == 0);
+    incoming_publish(incoming_arg, "/bms/resposta", 1);
+    incoming_data(incoming_arg, (const uint8_t *)"xx", 2, MQTT_DATA_FLAG_LAST);
+    assert(received_messages == 2);
+    in_core = false;
     publish_result = ERR_MEM;
     assert(f_mqtt_publish("/bms", "{}", 2, APP_MQTT_QOS_1, false,
                           on_publish, &publish_completed) == APP_MQTT_ERR_MEMORY);

@@ -1,0 +1,11 @@
+\begin{frame}{6.3 — O que é recursividade?}
+\begin{block}{Definição}
+Uma função recursiva resolve parte do problema chamando a si mesma com um problema menor.
+\end{block}
+\begin{enumerate}
+\item \textbf{Caso-base}: resultado conhecido, sem nova chamada.
+\item \textbf{Passo recursivo}: reduzir o problema.
+\item \textbf{Progresso}: garantir que as chamadas alcancem o caso-base.
+\end{enumerate}
+\small Exemplo didático: $S(0)=0$ e $S(n)=n+S(n-1)$ para inteiros $n>0$. Na aula, limitaremos $n$ a 20.
+\end{frame}

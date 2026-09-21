@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{do/while: executar pelo menos uma vez}
+\begin{lstlisting}
+int opcao;
+do {
+    printf("1 = consultar; 0 = sair: ");
+    if (scanf("%d", &opcao) != 1) {
+        printf("Entrada invalida\n");
+        return 1;
+    }
+    if (opcao == 1) {
+        printf("Sensor: 28 C\n");
+    }
+} while (opcao != 0);
+\end{lstlisting}
+O menu aparece antes do primeiro teste. Há um ponto e vírgula obrigatório ao final de \texttt{while (opcao != 0);}. O retorno de \texttt{scanf} verifica se um inteiro foi lido.
+\end{frame}

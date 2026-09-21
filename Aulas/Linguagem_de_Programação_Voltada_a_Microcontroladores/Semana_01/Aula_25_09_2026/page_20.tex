@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Escopo: qual estrutura será encerrada?}
+\begin{lstlisting}
+for (int ciclo = 1; ciclo <= 3; ciclo++) {
+    switch (modo) {
+        case 0:
+            printf("Parado\n");
+            break; /* sai do switch, nao do for */
+        default:
+            printf("Em operacao\n");
+            break;
+    }
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{break} encerra o \texttt{switch} ou laço mais interno que o contém.
+\item \texttt{continue} refere-se ao laço mais interno.
+\item Variáveis locais pertencem ao bloco em que foram declaradas; evite reutilizar o mesmo nome em blocos internos.
+\end{itemize}
+\end{frame}

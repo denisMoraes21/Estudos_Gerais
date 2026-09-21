@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{break e continue: efeitos diferentes}
+\begin{lstlisting}
+for (int ciclo = 1; ciclo <= 5; ciclo++) {
+    if (ciclo == 2) {
+        continue; /* pula o restante desta iteracao */
+    }
+    if (ciclo == 4) {
+        break;    /* encerra este laco */
+    }
+    printf("Processado: %d\n", ciclo);
+}
+\end{lstlisting}
+\begin{itemize}
+\item A saída mostra apenas \texttt{Processado: 1} e \texttt{Processado: 3}.
+\item No \texttt{for}, \texttt{continue} segue para a atualização e o teste.
+\item No \texttt{while}, segue diretamente para o teste; cuidado para não pular o incremento necessário.
+\end{itemize}
+\end{frame}

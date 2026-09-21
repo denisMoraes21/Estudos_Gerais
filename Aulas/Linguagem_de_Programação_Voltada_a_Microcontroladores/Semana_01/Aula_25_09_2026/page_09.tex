@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Combinando condições de operação}
+Uma esteira simulada só pode ser habilitada se houver peça e a proteção estiver fechada.
+\begin{lstlisting}
+int peca_detectada = 1;
+int protecao_fechada = 1;
+int esteira = 0;
+if (peca_detectada && protecao_fechada) {
+    esteira = 1;
+}
+printf("Esteira: %d\n", esteira);
+\end{lstlisting}
+\begin{itemize}
+\item Em C, zero é falso e qualquer valor diferente de zero é verdadeiro.
+\item \texttt{\&\&}: ambas; \texttt{||}: pelo menos uma; \texttt{!}: negação.
+\item Inicializar a saída evita manter um valor indefinido.
+\end{itemize}
+\small A regra é um modelo didático; sistemas de proteção reais exigem projeto específico.
+\end{frame}

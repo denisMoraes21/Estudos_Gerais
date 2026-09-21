@@ -1,0 +1,17 @@
+\begin{frame}{O que é uma variável?}
+Uma variável é um objeto identificado por um nome, com um tipo e um valor armazenado durante a execução.
+\begin{center}
+\begin{tikzpicture}[node distance=0.6cm]
+\node[draw,rounded corners,fill=darkgreen!10,minimum width=2.4cm,minimum height=0.8cm] (n) {nome: ciclos};
+\node[draw,rounded corners,right=of n,minimum width=1.8cm,minimum height=0.8cm] (t) {tipo: int};
+\node[draw,rounded corners,right=of t,minimum width=1.8cm,minimum height=0.8cm] (v) {valor: 42};
+\draw[-{Latex}] (n) -- (t);
+\draw[-{Latex}] (t) -- (v);
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+\item O \textbf{nome} permite referenciar a informação.
+\item O \textbf{tipo} define valores e operações possíveis.
+\item O \textbf{valor} pode mudar por uma atribuição.
+\end{itemize}
+\end{frame}

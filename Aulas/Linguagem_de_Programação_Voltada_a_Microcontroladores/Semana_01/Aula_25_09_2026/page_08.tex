@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Mais de duas alternativas: cadeia de decisões}
+\begin{lstlisting}
+if (temperatura < 20) {
+    printf("Faixa baixa\n");
+} else if (temperatura < 30) {
+    printf("Faixa normal\n");
+} else {
+    printf("Faixa alta\n");
+}
+\end{lstlisting}
+\begin{itemize}
+\item A primeira condição verdadeira determina o bloco executado.
+\item No segundo teste, já sabemos que a temperatura é pelo menos 20.
+\item O último \texttt{else} cobre todos os valores restantes.
+\end{itemize}
+\textbf{Verifique os limites:} 19 $\to$ baixa; 20 e 29 $\to$ normal; 30 $\to$ alta.
+\end{frame}

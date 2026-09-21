@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Rastreamento manual do estado}
+\begin{lstlisting}
+size_t total = 0;
+for (size_t i = 0; i < quantidade; ++i) {
+    if (valores[i] >= limite) ++total;
+}
+\end{lstlisting}
+\begin{center}
+\small
+\begin{tabular}{rrrr}
+\toprule
+\texttt{i} & \texttt{valores[i]} & Teste \texttt{>= 30} & \texttt{total} após passo \\
+\midrule
+0 & 28 & falso & 0 \\
+1 & 30 & verdadeiro & 1 \\
+2 & 32 & verdadeiro & 2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\small Invariante: antes do passo \texttt{i}, \texttt{total} conta as ocorrências nos elementos de índices menores que \texttt{i}.
+\end{frame}

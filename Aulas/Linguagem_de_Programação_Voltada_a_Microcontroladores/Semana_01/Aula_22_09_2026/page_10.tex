@@ -1,0 +1,16 @@
+\begin{frame}[fragile,t]{Pseudocódigo com decisão}
+\begin{lstlisting}[language={}]
+INICIO
+  LER temperatura
+  SE temperatura >= 30 ENTAO
+    sinalizador <- LIGADO
+  SENAO
+    sinalizador <- DESLIGADO
+  FIM_SE
+  ESCREVER sinalizador
+FIM
+\end{lstlisting}
+\begin{block}{Por que escrever o SENÃO?}
+O algoritmo define também o que fazer abaixo do limite. Deixar uma situação sem resposta pode preservar uma saída anterior indesejada.
+\end{block}
+\end{frame}

@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Escopo e duração das variáveis locais}
+\begin{lstlisting}
+int dobro(int entrada)
+{
+    int resultado = 2 * entrada;
+    return resultado;
+}
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{entrada} e \texttt{resultado} pertencem a esta chamada.
+\item Os nomes não podem ser usados fora de seu escopo.
+\item Variáveis locais automáticas deixam de existir ao retornar.
+\item Retornar o \textbf{valor} é válido; retornar o endereço de uma variável local automática cria um ponteiro inválido.
+\end{itemize}
+\small Pré-condição do exemplo: o dobro deve caber no tipo \texttt{int}. Variáveis globais dificultam acompanhar quem altera o estado.
+\end{frame}

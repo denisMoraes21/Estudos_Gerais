@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{strcmp: comparar o conteúdo de strings}
+\begin{lstlisting}
+#include <string.h>
+/* Dentro de main: */
+char comando[16] = "LIGAR";
+if (strcmp(comando, "LIGAR") == 0) {
+    printf("Saida ativada\n");
+} else {
+    printf("Comando diferente\n");
+}
+\end{lstlisting}
+\begin{itemize}
+\item Retorno zero: textos iguais.
+\item Retorno negativo ou positivo: ordem lexicográfica; não suponha que será exatamente $-1$ ou 1.
+\item \texttt{==} não compara conteúdo de strings.
+\item Maiúsculas e minúsculas diferem: \texttt{LIGAR} e \texttt{ligar} não são iguais.
+\end{itemize}
+\end{frame}

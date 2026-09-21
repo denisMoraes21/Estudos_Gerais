@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Integração: temperatura simulada por cinco ciclos}
+\begin{lstlisting}
+int temperatura = 26;
+int acionamentos = 0;
+for (int ciclo = 1; ciclo <= 5; ciclo++) {
+    int ventilador = 0;
+    if (temperatura >= 30) {
+        ventilador = 1;
+        acionamentos++;
+    }
+    printf("%d: %d C, ventilador=%d\n",
+           ciclo, temperatura, ventilador);
+    temperatura += 2;
+}
+printf("Ciclos ligado: %d\n", acionamentos);
+\end{lstlisting}
+\small Exemplo completo: \texttt{exemplos/02\_ciclos.c}. Valores de entrada: 26, 28, 30, 32 e 34~$^\circ$C; saída final: três ciclos ligado.
+\end{frame}

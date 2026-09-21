@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Matrizes: duas dimensões para organizar dados}
+Duas máquinas, três instantes de medição:
+\begin{lstlisting}
+int temperatura[2][3] = {
+    {24, 25, 26},
+    {28, 29, 30}
+};
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{c|ccc}
+ & instante 0 & instante 1 & instante 2 \\
+\hline
+máquina 0 & 24 & 25 & 26 \\
+máquina 1 & 28 & 29 & 30 \\
+\end{tabular}
+\end{center}
+\texttt{temperatura[1][2]} acessa a máquina 1 no instante 2: valor 30.
+\end{frame}

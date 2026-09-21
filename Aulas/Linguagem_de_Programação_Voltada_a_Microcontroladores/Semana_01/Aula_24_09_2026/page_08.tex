@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Expressões para grandezas de automação}
+\begin{lstlisting}
+double tempo_s = 12.0;
+double distancia_m = 3.0;
+double velocidade_m_s = distancia_m / tempo_s;
+double tempo_ms = tempo_s * 1000.0;
+\end{lstlisting}
+\begin{itemize}
+\item Velocidade: $3{,}0 / 12{,}0 = 0{,}25$ m/s.
+\item Conversão de tempo: $12{,}0 \times 1000 = 12000$ ms.
+\item Verifique se as unidades fazem sentido antes de confiar no número.
+\end{itemize}
+\begin{block}{Hipótese do exemplo}
+Tempo positivo e medidas simuladas; ainda não há leitura de hardware.
+\end{block}
+\end{frame}

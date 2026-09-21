@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Um conjunto automatizado de casos}
+\begin{lstlisting}
+const int misto[] = {28, 30, 32};
+const int nenhum[] = {25, 28};
+const int todos[] = {30, 31};
+const int igual[] = {30};
+const int negativos[] = {-2, 0, 2};
+assert(contar_no_limite(misto, 3, 30) == 2);
+assert(contar_no_limite(nenhum, 2, 30) == 0);
+assert(contar_no_limite(todos, 2, 30) == 2);
+assert(contar_no_limite(igual, 1, 30) == 1);
+assert(contar_no_limite(NULL, 0, 30) == 0);
+assert(contar_no_limite(negativos, 3, 0) == 2);
+puts("6 testes de contagem passaram");
+\end{lstlisting}
+\small Versão completa: \texttt{exemplos/testes.c}. Ela também verifica seis casos da validação de temperatura.
+\end{frame}

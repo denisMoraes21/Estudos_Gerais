@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Vetores: dados e quantidade viajam juntos}
+\begin{lstlisting}
+int maior_leitura(const int valores[], size_t quantidade)
+{
+    int maior = valores[0];
+    for (size_t i = 1; i < quantidade; ++i) {
+        if (valores[i] > maior) maior = valores[i];
+    }
+    return maior;
+}
+\end{lstlisting}
+\small \texttt{size\_t} vem de \texttt{<stddef.h>}.
+\begin{itemize}
+\item Contrato: \texttt{quantidade > 0}; vetor com elementos suficientes.
+\item No parâmetro, \texttt{valores[]} é ajustado para ponteiro.
+\item \texttt{const} impede modificar os elementos por este parâmetro.
+\end{itemize}
+\end{frame}

@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Capacidade e quantidade utilizada}
+Um vetor pode ter espaço para cinco leituras e conter apenas três leituras válidas.
+\begin{lstlisting}
+int buffer[5] = {10, 20, 30, 0, 0};
+int quantidade = 3;
+if (quantidade < 5) {
+    buffer[quantidade] = 40;
+    quantidade++;
+}
+for (int i = 0; i < quantidade; i++) {
+    printf("%d\n", buffer[i]);
+}
+\end{lstlisting}
+\begin{itemize}
+\item Capacidade continua 5; quantidade passa a 4.
+\item O espaço restante não deve entrar na média das leituras válidas.
+\item Inserção no meio e remoção exigem deslocar elementos; não são automáticas em um vetor C.
+\end{itemize}
+\end{frame}

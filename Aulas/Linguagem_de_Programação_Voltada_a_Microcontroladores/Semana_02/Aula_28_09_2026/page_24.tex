@@ -1,0 +1,20 @@
+\begin{frame}[fragile]{Entrada longa: uma política explícita}
+\small Complemento ao teste da quebra de linha do slide anterior:
+\begin{lstlisting}
+else {
+    int extra = getchar();
+    if (extra != '\n' && extra != EOF) {
+        while ((extra = getchar()) != '\n' && extra != EOF) {
+            /* descartar o restante da linha */
+        }
+        printf("Comando muito longo\n");
+        return 1;
+    }
+}
+\end{lstlisting}
+\begin{itemize}
+\item Se só faltou ler a quebra ou chegou o fim da entrada, o texto completo cabe e pode ser aceito.
+\item Se existe outro caractere, o texto foi cortado: descarte e rejeite.
+\item \texttt{getchar} retorna \texttt{int}, para representar caracteres e \texttt{EOF}.
+\end{itemize}
+\end{frame}

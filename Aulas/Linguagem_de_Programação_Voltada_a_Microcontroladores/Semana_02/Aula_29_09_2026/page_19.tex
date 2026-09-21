@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Compilar e ligar os módulos}
+\begin{lstlisting}[language=bash]
+gcc -std=c11 -Wall -Wextra -Wpedantic \
+    main.c alarme.c -o monitor
+./monitor
+\end{lstlisting}
+\begin{lstlisting}[language={}]
+28 C: normal
+30 C: ALARME
+32 C: ALARME
+\end{lstlisting}
+\begin{itemize}
+\item Cada \texttt{.c} é compilado; o ligador resolve as referências.
+\item Informe os dois arquivos \texttt{.c} ao comando.
+\item Inclua \texttt{alarme.h}; não inclua \texttt{alarme.c} no principal.
+\end{itemize}
+\small Execute na pasta \texttt{exemplos/modular} desta aula.
+\end{frame}

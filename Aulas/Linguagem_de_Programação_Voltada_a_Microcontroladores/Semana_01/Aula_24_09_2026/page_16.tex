@@ -1,0 +1,18 @@
+\begin{frame}{Tabela-verdade}
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+A & B & A \texttt{\&\&} B & A \texttt{||} B & \texttt{!}A \\
+\midrule
+0 & 0 & 0 & 0 & 1 \\
+0 & 1 & 0 & 1 & 1 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 1 & 1 & 1 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Interpretação}
+Uma partida simulada pode exigir ``comando ativo \textbf{E} proteção fechada''. Um aviso pode ocorrer por ``temperatura alta \textbf{OU} nível baixo''.
+\end{block}
+\small São modelos didáticos de lógica; sistemas reais de proteção exigem projeto próprio.
+\end{frame}

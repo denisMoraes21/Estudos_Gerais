@@ -1,0 +1,20 @@
+\begin{frame}[fragile]{Atribuição não é teste de igualdade}
+\begin{lstlisting}
+int nivel = 8;
+bool igual_a_dez = (nivel == 10); /* falso */
+nivel = 10;                     /* altera nivel */
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Operação & Propósito & Efeito no nível \\
+\midrule
+\texttt{nivel == 10} & Comparar & Mantém 8 \\
+\texttt{nivel = 10} & Atribuir & Passa para 10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Leitura em voz alta}
+Leia \texttt{=} como ``recebe'' e \texttt{==} como ``é igual a?''.
+\end{block}
+\end{frame}

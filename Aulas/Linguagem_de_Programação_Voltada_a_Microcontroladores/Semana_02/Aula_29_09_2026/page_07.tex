@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Retornar um valor ou executar uma ação}
+\begin{lstlisting}
+int limitar(int valor, int minimo, int maximo)
+{
+    if (valor < minimo) return minimo;
+    if (valor > maximo) return maximo;
+    return valor;
+}
+
+void mostrar_inicio(void)
+{
+    puts("Monitor iniciado"); /* requer <stdio.h> */
+}
+\end{lstlisting}
+\small Contrato: \texttt{minimo <= maximo}. Uma função \texttt{void} não fornece valor; pode terminar com \texttt{return;}.
+\begin{alertblock}{Evite caminhos sem retorno}
+Toda execução de uma função que produz resultado deve devolver o valor esperado antes de ele ser usado.
+\end{alertblock}
+\end{frame}

@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Erros comuns em decisões}
+\begin{lstlisting}
+if (modo = 1) { /* atribui 1: nao compara! */
+    printf("Manual\n");
+}
+if (temperatura >= 30); /* encerra o if aqui */
+{
+    ventilador = 1; /* executa sempre */
+}
+\end{lstlisting}
+\begin{block}{Como corrigir}
+Use \texttt{modo == 1}; remova o ponto e vírgula após a condição; mantenha as chaves; compile com avisos habilitados.
+\end{block}
+\begin{itemize}
+\item Dois \texttt{if} independentes podem executar na mesma passagem.
+\item Uma cadeia \texttt{if/else if/else} seleciona um único caminho.
+\end{itemize}
+\end{frame}

@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Mínimo e máximo: começar com um elemento real}
+\begin{lstlisting}
+int minimo = leituras[0];
+int maximo = leituras[0];
+for (int i = 1; i < 5; i++) {
+    if (leituras[i] < minimo) {
+        minimo = leituras[i];
+    }
+    if (leituras[i] > maximo) {
+        maximo = leituras[i];
+    }
+}
+\end{lstlisting}
+\begin{itemize}
+\item Pressuposto: o vetor tem pelo menos um elemento válido.
+\item Com as leituras anteriores: mínimo 26 e máximo 34.
+\item Iniciar o mínimo em zero falha quando todas as leituras são positivas: zero não pertence à coleção.
+\end{itemize}
+\end{frame}

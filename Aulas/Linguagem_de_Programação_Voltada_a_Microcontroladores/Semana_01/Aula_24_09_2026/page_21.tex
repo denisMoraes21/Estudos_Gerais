@@ -1,0 +1,15 @@
+\begin{frame}{Erros comuns em expressões}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Problema & Prática recomendada \\
+\midrule
+Esperar 2,5 de \texttt{5 / 2} & Use \texttt{5.0 / 2.0} para divisão real. \\
+Confundir \texttt{=} com \texttt{==} & Diferencie atualização e comparação. \\
+Usar \texttt{\&} no lugar de \texttt{\&\&} & Escolha o operador pelo significado. \\
+Escrever \texttt{a < x < b} & Combine duas comparações com \texttt{\&\&}. \\
+Comparar resultados reais por igualdade exata & Defina uma tolerância conforme a aplicação. \\
+Modificar uma variável várias vezes na mesma expressão & Separe as atualizações em instruções. \\
+\bottomrule
+\end{tabularx}
+\end{frame}

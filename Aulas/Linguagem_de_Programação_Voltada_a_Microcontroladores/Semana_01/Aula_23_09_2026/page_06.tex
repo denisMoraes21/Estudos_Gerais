@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Inteiros: quantidades sem parte fracionária}
+\begin{lstlisting}
+int ciclos = 42;
+int temperatura_inteira = -5;
+unsigned int pecas = 120u;
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{int} representa inteiros com sinal.
+\item \texttt{unsigned int} representa inteiros não negativos.
+\item \texttt{short}, \texttt{long} e \texttt{long long} são outras formas de especificar tipos inteiros.
+\end{itemize}
+\begin{alertblock}{O tipo não elimina a necessidade de validação}
+Escolha um tipo com capacidade para os valores esperados. Converter um número negativo para \texttt{unsigned} não rejeita o valor.
+\end{alertblock}
+\end{frame}

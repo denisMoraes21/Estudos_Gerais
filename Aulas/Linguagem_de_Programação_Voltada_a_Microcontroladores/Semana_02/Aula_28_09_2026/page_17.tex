@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Uma média para cada linha}
+\begin{lstlisting}
+for (int linha = 0; linha < 2; linha++) {
+    int soma_linha = 0;
+    for (int coluna = 0; coluna < 3; coluna++) {
+        soma_linha += temperatura[linha][coluna];
+    }
+    double media = (double)soma_linha / 3;
+    printf("Maquina %d: %.1f C\n", linha, media);
+}
+\end{lstlisting}
+\begin{itemize}
+\item Máquina 0: $(24+25+26)/3=25{,}0$.
+\item Máquina 1: $(28+29+30)/3=29{,}0$.
+\item \texttt{soma\_linha} é reiniciada para cada máquina. Colocá-la antes do laço externo somaria também as linhas anteriores.
+\end{itemize}
+\end{frame}

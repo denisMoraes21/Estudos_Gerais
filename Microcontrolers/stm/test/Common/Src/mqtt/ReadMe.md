@@ -80,7 +80,7 @@ configuração do hostname no transporte TLS antes de iniciar a negociação.
 de retornar e sincroniza com o core. OK indica enfileiramento; no QoS 1,
 o callback confirma o PUBACK do broker. Desconexão cancela callbacks pendentes
 com NOT_CONNECTED. O argumento do callback deve permanecer válido.
-Assinatura, cancelamento de assinatura e recepção continuam pendentes.
+Assinatura e recepcao estao implementadas; cancelamento de assinatura continua pendente.
 `mqtt_service.c` continua sendo a interface provisória do serviço: seleciona
 MQTTS, mas ainda não cria tarefa, filas, telemetria ou reconexão automática.
 
@@ -95,3 +95,20 @@ placa com um broker real ainda precisa ser feita.
 Referências:
 - https://www.nongnu.org/lwip/2_1_x/group__mqtt.html
 - https://www.nongnu.org/lwip/2_1_x/group__altcp__tls.html
+
+## Teste de resposta na serial
+
+Depois de publicar em `/bms`, o firmware assina `/bms/resposta` com QoS 1.
+Aguarde o log `MQTT: subscribed to /bms/resposta; waiting for messages` e publique:
+
+```sh
+mosquitto_pub -h 192.168.1.10 -p 1883 -t '/bms/resposta' -m '{"status":"ok"}' -q 1
+```
+
+O callback `on_message` recebe o topico e o payload completo (ate 512 bytes),
+mesmo quando o lwIP entrega varios fragmentos. Mensagens maiores sao descartadas.
+Na serial, o teste mostra topico, tamanho e texto em partes de ate 96 caracteres;
+bytes fora do ASCII imprimivel aparecem como `.`. Os callbacks nao devem chamar
+as APIs `f_mqtt_*` nem bloquear. A assinatura permanece ativa enquanto conectado;
+este teste nao implementa reconexao automatica. O broker nao gera uma resposta
+sozinho: outro cliente deve publicar no topico depois da confirmacao da assinatura.

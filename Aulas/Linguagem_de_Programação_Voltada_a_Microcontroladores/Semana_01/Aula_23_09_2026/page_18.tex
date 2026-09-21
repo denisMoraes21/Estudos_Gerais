@@ -1,0 +1,17 @@
+\begin{frame}{Como compilar e conferir o painel}
+\small
+\textbf{No terminal, dentro da pasta da aula:}
+\begin{block}{Compilação C11}
+\texttt{gcc -std=c11 -Wall -Wextra -Wpedantic}\\
+\texttt{exemplos/01\_painel.c -o /tmp/painel}
+\end{block}
+Execute \texttt{/tmp/painel} e confira:
+\begin{exampleblock}{Saída esperada}
+\ttfamily
+Ciclos: 42\\
+Temperatura: 27.5 C\\
+Setor: A\\
+Disponivel: 1
+\end{exampleblock}
+Os avisos do compilador ajudam a encontrar incompatibilidades entre variáveis e formatos.
+\end{frame}

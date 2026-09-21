@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Curto-circuito: nem sempre avaliar tudo}
+\begin{lstlisting}
+int quantidade = 0;
+int total = 100;
+bool media_alta = (quantidade != 0)
+               && (total / quantidade > 20);
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{\&\&} avalia primeiro a esquerda. Se ela for falsa, não avalia a direita.
+\item No exemplo, a divisão não ocorre; \texttt{media\_alta} é falso.
+\item \texttt{||} também começa à esquerda: se ela for verdadeira, não avalia a direita.
+\end{itemize}
+\begin{block}{A ordem protege a operação}
+Verificar o divisor deve vir antes da divisão. Inverter as duas expressões elimina essa proteção.
+\end{block}
+\end{frame}

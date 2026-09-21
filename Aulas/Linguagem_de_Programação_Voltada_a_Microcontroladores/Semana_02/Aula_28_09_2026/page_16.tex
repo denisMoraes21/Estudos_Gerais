@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Percorrer matrizes com laços aninhados}
+\begin{lstlisting}
+for (int linha = 0; linha < 2; linha++) {
+    for (int coluna = 0; coluna < 3; coluna++) {
+        printf("%d ", temperatura[linha][coluna]);
+    }
+    printf("\n");
+}
+\end{lstlisting}
+\begin{block}{Rastreio da ordem}
+\texttt{[0][0] $\to$ [0][1] $\to$ [0][2] $\to$ [1][0] $\to$ [1][1] $\to$ [1][2]}
+\end{block}
+\begin{itemize}
+\item O laço externo escolhe a máquina.
+\item O laço interno percorre os três instantes dessa máquina.
+\item Ao mudar de linha, o índice de coluna começa novamente em zero.
+\end{itemize}
+\end{frame}

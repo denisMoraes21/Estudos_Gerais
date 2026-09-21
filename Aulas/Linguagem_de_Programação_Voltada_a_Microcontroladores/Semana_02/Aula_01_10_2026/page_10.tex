@@ -1,0 +1,13 @@
+\begin{frame}[t]{Entrada flutuante e resistor de pull-up}
+\begin{itemize}
+\item Um pino de entrada desconectado pode apresentar leituras instáveis.
+\item O resistor de \textit{pull-up} estabelece nível alto quando o botão está aberto.
+\item \texttt{INPUT\_PULLUP} habilita o pull-up interno da plataforma.
+\item Ao pressionar o botão ligado ao GND, o pino passa a ler nível baixo.
+\end{itemize}
+\begin{center}\begin{tabular}{ccc}\toprule
+Botão & Leitura & Significado\\\midrule
+Solto & \texttt{HIGH} & Não pressionado\\
+Pressionado & \texttt{LOW} & Pressionado\\\bottomrule
+\end{tabular}\end{center}
+\end{frame}

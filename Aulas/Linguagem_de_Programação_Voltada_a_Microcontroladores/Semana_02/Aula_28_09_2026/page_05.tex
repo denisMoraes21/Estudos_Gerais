@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Declaração e inicialização}
+\begin{lstlisting}
+int leituras[4] = {10, 20, 30, 40};
+int contadores[4] = {0}; /* todos recebem zero */
+int alarmes[4] = {1, 2}; /* restante recebe zero */
+int amostras[] = {7, 8, 9}; /* tamanho: 3 */
+int pendentes[4]; /* locais: ainda sem valores */
+\end{lstlisting}
+\begin{itemize}
+\item Um inicializador parcial preenche o restante com zero.
+\item Um vetor local sem inicialização deve receber valores antes de qualquer leitura.
+\item A capacidade de um vetor comum não aumenta durante o uso.
+\end{itemize}
+\begin{block}{Convenção nesta aula}
+Usaremos tamanhos pequenos e constantes, para acompanhar cada acesso manualmente.
+\end{block}
+\end{frame}

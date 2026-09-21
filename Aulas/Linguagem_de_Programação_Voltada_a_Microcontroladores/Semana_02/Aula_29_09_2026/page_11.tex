@@ -1,0 +1,16 @@
+\begin{frame}{Funções puras e efeitos externos}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\begin{block}{Decisão pura}
+Mesmas entradas produzem o mesmo retorno; nenhum estado externo é alterado.
+\end{block}
+\small Exemplos: comparar uma leitura, calcular uma média, limitar um valor.
+\column{0.48\textwidth}
+\begin{block}{Ação com efeito}
+Interage com entrada/saída ou modifica um objeto externo.
+\end{block}
+\small Exemplos: imprimir, ler um botão, alterar um contador por ponteiro.
+\end{columns}
+\vspace{0.4cm}
+Separar cálculo e entrada/saída permite reutilizar a lógica e montar testes com dados conhecidos.
+\end{frame}

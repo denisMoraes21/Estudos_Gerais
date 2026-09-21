@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Cabeçalho: interface e proteção de inclusão}
+\begin{lstlisting}
+/* alarme.h */
+#ifndef ALARME_H
+#define ALARME_H
+
+#include <stdbool.h>
+
+/* Unidades: graus Celsius. Igualdade ativa alarme. */
+bool alarme_ativo(int temperatura_c, int limite_c);
+
+#endif
+\end{lstlisting}
+\begin{itemize}
+\item As guardas evitam processar o conteúdo repetidamente na mesma unidade de tradução.
+\item O cabeçalho inclui o tipo de que sua interface depende.
+\item Neste projeto, corpos de funções ficam no \texttt{.c}.
+\end{itemize}
+\end{frame}

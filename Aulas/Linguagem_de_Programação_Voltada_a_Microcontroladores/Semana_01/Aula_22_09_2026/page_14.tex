@@ -1,0 +1,14 @@
+\begin{frame}[t]{1.2 Fluxogramas: símbolos básicos}
+\begin{center}\begin{tikzpicture}[every node/.style={font=\small},x=1cm,y=1cm]
+\node[draw,rounded corners=8pt,minimum width=2.3cm] at (-2,2.4) {Início / fim};
+\node[right] at (0,2.4) {Delimita a execução};
+\node[draw,rectangle,minimum width=2.3cm] at (-2,1.5) {Processo};
+\node[right] at (0,1.5) {Cálculo ou atribuição};
+\node[draw,trapezium,trapezium left angle=70,trapezium right angle=110,minimum width=2.3cm] at (-2,0.6) {Entrada / saída};
+\node[right] at (0,0.6) {Ler ou exibir dados};
+\node[draw,diamond,aspect=3,inner sep=2pt] at (-2,-0.4) {Decisão};
+\node[right] at (0,-0.4) {Escolhe um caminho};
+\draw[-{Latex},thick] (-3.1,-1.3)--(-0.9,-1.3);
+\node[right] at (0,-1.3) {Sentido do fluxo};
+\end{tikzpicture}\end{center}
+\end{frame}

@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Por que sistemas embarcados usam laços contínuos?}
+Um controlador normalmente permanece ativo para observar entradas, decidir e atualizar saídas.
+\begin{lstlisting}
+/* Esboco: leitura e escrita dependem da placa. */
+while (1) {
+    /* 1. Ler entradas. */
+    /* 2. Calcular o proximo estado. */
+    /* 3. Atualizar saidas. */
+}
+\end{lstlisting}
+\begin{itemize}
+\item Um laço contínuo pode ser intencional e correto.
+\item Nesta aula, usamos uma quantidade finita de ciclos no computador para observar a saída e terminar o teste.
+\item Repetir não define uma duração: temporização será feita com recursos adequados da plataforma.
+\end{itemize}
+\end{frame}

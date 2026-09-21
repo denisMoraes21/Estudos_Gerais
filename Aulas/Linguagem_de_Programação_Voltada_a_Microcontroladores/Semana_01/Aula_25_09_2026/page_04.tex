@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{4.1 Estrutura sequencial}
+As instruções executam na ordem em que aparecem no bloco.
+\begin{lstlisting}
+#include <stdio.h>
+int main(void) {
+    int leitura = 28;
+    int ajuste = 2;
+    int temperatura = leitura + ajuste;
+    printf("Temperatura: %d C\n", temperatura);
+    return 0;
+}
+\end{lstlisting}
+\begin{block}{Dependência entre instruções}
+\texttt{leitura} e \texttt{ajuste} precisam ter valores antes do cálculo de \texttt{temperatura}. Alterar a ordem pode mudar o resultado ou usar um valor não inicializado.
+\end{block}
+\end{frame}

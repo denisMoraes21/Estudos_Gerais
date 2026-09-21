@@ -1,0 +1,18 @@
+\begin{frame}{4.2 Estruturas condicionais: escolher um caminho}
+\begin{center}
+\begin{tikzpicture}[node distance=0.6cm, every node/.style={font=\small},
+process/.style={draw,rounded corners,align=center,minimum width=2.9cm,minimum height=0.7cm},
+choice/.style={draw,diamond,aspect=3,inner sep=2pt,align=center}]
+\node[process] (read) {Ler temperatura};
+\node[choice,below=of read] (test) {temperatura $\geq$ 30?};
+\node[process,below left=0.65cm and 0.1cm of test] (yes) {ventilador = 1};
+\node[process,below right=0.65cm and 0.1cm of test] (no) {ventilador = 0};
+\node[process,below=2.0cm of test] (out) {Exibir estado};
+\draw[-{Latex}] (read)--(test);
+\draw[-{Latex}] (test)-|node[above,pos=0.7]{sim}(yes);
+\draw[-{Latex}] (test)-|node[above,pos=0.7]{não}(no);
+\draw[-{Latex}] (yes)|-(out); \draw[-{Latex}] (no)|-(out);
+\end{tikzpicture}
+\end{center}
+A condição é avaliada no momento em que a execução chega à decisão.
+\end{frame}

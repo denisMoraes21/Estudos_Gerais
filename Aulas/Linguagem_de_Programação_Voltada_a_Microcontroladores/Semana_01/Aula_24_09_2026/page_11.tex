@@ -1,0 +1,18 @@
+\begin{frame}{Rastreamento de expressões aritméticas}
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Expressão & Cálculo e resultado \\
+\midrule
+\texttt{2 + 3 * 4} & $2 + 12 = 14$ \\
+\texttt{(2 + 3) * 4} & $5 \times 4 = 20$ \\
+\texttt{20 / 5 * 2} & $4 \times 2 = 8$ \\
+\texttt{(5 + 8) / 2} & $13 / 2 = 6$ (inteiro) \\
+\texttt{(5 + 8) / 2.0} & $13 / 2{,}0 = 6{,}5$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Método}
+Identifique tipos, aplique os agrupamentos e só então determine o valor armazenado. Para operadores aritméticos binários no mesmo nível, o agrupamento é da esquerda para a direita.
+\end{block}
+\end{frame}

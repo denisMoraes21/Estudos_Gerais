@@ -1,0 +1,19 @@
+\begin{frame}{Rastreio da busca e da agregação}
+Vetor \texttt{\{26, 28, 30, 32, 34\}}; alvo 30:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+Índice & Leitura & Soma acumulada & Comparação na busca \\
+\midrule
+0 & 26 & 26 & diferente \\
+1 & 28 & 54 & diferente \\
+2 & 30 & 84 & igual: parar a busca \\
+3 & 32 & 116 & não visitado na busca \\
+4 & 34 & 150 & não visitado na busca \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{São dois percursos com objetivos diferentes}
+A soma percorre todos os elementos. A busca da primeira ocorrência pode parar assim que encontra o alvo. Não use a parada da busca para interromper uma soma que ainda precisa terminar.
+\end{block}
+\end{frame}

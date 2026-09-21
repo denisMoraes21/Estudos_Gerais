@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Remover a quebra de linha sem acessar antes do vetor}
+\begin{lstlisting}
+size_t tamanho = strlen(comando);
+if (tamanho > 0 && comando[tamanho - 1] == '\n') {
+    comando[tamanho - 1] = '\0';
+}
+\end{lstlisting}
+\begin{itemize}
+\item A verificação \texttt{tamanho > 0} vem antes do acesso à última posição.
+\item Trocar a quebra pelo terminador permite comparar \texttt{LIGAR} com o comando recebido pelo teclado.
+\item Uma linha vazia contém apenas \texttt{'\textbackslash n'} antes dessa limpeza; depois, vira a string vazia.
+\end{itemize}
+\begin{block}{Falta uma decisão}
+Se a quebra de linha não coube, precisamos tratar o restante da entrada antes de aceitar o comando.
+\end{block}
+\end{frame}

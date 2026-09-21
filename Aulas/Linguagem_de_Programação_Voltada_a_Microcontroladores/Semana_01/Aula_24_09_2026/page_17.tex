@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Representar um intervalo corretamente}
+\begin{lstlisting}
+double temperatura_c = 25.0;
+bool na_faixa = (temperatura_c >= 20.0)
+             && (temperatura_c <= 30.0);
+bool fora_faixa = !na_faixa;
+\end{lstlisting}
+\begin{itemize}
+\item O intervalo inclui 20 e 30: os dois limites são inclusivos.
+\item Para 25, \texttt{na\_faixa} é verdadeiro.
+\item Não escreva \texttt{20 <= temperatura\_c <= 30}.
+\end{itemize}
+\begin{alertblock}{Por que a comparação encadeada falha?}
+C avalia \texttt{20 <= temperatura\_c} primeiro, obtendo 0 ou 1. Depois compara esse resultado com 30.
+\end{alertblock}
+\end{frame}

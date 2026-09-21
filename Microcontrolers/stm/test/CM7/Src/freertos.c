@@ -74,7 +74,7 @@ void vApplicationStackOverflowHook(TaskHandle_t task, char *task_name)
 /* USER CODE BEGIN 5 */
 void vApplicationMallocFailedHook(void)
 {
-  LOG_ERROR("FreeRTOS malloc falhou");
+  LOG_ERROR("FreeRTOS malloc failed");
   taskDISABLE_INTERRUPTS();
   for (;;)
   {

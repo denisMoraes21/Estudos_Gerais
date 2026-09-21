@@ -1,0 +1,12 @@
+\begin{frame}{Tamanho e limites dependem da implementação}
+\begin{itemize}
+\item Um computador e um microcontrolador podem usar tamanhos diferentes para \texttt{int}.
+\item \texttt{sizeof(tipo)} informa o tamanho em bytes de C.
+\item \texttt{sizeof(char)} é sempre 1; a quantidade de bits nesse byte é dada por \texttt{CHAR\_BIT}.
+\item \texttt{<limits.h>} fornece limites como \texttt{INT\_MIN} e \texttt{INT\_MAX}.
+\item \texttt{<stdint.h>} oferece tipos de largura especificada. Os tipos exatos, como \texttt{uint16\_t}, existem quando a implementação os suporta.
+\end{itemize}
+\begin{block}{Decisão prática}
+Consulte o ambiente de destino; não memorize um tamanho universal para \texttt{int}.
+\end{block}
+\end{frame}

@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Assert: uma expectativa executável}
+\begin{lstlisting}
+#include <assert.h>
+
+const int leituras[] = {28, 30, 32};
+assert(contar_no_limite(leituras, 3, 30) == 2);
+\end{lstlisting}
+\begin{itemize}
+\item Se a expressão for falsa, a execução de teste é interrompida com diagnóstico.
+\item Se todas forem verdadeiras, o programa continua.
+\item Compilar com \texttt{NDEBUG} definido desativa \texttt{assert}.
+\item Não use \texttt{assert} como única validação de entradas externas.
+\end{itemize}
+\small Evite efeitos necessários dentro de \texttt{assert}; eles desapareceriam quando as verificações fossem desativadas.
+\end{frame}

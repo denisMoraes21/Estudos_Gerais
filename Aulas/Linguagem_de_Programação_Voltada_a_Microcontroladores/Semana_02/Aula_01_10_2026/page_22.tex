@@ -1,0 +1,16 @@
+\begin{frame}[t]{Plano de testes do projeto}
+\small
+\begin{center}\begin{tabular}{cccc}\toprule
+Solicitação & Permissão & Decisão & LED esperado\\\midrule
+Solto & Solto & Falsa & Apagado\\
+Pressionado & Solto & Falsa & Apagado\\
+Solto & Pressionado & Falsa & Apagado\\
+Pressionado & Pressionado & Verdadeira & Aceso\\\bottomrule
+\end{tabular}\end{center}
+\begin{itemize}
+\item Registrar resultado esperado e observado das quatro combinações.
+\item Partir de ambos pressionados e soltar cada botão separadamente.
+\item Reiniciar com ambos soltos: após a inicialização, LED apagado.
+\item Reiniciar com ambos pressionados: no primeiro ciclo, LED aceso.
+\end{itemize}
+\end{frame}

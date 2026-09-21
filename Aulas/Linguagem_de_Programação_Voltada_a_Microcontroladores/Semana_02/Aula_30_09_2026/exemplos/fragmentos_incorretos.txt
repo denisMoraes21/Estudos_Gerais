@@ -1,0 +1,20 @@
+FRAGMENTOS INTENCIONALMENTE INCORRETOS — somente para análise
+
+1. Acesso fora dos limites (comportamento indefinido):
+for (size_t i = 0; i <= quantidade; ++i) {
+    if (valores[i] >= limite) ++total;
+}
+Correcao: i < quantidade. N elementos ocupam indices 0 a N-1.
+
+2. Regra que esquece a igualdade:
+if (valores[i] > limite) ++total;
+Correcao: >= para a especificacao inclusiva desta aula.
+Caso que distingue: vetor {30}, limite 30, esperado 1.
+
+3. Erro de sintaxe:
+int total = 0
+Correcao: incluir ponto e virgula.
+
+4. Ligacao:
+Declarar e chamar uma funcao, mas omitir sua implementacao no comando
+de compilacao e ligacao, pode produzir referencia indefinida.

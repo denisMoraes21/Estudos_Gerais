@@ -1,0 +1,15 @@
+\begin{frame}[fragile,t]{Estrutura de um sketch}
+\begin{lstlisting}[language=C++]
+void setup() {
+    // Executa uma vez a cada inicializacao/reset.
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+}
+
+void loop() {
+    // O ambiente chama esta funcao repetidamente.
+    // Ler entradas, decidir e atualizar saidas.
+}
+\end{lstlisting}
+\small No núcleo AVR, um laço principal chama \texttt{loop()} continuamente. Não é necessário escrever outro \texttt{while (true)} dentro dela para repetir a aplicação.
+\end{frame}

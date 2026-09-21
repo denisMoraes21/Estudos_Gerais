@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Alternativa iterativa e custo em microcontroladores}
+\begin{lstlisting}
+unsigned soma_iterativa(unsigned n)
+{
+    unsigned total = 0U;
+    for (unsigned i = 1U; i <= n; ++i) total += i;
+    return total;
+}
+\end{lstlisting}
+\small Mesmo contrato: \texttt{n <= 20}.
+\begin{itemize}
+\item Ambas executam trabalho proporcional a $n$ neste exemplo.
+\item A versão iterativa usa quantidade constante de variáveis locais.
+\item A recursão pode esgotar uma pilha pequena; sua profundidade precisa ser analisada.
+\item Em firmware simples, um laço costuma facilitar prever memória e tempo.
+\end{itemize}
+\end{frame}

@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Conferência dos exercícios}
+\begin{itemize}
+\item Categorias: sintaxe; ligação; execução com comportamento indefinido; lógica.
+\item O vetor tem três ocorrências: 30, 31 e 30.
+\end{itemize}
+\begin{lstlisting}
+const int fronteiras[] = {29, 30, 31, 30};
+assert(contar_no_limite(fronteiras, 4, 30) == 3);
+\end{lstlisting}
+\begin{itemize}
+\item 32 satisfaz \texttt{>} e \texttt{>=}; use 30 para distinguir.
+\item Validação: $-41$ rejeitado; $-40$ aceito; 125 aceito; 126 rejeitado.
+\item Na prática, os totais após cada passo são 0, 1 e 2.
+\end{itemize}
+\end{frame}

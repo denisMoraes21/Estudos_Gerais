@@ -11,7 +11,8 @@ extern "C" {
 #endif
 
 /* Callback data is borrowed for the duration of the callback only.
- * The future lwIP adapter must assemble bounded fragments before delivery.
+ * Incoming fragments are assembled up to APP_MQTT_PAYLOAD_MAX_LEN bytes.
+ * Oversized messages are dropped. Payload is not necessarily NUL-terminated.
  * Callbacks run with the lwIP core protected; they must not block or call
  * any client API (including get_state). Queue events for the application task. */
 typedef void (*app_mqtt_message_cb_t)(const char *topic, const void *payload,

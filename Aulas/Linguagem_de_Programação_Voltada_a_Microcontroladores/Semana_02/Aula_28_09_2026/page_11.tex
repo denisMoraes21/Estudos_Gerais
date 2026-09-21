@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{Busca linear: localizar a primeira ocorrência}
+\begin{lstlisting}
+int alvo = 30;
+int encontrado = -1;
+for (int i = 0; i < 5; i++) {
+    if (leituras[i] == alvo) {
+        encontrado = i;
+        break;
+    }
+}
+if (encontrado >= 0) {
+    printf("Encontrado no indice %d\n", encontrado);
+} else {
+    printf("Valor ausente\n");
+}
+\end{lstlisting}
+\small O valor $-1$ significa ``não encontrado'' e nunca deve ser usado como índice. A busca visita no máximo cinco elementos neste exemplo.
+\end{frame}

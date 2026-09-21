@@ -1,0 +1,21 @@
+\begin{frame}{Integração: um comando controla uma saída simulada}
+\begin{enumerate}
+\item Ler uma linha com \texttt{fgets} e testar o retorno.
+\item Remover a quebra de linha e rejeitar entrada longa.
+\item Usar \texttt{strcmp} para reconhecer \texttt{LIGAR} e \texttt{DESLIGAR}.
+\item Exibir o estado de saída ou indicar comando desconhecido.
+\end{enumerate}
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Entrada & Resultado esperado \\
+\midrule
+\texttt{LIGAR} & Saída simulada: 1 \\
+\texttt{DESLIGAR} & Saída simulada: 0 \\
+\texttt{ligar} ou linha vazia & Comando desconhecido \\
+Mais de 15 caracteres & Comando muito longo \\
+\bottomrule
+\end{tabular}
+\end{center}
+\small Código completo: \texttt{exemplos/03\_comandos.c}. Evite misturar leituras \texttt{scanf} e \texttt{fgets} nesta atividade.
+\end{frame}

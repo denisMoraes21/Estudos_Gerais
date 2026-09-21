@@ -1,0 +1,14 @@
+\begin{frame}[fragile]{Divisão real: converter antes de dividir}
+\begin{lstlisting}
+int pecas = 17;
+int capacidade = 5;
+double a = pecas / capacidade;         /* 3.0 */
+double b = (double)pecas / capacidade; /* 3.4 */
+double c = 17.0 / 5.0;                 /* 3.4 */
+\end{lstlisting}
+\begin{itemize}
+\item Em \texttt{a}, a divisão inteira ocorre primeiro.
+\item Armazenar o resultado em \texttt{double} não recupera a fração.
+\item Em \texttt{b}, o \textit{cast} altera o tipo de um operando antes da operação; o outro é convertido para \texttt{double}.
+\end{itemize}
+\end{frame}

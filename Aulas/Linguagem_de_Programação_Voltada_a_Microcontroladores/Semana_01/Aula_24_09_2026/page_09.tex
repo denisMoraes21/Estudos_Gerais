@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Atribuição e atualização de uma variável}
+\begin{lstlisting}
+int contador = 10;
+contador = contador + 1;  /* passa para 11 */
+contador += 4;           /* passa para 15 */
+contador -= 2;           /* passa para 13 */
+contador++;              /* passa para 14 */
+\end{lstlisting}
+\begin{itemize}
+\item A expressão à direita é calculada antes de armazenar o novo valor.
+\item \texttt{+=} e \texttt{-=} combinam operação com atribuição.
+\item \texttt{contador++} incrementa uma unidade; \texttt{contador--} decrementa.
+\end{itemize}
+\small Nesta etapa, use incrementos como instruções isoladas para facilitar o rastreamento.
+\end{frame}

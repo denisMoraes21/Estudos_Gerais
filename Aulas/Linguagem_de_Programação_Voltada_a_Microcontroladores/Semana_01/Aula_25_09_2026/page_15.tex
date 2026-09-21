@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{for: inicialização, condição e atualização}
+\begin{lstlisting}
+int total = 0;
+for (int ciclo = 1; ciclo <= 4; ciclo++) {
+    total += 2;
+    printf("Ciclo %d: total = %d\n", ciclo, total);
+}
+\end{lstlisting}
+\begin{block}{Ordem de execução}
+Inicialização (uma vez) $\to$ condição $\to$ corpo $\to$ atualização $\to$ condição novamente.
+\end{block}
+\begin{itemize}
+\item A simulação contabiliza duas peças em cada ciclo.
+\item O corpo executa quatro vezes: ciclos 1, 2, 3 e 4.
+\item A atualização acontece \emph{depois} do corpo.
+\end{itemize}
+\end{frame}

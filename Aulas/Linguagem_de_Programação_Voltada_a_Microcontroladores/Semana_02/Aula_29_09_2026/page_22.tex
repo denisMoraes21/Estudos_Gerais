@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Exemplo recursivo com domínio limitado}
+\begin{lstlisting}
+/* Contrato: 0 <= n <= 20. */
+unsigned soma_recursiva(unsigned n)
+{
+    if (n == 0U) return 0U; /* caso-base */
+    return n + soma_recursiva(n - 1U);
+}
+\end{lstlisting}
+\begin{itemize}
+\item O teste ocorre antes da subtração: não há redução abaixo de zero.
+\item Para 20, o resultado é 210 e cabe em \texttt{unsigned}.
+\item O chamador deve verificar o limite antes da chamada.
+\item Há no máximo 21 chamadas ativas, incluindo o caso-base.
+\end{itemize}
+\small O arquivo de exemplo usa valores pequenos e conhecidos.
+\end{frame}

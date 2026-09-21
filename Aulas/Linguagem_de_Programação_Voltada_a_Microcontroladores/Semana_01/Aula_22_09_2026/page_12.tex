@@ -1,0 +1,18 @@
+\begin{frame}[fragile,t]{Repetir sem perder o controle}
+\begin{lstlisting}[language={}]
+INICIO
+  contador <- 0
+  REPETIR 3 VEZES
+    LER temperatura
+    ESCREVER temperatura
+    contador <- contador + 1
+  FIM_REPETIR
+  ESCREVER contador
+FIM
+\end{lstlisting}
+\begin{itemize}
+\item O corpo é executado três vezes; o contador termina em 3.
+\item A atualização usa o valor anterior: 0, depois 1, 2 e 3.
+\item Na aula de controle de fluxo, traduziremos a repetição para C.
+\end{itemize}
+\end{frame}

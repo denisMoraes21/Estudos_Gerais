@@ -1,0 +1,19 @@
+\begin{frame}{Índices de linha e coluna}
+\begin{itemize}
+\item Em \texttt{int dados[2][3]}, há duas linhas e três colunas.
+\item Linhas válidas: 0 e 1; colunas válidas: 0, 1 e 2.
+\item Total de elementos: $2 \times 3 = 6$.
+\item Cada linha é um vetor; em C, as linhas ficam em sequência na memória.
+\end{itemize}
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+\texttt{[0][0]} & \texttt{[0][1]} & \texttt{[0][2]} & \texttt{[1][0]} & \texttt{[1][1]} & \texttt{[1][2]} \\
+24 & 25 & 26 & 28 & 29 & 30 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{Ambos os limites precisam ser respeitados}
+\texttt{dados[0][3]} é inválido, mesmo existindo uma linha seguinte. Não tente atravessar uma linha usando um índice de coluna fora do intervalo.
+\end{alertblock}
+\end{frame}

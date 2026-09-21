@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Modificar o original: passar seu endereço}
+\begin{lstlisting}
+void incrementar_no_local(int *contador)
+{
+    if (contador != NULL) {
+        (*contador)++;
+    }
+}
+
+int total = 10;
+incrementar_no_local(&total); /* total passa a 11 */
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{\&total}: endereço de \texttt{total}; \texttt{*contador}: objeto apontado.
+\item O ponteiro também é copiado; ele permite acessar o original.
+\item Exige endereço válido e valor menor que \texttt{INT\_MAX}.
+\end{itemize}
+\small Isto é alteração indireta por ponteiro, não um modo nativo de passagem por referência em C. \texttt{NULL} vem de \texttt{<stddef.h>}.
+\end{frame}

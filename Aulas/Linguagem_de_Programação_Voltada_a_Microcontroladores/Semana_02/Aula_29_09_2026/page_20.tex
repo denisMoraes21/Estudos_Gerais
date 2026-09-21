@@ -1,0 +1,16 @@
+\begin{frame}{Erros comuns ao criar módulos}
+\small
+\begin{tabularx}{\textwidth}{p{3.7cm}X}
+\toprule
+Sintoma & O que investigar \\
+\midrule
+Declaração implícita & Protótipo ausente ou cabeçalho não incluído. \\
+Tipos conflitantes & Declaração e definição usam assinaturas diferentes. \\
+Referência indefinida & Implementação ausente do comando de ligação. \\
+Definição múltipla & Função definida em mais de um arquivo do projeto. \\
+Resultado inesperado & Unidades, ordem dos argumentos e regra do limite. \\
+\bottomrule
+\end{tabularx}
+\vspace{0.3cm}
+Compilar sem avisos ajuda; ainda é necessário testar a regra de negócio.
+\end{frame}

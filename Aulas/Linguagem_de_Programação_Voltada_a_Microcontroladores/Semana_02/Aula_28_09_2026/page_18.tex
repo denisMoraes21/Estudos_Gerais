@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{5.3 Strings: texto em um vetor de char}
+\begin{lstlisting}
+char comando[6] = "LIGAR";
+/* Equivalente a: {'L', 'I', 'G', 'A', 'R', '\0'} */
+printf("Comando: %s\n", comando);
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{c|cccccc}
+Índice & 0 & 1 & 2 & 3 & 4 & 5 \\
+\hline
+Conteúdo & L & I & G & A & R & \texttt{\textbackslash 0} \\
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item Uma string C termina no primeiro caractere nulo, \texttt{'\textbackslash 0'}.
+\item Cinco letras precisam de pelo menos seis posições.
+\item \texttt{\%s} espera uma string válida, com terminador acessível.
+\end{itemize}
+\end{frame}

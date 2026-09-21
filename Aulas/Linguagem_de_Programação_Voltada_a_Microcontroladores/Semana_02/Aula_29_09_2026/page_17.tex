@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Implementação: uma regra em um lugar}
+\begin{lstlisting}
+/* alarme.c */
+#include "alarme.h"
+
+bool alarme_ativo(int temperatura_c, int limite_c)
+{
+    return temperatura_c >= limite_c;
+}
+\end{lstlisting}
+\begin{block}{Por que incluir o próprio cabeçalho?}
+O compilador pode detectar divergências entre a interface declarada e a definição da função.
+\end{block}
+\small As aspas identificam o cabeçalho do projeto. As bibliotecas padrão, como \texttt{<stdio.h>}, usam sinais de menor e maior.
+\end{frame}

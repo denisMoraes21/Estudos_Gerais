@@ -1,0 +1,16 @@
+\begin{frame}{7.2 — Em que etapa o erro aparece?}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Categoria & Exemplo & Evidência \\
+\midrule
+Sintaxe/tipos & Falta de \texttt{;} ou tipos incompatíveis & Diagnóstico na compilação. \\
+Ligação & Função declarada sem implementação ligada & Referência indefinida. \\
+Execução & Acesso além do vetor & Pode falhar ou parecer funcionar; comportamento indefinido. \\
+Lógica & \texttt{>} em vez de \texttt{>=} & Resultado incorreto em caso válido. \\
+\bottomrule
+\end{tabularx}
+\begin{alertblock}{Atenção}
+Comportamento indefinido não tem saída previsível e não precisa causar uma mensagem de erro.
+\end{alertblock}
+\end{frame}

@@ -1,0 +1,11 @@
+\begin{frame}[t]{O efeito de bloquear o ciclo}
+\begin{itemize}
+\item \texttt{delay(1000)} pausa o avanço do código de \texttt{loop} por cerca de 1 s.
+\item Nesse trecho, o programa não executa novas chamadas a \texttt{digitalRead}.
+\item Um botão pode ser pressionado e solto antes da próxima leitura.
+\item O hardware e certas interrupções podem continuar funcionando; o problema é a pausa no fluxo da aplicação.
+\end{itemize}
+\begin{block}{Alternativa}
+Consultar o tempo decorrido e executar a tarefa quando o intervalo for atingido, deixando o ciclo continuar entre as verificações.
+\end{block}
+\end{frame}

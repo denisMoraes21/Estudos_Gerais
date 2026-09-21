@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Combinar requisitos com nomes claros}
+\begin{lstlisting}
+bool comando = true;
+bool protecao_fechada = true;
+bool falha = false;
+bool habilitado = comando && protecao_fechada && !falha;
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{lcl}
+\toprule
+Parte da expressão & Valor & Interpretação \\
+\midrule
+\texttt{comando} & 1 & Há solicitação \\
+\texttt{protecao\_fechada} & 1 & Proteção sinalizada \\
+\texttt{!falha} & 1 & Falha não sinalizada \\
+\texttt{habilitado} & 1 & Todos os requisitos atendidos \\
+\bottomrule
+\end{tabular}
+\end{center}
+\small O resultado é apenas um valor calculado; nenhum motor é acionado nesta simulação.
+\end{frame}

@@ -1,0 +1,13 @@
+\begin{frame}{Teste de regressão: guardar o caso que revelou a falha}
+\begin{enumerate}
+\item Preserve o caso \texttt{\{30\}}, limite 30, esperado 1.
+\item Confirme que a comparação antiga \texttt{>} falha nesse caso.
+\item Corrija para \texttt{>=} e execute o conjunto completo.
+\item Mantenha o caso nas próximas versões.
+\end{enumerate}
+\begin{block}{Duas fronteiras diferentes}
+\texttt{i < quantidade} protege o acesso ao vetor.\\
+\texttt{valores[i] >= limite} implementa a decisão de alarme.
+\end{block}
+\small Um teste de saída não garante sozinho que todos os acessos à memória foram válidos; revise também os limites do laço.
+\end{frame}

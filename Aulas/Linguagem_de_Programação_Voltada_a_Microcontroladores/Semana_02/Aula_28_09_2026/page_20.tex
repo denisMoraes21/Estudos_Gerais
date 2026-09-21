@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{strlen e sizeof respondem perguntas diferentes}
+\begin{lstlisting}
+#include <string.h>
+/* Dentro de main: */
+char estado[10] = "ON";
+printf("Comprimento: %zu\n", strlen(estado));
+printf("Capacidade: %zu\n", sizeof estado);
+\end{lstlisting}
+\begin{tabularx}{\textwidth}{lXl}
+\toprule
+Expressão & Significado neste exemplo & Resultado \\
+\midrule
+\texttt{strlen(estado)} & Bytes anteriores ao terminador & 2 \\
+\texttt{sizeof estado} & Bytes de todo este vetor & 10 \\
+\bottomrule
+\end{tabularx}
+\vspace{0.25cm}
+\small Os resultados usam \texttt{size\_t}, impresso com \texttt{\%zu}. \texttt{strlen} exige uma string terminada. Em UTF-8, uma letra acentuada pode ocupar mais de um byte; os comandos desta aula usam apenas ASCII.
+\end{frame}

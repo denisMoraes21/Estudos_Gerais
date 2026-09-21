@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{C passa todos os argumentos por valor}
+\begin{lstlisting}
+void tentar_incrementar(int contador)
+{
+    contador++; /* altera somente a copia local */
+    printf("Local: %d\n", contador);
+}
+
+int contador = 10;
+tentar_incrementar(contador);
+printf("Original: %d\n", contador);
+\end{lstlisting}
+\begin{block}{Rastreamento}
+A chamada copia 10. A cópia torna-se 11; o original continua 10.
+\end{block}
+\small Use retorno para fornecer um novo valor: \texttt{contador = incrementar(contador);}. Considere o intervalo do tipo.
+\end{frame}

@@ -1,0 +1,11 @@
+\begin{frame}[t]{Fluxograma da média}
+\begin{center}\begin{tikzpicture}[node distance=0.35cm,every node/.style={font=\small},p/.style={draw=darkgreen,fill=darkgreen!8,minimum width=4.4cm,minimum height=0.55cm},io/.style={p,trapezium,trapezium left angle=70,trapezium right angle=110}]
+\node[p,rounded corners] (i) {Início};
+\node[io,below=of i] (l) {Ler leitura1 e leitura2};
+\node[p,below=of l] (m) {média $\leftarrow$ (leitura1 + leitura2) / 2};
+\node[io,below=of m] (s) {Exibir média};
+\node[p,rounded corners,below=of s] (f) {Fim};
+\draw[-{Latex}] (i)--(l);\draw[-{Latex}] (l)--(m);\draw[-{Latex}] (m)--(s);\draw[-{Latex}] (s)--(f);
+\end{tikzpicture}\end{center}
+\small Cada símbolo corresponde a uma etapa do pseudocódigo. As setas tornam a ordem explícita.
+\end{frame}

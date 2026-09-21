@@ -1,0 +1,10 @@
+# Arquivos auxiliares do LaTeX; os PDFs das aulas fazem parte do material.
+*.aux
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+__pycache__/

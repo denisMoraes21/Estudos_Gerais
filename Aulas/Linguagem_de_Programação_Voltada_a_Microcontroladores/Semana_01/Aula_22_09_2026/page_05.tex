@@ -1,0 +1,15 @@
+\begin{frame}[t]{Entrada, processamento e saída}
+\begin{center}
+\begin{tikzpicture}[node distance=0.45cm, every node/.style={font=\small},box/.style={draw=darkgreen,fill=darkgreen!10,rounded corners,text width=2.5cm,minimum height=1.25cm,align=center}]
+\node[box] (e) {Entrada\\Temperatura: 32};
+\node[box,right=of e] (p) {Processamento\\Comparar com 30};
+\node[box,right=of p] (s) {Saída\\Sinalizador ligado};
+\draw[-{Latex},thick] (e)--(p);\draw[-{Latex},thick] (p)--(s);
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+\item No computador, os dados podem vir do teclado ou de valores de teste.
+\item No microcontrolador, podem vir de sensores e botões.
+\item A mesma regra pode ser exercitada sem conectar o circuito.
+\end{itemize}
+\end{frame}

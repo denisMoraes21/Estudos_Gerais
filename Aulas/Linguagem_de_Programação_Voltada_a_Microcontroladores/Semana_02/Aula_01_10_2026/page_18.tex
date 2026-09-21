@@ -1,0 +1,12 @@
+\begin{frame}[t]{8.3 Projeto: sinalização de autorização}
+\textbf{Regra:} o LED acende somente enquanto os botões de solicitação e de permissão estiverem pressionados juntos.
+\begin{itemize}
+\item Entrada 1: solicitação no D2, com pull-up interno.
+\item Entrada 2: permissão no D3, com pull-up interno.
+\item Processamento: \texttt{solicitacao \&\& permissao}.
+\item Saída: LED integrado aceso ou apagado.
+\end{itemize}
+\begin{block}{Modelo didático de bancada}
+Os botões representam sinais de processo e o LED representa uma indicação de autorização. A montagem não implementa um sistema de segurança industrial.
+\end{block}
+\end{frame}

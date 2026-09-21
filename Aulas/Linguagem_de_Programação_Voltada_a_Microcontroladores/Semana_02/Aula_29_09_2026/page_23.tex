@@ -1,0 +1,17 @@
+\begin{frame}{Rastreamento: chamadas descem, retornos sobem}
+\small
+\begin{tabular}{lll}
+\toprule
+Chamada & Aguarda & Depois devolve \\
+\midrule
+\texttt{soma\_recursiva(3)} & $3 + S(2)$ & $3 + 3 = 6$ \\
+\texttt{soma\_recursiva(2)} & $2 + S(1)$ & $2 + 1 = 3$ \\
+\texttt{soma\_recursiva(1)} & $1 + S(0)$ & $1 + 0 = 1$ \\
+\texttt{soma\_recursiva(0)} & Caso-base & $0$ \\
+\bottomrule
+\end{tabular}
+\begin{block}{Memória das chamadas}
+Cada chamada pode precisar guardar argumentos, estado e endereço de retorno na pilha. A profundidade cresce com $n$.
+\end{block}
+\small O tamanho exato depende da arquitetura e do compilador. Não presuma que uma otimização removerá essas chamadas.
+\end{frame}

@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Ponto flutuante: valores aproximados}
+\begin{lstlisting}
+float temperatura_c = 27.5f;
+double tensao_v = 3.3;
+\end{lstlisting}
+\begin{itemize}
+\item No código C, a parte decimal usa \textbf{ponto}.
+\item O sufixo \texttt{f} especifica um literal \texttt{float}.
+\item Sem o sufixo, \texttt{3.3} tem tipo \texttt{double}.
+\item Muitos valores decimais têm representação binária aproximada; não suponha precisão infinita.
+\end{itemize}
+\begin{block}{Unidade no nome}
+\texttt{temperatura\_c} e \texttt{tensao\_v} ajudam a evitar confusões entre grandezas e unidades.
+\end{block}
+\end{frame}

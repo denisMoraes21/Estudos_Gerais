@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Verificação adicional de memória no computador}
+\begin{lstlisting}[language=bash]
+gcc -std=c11 -Wall -Wextra -Wpedantic -g -O0 \
+    -fsanitize=address,undefined \
+    exemplos/testes.c exemplos/regras.c \
+    -o /tmp/aula30_sanitizado
+/tmp/aula30_sanitizado
+\end{lstlisting}
+\begin{itemize}
+\item Ferramentas opcionais detectam classes de acesso inválido e comportamento indefinido durante a execução.
+\item Exigem suporte do compilador e do ambiente.
+\item Complementam avisos, revisão de código e testes de resultado.
+\item Sua disponibilidade e custo diferem no microcontrolador.
+\end{itemize}
+\small O exemplo fornecido está corrigido. Os fragmentos defeituosos ficam em um arquivo de texto para análise.
+\end{frame}

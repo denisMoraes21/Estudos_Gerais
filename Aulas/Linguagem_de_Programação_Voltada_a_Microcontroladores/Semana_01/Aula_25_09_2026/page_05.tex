@@ -1,0 +1,19 @@
+\begin{frame}{Rastreio: acompanhe uma instrução de cada vez}
+Para o programa anterior, registre os valores após cada etapa:
+\begin{center}
+\begin{tabular}{clccc}
+\toprule
+Etapa & Instrução & leitura & ajuste & temperatura \\
+\midrule
+1 & Inicializar leitura & 28 & -- & -- \\
+2 & Inicializar ajuste & 28 & 2 & -- \\
+3 & Somar & 28 & 2 & 30 \\
+4 & Exibir & 28 & 2 & 30 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{alertblock}{O símbolo -- é apenas uma anotação}
+A tabela não autoriza ler variáveis sem inicialização. A saída esperada é \texttt{Temperatura: 30 C}.
+\end{alertblock}
+\textbf{Pergunta:} se \texttt{ajuste} receber 5 \emph{depois} da soma, \texttt{temperatura} muda automaticamente? Não: seria preciso calcular novamente.
+\end{frame}

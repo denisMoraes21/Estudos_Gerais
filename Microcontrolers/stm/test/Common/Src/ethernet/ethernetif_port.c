@@ -389,7 +389,7 @@ static void low_level_init(struct netif *netif)
 /* USER CODE BEGIN low_level_init Code 2 for User BSP */
     LAN8742_RegisterBusIO(&LAN8742, &LAN8742_IOCtx);
     if (LAN8742_Init(&LAN8742) != LAN8742_STATUS_OK) {
-        LOG_ERROR("PHY LAN8742 nao encontrado via MDIO");
+        LOG_ERROR("LAN8742 PHY not found via MDIO");
         netif_set_link_down(netif);
         netif_set_down(netif);
         return;
@@ -794,7 +794,7 @@ void ethernet_link_thread(void *argument)
     if (LinkUpdateDone == NULL) { Error_HandlerAt(__FILE__, __LINE__, __func__); return; }
     for (;;) {
         if (tcpip_callback(ethernetif_update_link_callback, argument) != ERR_OK) {
-            LOG_ERROR("Falha ao atualizar link na tarefa TCP/IP");
+            LOG_ERROR("Failed to update link in TCP/IP task");
         } else {
             /* Keep only one link update in flight. */
             osSemaphoreAcquire(LinkUpdateDone, osWaitForever);

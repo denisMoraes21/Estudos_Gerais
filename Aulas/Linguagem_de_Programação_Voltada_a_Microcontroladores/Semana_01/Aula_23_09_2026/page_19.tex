@@ -1,0 +1,14 @@
+\begin{frame}[fragile]{Conversão de tipos: o valor pode mudar}
+\begin{lstlisting}
+int ciclos = 12;
+double ciclos_reais = ciclos;    /* 12.0 */
+double leitura_c = 27.9;
+int leitura_inteira = (int)leitura_c; /* 27 */
+\end{lstlisting}
+\begin{itemize}
+\item Uma atribuição pode converter o valor para o tipo de destino.
+\item O \textit{cast} \texttt{(int)} torna explícita a conversão desejada.
+\item No exemplo, converter para inteiro descarta a parte fracionária; não arredonda.
+\item A conversão para inteiro só é válida se o resultado for representável pelo tipo de destino.
+\end{itemize}
+\end{frame}

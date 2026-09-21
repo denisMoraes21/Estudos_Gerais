@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Erro de limite: um índice a mais}
+\begin{lstlisting}
+/* INCORRETO: fragmento para analise, nao executar. */
+for (size_t i = 0; i <= quantidade; ++i) {
+    if (valores[i] >= limite) ++total;
+}
+\end{lstlisting}
+\begin{itemize}
+\item Para 3 elementos, os índices válidos são 0, 1 e 2.
+\item Quando \texttt{i == quantidade}, ocorre acesso fora do vetor.
+\item Esse acesso tem comportamento indefinido em C.
+\end{itemize}
+\begin{lstlisting}
+/* CORRETO: intervalo [0, quantidade). */
+for (size_t i = 0; i < quantidade; ++i) {
+    if (valores[i] >= limite) ++total;
+}
+\end{lstlisting}
+\end{frame}

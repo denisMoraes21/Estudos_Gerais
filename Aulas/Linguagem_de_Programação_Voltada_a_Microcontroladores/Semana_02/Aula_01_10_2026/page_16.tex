@@ -1,0 +1,13 @@
+\begin{frame}[t]{Rastrear a entrada até a saída}
+\small
+\begin{center}\begin{tabular}{cccc}\toprule
+Botão & \texttt{digitalRead(2)} & \texttt{pressionado} & LED\\\midrule
+Solto & \texttt{HIGH} & \texttt{false} & Apagado\\
+Pressionado & \texttt{LOW} & \texttt{true} & Aceso\\
+Solto novamente & \texttt{HIGH} & \texttt{false} & Apagado\\\bottomrule
+\end{tabular}\end{center}
+\begin{block}{Separar eletricidade e significado}
+\texttt{LOW} é o nível lido. ``Pressionado'' é a interpretação desse nível na ligação escolhida. A comparação \texttt{== LOW} realiza essa conversão.
+\end{block}
+\small O \texttt{delay(100)} deste exemplo limita a frequência de impressão e também atrasa a próxima leitura.
+\end{frame}

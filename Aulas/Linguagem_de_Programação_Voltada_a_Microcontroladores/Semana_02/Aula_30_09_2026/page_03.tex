@@ -1,0 +1,20 @@
+\begin{frame}{O programa compilou. A regra está correta?}
+\begin{block}{Especificação do monitor}
+Conte uma ocorrência para cada temperatura \textbf{maior ou igual} a 30~$^{\circ}$C.
+\end{block}
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+Leitura & 28 & 30 & 32 \\
+\midrule
+Conta? & Não & Sim & Sim \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item Resultado esperado: 2 ocorrências.
+\item Resultado observado: 1 ocorrência.
+\item A diferença indica uma falha; ainda precisamos localizar sua causa.
+\end{itemize}
+\small Um caso mínimo e reproduzível ajuda mais que trocar várias linhas ao acaso.
+\end{frame}

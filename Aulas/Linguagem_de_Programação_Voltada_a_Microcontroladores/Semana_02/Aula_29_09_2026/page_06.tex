@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Declaração, definição e chamada}
+\begin{lstlisting}
+/* Declaracao: apresenta a interface. */
+bool alarme_ativo(int temperatura_c, int limite_c);
+
+/* Chamada: usa a interface com argumentos. */
+bool ativo = alarme_ativo(32, 30);
+\end{lstlisting}
+\begin{itemize}
+\item A \textbf{declaração} termina com ponto e vírgula.
+\item A \textbf{definição} inclui o corpo entre chaves.
+\item Na chamada, \texttt{32} e \texttt{30} são argumentos.
+\item Declare a função antes de usá-la; o compilador verifica os tipos.
+\end{itemize}
+\small Um protótipo \texttt{int ler(void);} explicita ausência de parâmetros em C11.
+\end{frame}

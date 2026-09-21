@@ -1,0 +1,17 @@
+\begin{frame}{6.2 — Organização modular do monitor}
+\begin{center}
+\begin{tikzpicture}[node distance=0.65cm,every node/.style={draw,rounded corners,align=center,font=\small,text width=2.6cm}]
+\node (main) {\texttt{main.c}\\cenário e impressão};
+\node[right=of main,fill=green!10] (header) {\texttt{alarme.h}\\interface pública};
+\node[right=of header] (source) {\texttt{alarme.c}\\implementação};
+\draw[-{Latex}] (main)--node[above,draw=none,text width=1cm,font=\tiny]{inclui}(header);
+\draw[-{Latex}] (source)--node[below,draw=none,text width=1cm,font=\tiny]{inclui}(header);
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+\item Cada arquivo tem uma responsabilidade identificável.
+\item O cabeçalho informa como usar o módulo.
+\item O arquivo \texttt{.c} contém a implementação da regra.
+\item A interface permite trocar a implementação preservando o uso.
+\end{itemize}
+\end{frame}

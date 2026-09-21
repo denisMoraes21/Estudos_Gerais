@@ -1,0 +1,14 @@
+\begin{frame}[fragile]{E lógico não é E bit a bit}
+\begin{lstlisting}
+int a = 2; /* binario: 10 */
+int b = 1; /* binario: 01 */
+int logico = a && b; /* 1: ambos nao sao zero */
+int bits = a & b;   /* 0: nenhum bit 1 em comum */
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{\&\&} combina a verdade das condições e tem curto-circuito.
+\item \texttt{\&} combina bits de operandos inteiros e não tem curto-circuito.
+\item Não substitua \texttt{\&\&} por \texttt{\&} para ``simplificar''.
+\end{itemize}
+\small Operações de bits serão úteis em registradores; aqui, usamos operadores lógicos para combinar condições.
+\end{frame}

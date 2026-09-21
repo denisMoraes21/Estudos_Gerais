@@ -1,0 +1,16 @@
+\begin{frame}{Erros comuns e como corrigi-los}
+\small
+\begin{tabularx}{\textwidth}{XX}
+\toprule
+Problema & Correção ou explicação \\
+\midrule
+\texttt{float t = 27,5;} & Use \texttt{27.5f}; vírgula não é separador decimal em C. \\
+\texttt{char setor = "A";} & Use aspas simples: \texttt{'A'}. \\
+\texttt{int n; printf("\%d", n);} & Inicialize \texttt{n} antes da leitura. \\
+\texttt{printf("\%d", 2.5);} & Use \texttt{\%f} para esse argumento. \\
+\texttt{int ciclos = 2.8;} & Parte fracionária perdida; reveja o tipo. \\
+\bottomrule
+\end{tabularx}
+\medskip
+Corrija primeiro a causa indicada na mensagem do compilador; compile novamente antes de executar.
+\end{frame}

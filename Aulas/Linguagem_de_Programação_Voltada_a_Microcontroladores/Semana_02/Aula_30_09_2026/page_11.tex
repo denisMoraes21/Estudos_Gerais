@@ -1,0 +1,17 @@
+\begin{frame}{Escolher onde observar}
+\begin{center}
+\begin{tikzpicture}[node distance=0.5cm,every node/.style={draw,align=center,font=\small,text width=2.55cm,minimum height=1.1cm}]
+\node (in) {Entrada\\vetor e tamanho};
+\node[right=of in,fill=green!10] (calc) {Processamento\\índice e condição};
+\node[right=of calc] (out) {Saída\\total};
+\draw[-{Latex}] (in)--(calc);
+\draw[-{Latex}] (calc)--(out);
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+\item Entrada errada: investigue aquisição e validação.
+\item Entrada certa, estado errado: investigue laço e condição.
+\item Retorno certo, tela errada: investigue formatação e apresentação.
+\end{itemize}
+\small Uma função pura reduz o número de lugares em que a falha pode estar.
+\end{frame}

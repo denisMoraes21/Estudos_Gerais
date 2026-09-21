@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Seleção por valores: switch}
+\small
+Use \texttt{switch} para comparar uma expressão inteira com valores constantes.
+\begin{lstlisting}
+switch (modo) {
+    case 0:
+        printf("Parado\n");
+        break;
+    case 1:
+        printf("Manual\n");
+        break;
+    case 2:
+        printf("Automatico\n");
+        break;
+    default:
+        printf("Modo invalido\n");
+        break;
+}
+\end{lstlisting}
+\texttt{break} sai do \texttt{switch}; sem ele, a execução continua no próximo caso. Para intervalos, prefira \texttt{if/else}.
+\end{frame}

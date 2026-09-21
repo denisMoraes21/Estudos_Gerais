@@ -1,0 +1,22 @@
+\begin{frame}{Rastreio de for: contador e acumulador}
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+ciclo & total antes & total depois de \texttt{+= 2} \\
+\midrule
+1 & 0 & 2 \\
+2 & 2 & 4 \\
+3 & 4 & 6 \\
+4 & 6 & 8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item \textbf{Contador:} registra quantas etapas avançaram.
+\item \textbf{Acumulador:} reúne os resultados de várias etapas.
+\item Ambos precisam de inicialização coerente.
+\end{itemize}
+\begin{alertblock}{Atenção ao escopo}
+O \texttt{ciclo} declarado no \texttt{for} só existe dentro desse laço. O \texttt{total}, declarado antes, continua disponível depois dele.
+\end{alertblock}
+\end{frame}

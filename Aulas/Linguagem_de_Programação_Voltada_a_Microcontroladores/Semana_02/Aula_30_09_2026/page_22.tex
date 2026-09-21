@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Executar os testes e interpretar o resultado}
+\begin{lstlisting}[language=bash]
+gcc -std=c11 -Wall -Wextra -Wpedantic \
+    exemplos/testes.c exemplos/regras.c \
+    -o /tmp/aula30_testes
+/tmp/aula30_testes
+\end{lstlisting}
+\begin{lstlisting}[language={}]
+6 testes de contagem passaram
+6 testes de validacao passaram
+\end{lstlisting}
+\begin{itemize}
+\item As mensagens aparecem após as verificações bem-sucedidas.
+\item Uma falha interrompe a execução antes da mensagem correspondente.
+\item Passar nos casos escolhidos aumenta a confiança; não prova ausência de todos os defeitos.
+\end{itemize}
+\end{frame}

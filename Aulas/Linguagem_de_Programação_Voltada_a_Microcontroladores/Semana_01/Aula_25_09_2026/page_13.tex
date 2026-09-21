@@ -1,0 +1,18 @@
+\begin{frame}[fragile]{while: testar antes de executar}
+\begin{lstlisting}
+int ciclo = 1;
+while (ciclo <= 3) {
+    printf("Leitura %d\n", ciclo);
+    ciclo++;
+}
+printf("Fim: ciclo = %d\n", ciclo);
+\end{lstlisting}
+\begin{enumerate}
+\item Avaliar \texttt{ciclo <= 3}.
+\item Se verdadeira, executar todo o corpo.
+\item Voltar ao teste; encerrar quando ele for falso.
+\end{enumerate}
+\begin{alertblock}{Progresso}
+Sem \texttt{ciclo++}, o valor permanece 1 e o laço não termina.
+\end{alertblock}
+\end{frame}

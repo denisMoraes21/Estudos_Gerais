@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Terminador, caractere e capacidade}
+\begin{lstlisting}
+char estado[10] = "ON";  /* 2 letras + terminador */
+char letra = '0';        /* caractere do digito */
+char fim = '\0';         /* valor zero: terminador */
+estado[0] = 'O';
+estado[1] = 'K';
+estado[2] = '\0';         /* string agora: "OK" */
+\end{lstlisting}
+\begin{itemize}
+\item Aspas simples representam um caractere; aspas duplas, uma string literal.
+\item \texttt{'0'} e \texttt{'\textbackslash 0'} não representam o mesmo valor.
+\item \texttt{char texto[5] = "LIGAR";} não deixa espaço para o terminador e não deve ser usado como string.
+\end{itemize}
+\end{frame}

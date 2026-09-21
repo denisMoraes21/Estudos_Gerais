@@ -1,0 +1,19 @@
+\begin{frame}[fragile]{Divisão inteira e resto na embalagem}
+\begin{lstlisting}
+int pecas = 17;
+int capacidade = 5;
+int caixas_completas = pecas / capacidade;
+int pecas_restantes = pecas % capacidade;
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Expressão & Resultado \\
+\midrule
+\texttt{17 / 5} & 3 caixas completas \\
+\texttt{17 \% 5} & 2 peças restantes \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Conferência:} $17 = 3 \times 5 + 2$. Para valores positivos, o resto fica entre zero e um a menos que o divisor.
+\end{frame}

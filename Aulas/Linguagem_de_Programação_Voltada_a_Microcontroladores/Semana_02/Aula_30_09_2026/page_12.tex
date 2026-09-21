@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{GDB: pausar antes de adivinhar}
+\begin{lstlisting}[language=bash]
+gcc -std=c11 -Wall -Wextra -Wpedantic \
+    -g -O0 exemplos/monitor.c exemplos/regras.c \
+    -o /tmp/aula30_monitor
+gdb /tmp/aula30_monitor
+\end{lstlisting}
+\begin{lstlisting}[language={}]
+(gdb) break contar_no_limite
+(gdb) run
+(gdb) print quantidade
+(gdb) print limite
+(gdb) print valores[1]
+\end{lstlisting}
+\small Na primeira parada, os valores esperados são 3, 30 e 30. Um ponto de parada suspende o programa antes de continuar sua execução.
+\end{frame}

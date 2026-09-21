@@ -1,0 +1,20 @@
+\begin{frame}[fragile]{Exibir valores com printf}
+\begin{lstlisting}
+printf("Ciclos: %d\n", ciclos);
+printf("Temperatura: %.1f C\n", temperatura_c);
+printf("Setor: %c\n", setor);
+printf("Disponivel: %d\n", disponivel);
+\end{lstlisting}
+\small
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+Formato & Valor esperado nesta aula \\
+\midrule
+\texttt{\%d} / \texttt{\%u} & \texttt{int} / \texttt{unsigned int} \\
+\texttt{\%c} & Caractere, promovido para \texttt{int} \\
+\texttt{\%f} / \texttt{\%.1f} & Ponto flutuante / uma casa decimal \\
+\bottomrule
+\end{tabularx}
+\medskip
+\texttt{printf} recebe \texttt{float} como \texttt{double} e \texttt{bool} como \texttt{int} pelas promoções da linguagem. \texttt{\textbackslash n} inicia uma nova linha.
+\end{frame}

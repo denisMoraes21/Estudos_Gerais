@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{Por que extrair uma função?}
+\begin{lstlisting}
+bool alarme_motor = temperatura_motor >= 30;
+bool alarme_painel = temperatura_painel >= 30;
+\end{lstlisting}
+\begin{itemize}
+\item A decisão se repete; sua regra pode mudar.
+\item Uma função recebe os dados e concentra a regra.
+\item Nomes claros explicam a intenção de cada chamada.
+\end{itemize}
+\begin{lstlisting}
+bool alarme_motor = alarme_ativo(temperatura_motor, 30);
+bool alarme_painel = alarme_ativo(temperatura_painel, 30);
+\end{lstlisting}
+\small Trechos de uso; a definição de \texttt{alarme\_ativo} vem a seguir.
+\end{frame}

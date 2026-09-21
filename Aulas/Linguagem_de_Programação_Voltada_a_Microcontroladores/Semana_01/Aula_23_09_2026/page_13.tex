@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Atribuição entre variáveis copia o valor}
+\begin{lstlisting}
+int leitura = 12;
+int copia = leitura;
+leitura = 20;
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Etapa & \texttt{leitura} & \texttt{copia} \\
+\midrule
+Primeira declaração & 12 & ainda não declarada \\
+Segunda declaração & 12 & 12 \\
+Nova atribuição & 20 & 12 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Leitura correta}
+\texttt{copia} recebe o valor daquele momento; ela não passa a acompanhar automaticamente \texttt{leitura}.
+\end{block}
+\end{frame}

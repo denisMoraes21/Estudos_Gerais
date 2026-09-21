@@ -143,22 +143,22 @@ void ESP32_ReadSensor(void) {
 
     // if(status == HAL_OK)
     // {
-    //     LOG_ERROR("Temperatura: %.1f C\n",
+    //     LOG_ERROR("Temperature: %.1f C\n",
     //            sensor.temperatura / 10.0);
 
-    //     LOG_ERROR("Umidade: %.1f %%\n",
+    //     LOG_ERROR("Humidity: %.1f %%\n",
     //            sensor.umidade / 10.0);
 
-    //     LOG_ERROR("Contador: %lu\n",
+    //     LOG_ERROR("Counter: %lu\n",
     //            sensor.contador);
 
-    //     LOG_INFO("Temperatura raw: %u", sensor.temperatura);
-    //     LOG_INFO("Umidade raw: %u", sensor.umidade);
-    //     LOG_INFO("Contador: %lu", sensor.contador);
+    //     LOG_INFO("Raw temperature: %u", sensor.temperatura);
+    //     LOG_INFO("Raw humidity: %u", sensor.umidade);
+    //     LOG_INFO("Counter: %lu", sensor.contador);
     // }
     // else
     // {
-    //     LOG_ERROR("Erro I2C: %d\n", status);
+    //     LOG_ERROR("I2C error: %d\n", status);
     // }
 }
 
@@ -634,12 +634,41 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+static void f_bms_message(const char *topic, const void *payload, size_t length,
+                          void *argument) {
+    (void)argument;
+    LOG_INFO("MQTT RX: topic=%s bytes=%lu", topic, (unsigned long)length);
+    /* Small chunks avoid truncating long payloads in the serial logger. */
+    const unsigned char *data = payload;
+    for (size_t offset = 0; offset < length; offset += 96) {
+        char text[97];
+        size_t count = length - offset;
+        if (count > 96)
+            count = 96;
+        for (size_t i = 0; i < count; ++i) {
+            unsigned char c = data[offset + i];
+            text[i] = (c >= 32 && c <= 126) ? (char)c : '.';
+        }
+        text[count] = '\0';
+        LOG_INFO("MQTT RX: %s", text);
+    }
+}
+
+static void f_bms_subscribe_done(int result, void *argument) {
+    (void)argument;
+    if (result == APP_MQTT_OK) {
+        LOG_INFO("MQTT: subscribed to /bms/resposta; waiting for messages");
+    } else {
+        LOG_ERROR("MQTT: subscription to /bms/resposta failed (%d)", result);
+    }
+}
+
 static void f_bms_publish_done(int result, void *argument) {
     (void)argument;
     if (result == APP_MQTT_OK) {
-        LOG_INFO("MQTT: broker confirmou o JSON em /bms");
+        LOG_INFO("MQTT: broker acknowledged JSON on /bms");
     } else {
-        LOG_ERROR("MQTT: falha na publicacao em /bms (%d)", result);
+        LOG_ERROR("MQTT: publish to /bms failed (%d)", result);
     }
 }
 
@@ -693,8 +722,8 @@ void StartDefaultTask(void *argument) {
 #endif
 
     if (!f_phy_init()) {
-        LOG_ERROR("Identificacao PHY invalida; verifique clocks ETH, MDC/MDIO "
-                  "e reset do PHY");
+        LOG_ERROR("Invalid PHY ID; check ETH clocks, MDC/MDIO "
+                  "and PHY reset");
         osThreadExit();
         return;
     }
@@ -728,6 +757,7 @@ void StartDefaultTask(void *argument) {
         .broker_port = APP_MQTT_PLAIN_BROKER_PORT,
         .client_id = APP_MQTT_DEVICE_ID,
         .keep_alive_s = APP_MQTT_KEEP_ALIVE_S,
+        .on_message = f_bms_message,
     };
 
     int mqtt_result = f_mqtt_init(&mqtt_config);
@@ -739,6 +769,7 @@ void StartDefaultTask(void *argument) {
     }
 
     static const char payload[] = "{\"tensao\":12.6,\"corrente\":1.5}";
+    LOG_INFO("Publishing message: %s", payload);
     if (mqtt_result == APP_MQTT_OK) {
         mqtt_result =
             f_mqtt_publish("/bms", payload, sizeof(payload) - 1U,
@@ -748,7 +779,16 @@ void StartDefaultTask(void *argument) {
     }
 
     if (mqtt_result != APP_MQTT_OK) {
-        LOG_ERROR("MQTT: teste /bms falhou (%d)", mqtt_result);
+        LOG_ERROR("MQTT: /bms test failed (%d)", mqtt_result);
+    }
+
+    if (f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED) {
+        int subscribe_result = f_mqtt_subscribe("/bms/resposta", APP_MQTT_QOS_1,
+                                                f_bms_subscribe_done, NULL);
+        if (subscribe_result != APP_MQTT_OK) {
+            LOG_ERROR("MQTT: could not subscribe to /bms/resposta (%d)",
+                      subscribe_result);
+        }
     }
 
     while (1) {

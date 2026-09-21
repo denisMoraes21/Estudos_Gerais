@@ -1,0 +1,12 @@
+\begin{frame}[fragile]{O tamanho deve ser calculado no chamador}
+\begin{lstlisting}
+int leituras[] = {28, 31, 29, 30};
+size_t n = sizeof leituras / sizeof leituras[0];
+int maior = maior_leitura(leituras, n);
+printf("Maior leitura: %d C\n", maior); /* 31 C */
+\end{lstlisting}
+\begin{alertblock}{Armadilha comum}
+Dentro de \texttt{maior\_leitura}, \texttt{sizeof valores} mede o ponteiro, não o vetor original. A função precisa receber a quantidade.
+\end{alertblock}
+\small Antes de chamar com dados externos, valide se o vetor não está vazio. A função não descobre sozinha quantos elementos são válidos.
+\end{frame}

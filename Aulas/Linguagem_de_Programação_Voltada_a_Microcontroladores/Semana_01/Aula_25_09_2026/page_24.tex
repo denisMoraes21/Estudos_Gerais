@@ -1,0 +1,19 @@
+\begin{frame}{Verificação: casos que revelam erros}
+Para a regra \texttt{temperatura >= 30}, monte uma tabela antes de executar:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+Entrada & Ventilador esperado & Motivo \\
+\midrule
+29 & 0 & Imediatamente abaixo do limite. \\
+30 & 1 & Exatamente no limite. \\
+31 & 1 & Imediatamente acima do limite. \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+\item Conte também o número de linhas geradas pelo laço.
+\item Compare o acumulador final com uma soma manual.
+\item Um programa compilar não garante que sua regra esteja correta.
+\end{itemize}
+\end{frame}

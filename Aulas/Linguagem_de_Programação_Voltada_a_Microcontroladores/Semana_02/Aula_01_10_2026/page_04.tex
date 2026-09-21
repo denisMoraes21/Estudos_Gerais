@@ -1,0 +1,12 @@
+\begin{frame}[t]{Blocos internos e caminho dos dados}
+\begin{center}\begin{tikzpicture}[every node/.style={font=\small,align=center},b/.style={draw=darkgreen,fill=darkgreen!8,minimum width=2.3cm,minimum height=0.8cm}]
+\node[b] (cpu) at (0,0) {CPU\\executa instruções};
+\node[b] (flash) at (-2.8,1.8) {Flash\\programa};
+\node[b] (ram) at (2.8,1.8) {RAM\\dados em uso};
+\node[b] (gpio) at (-2.8,-1.8) {GPIO\\entradas / saídas};
+\node[b] (timer) at (2.8,-1.8) {Temporizadores\\medição de tempo};
+\draw[{Latex}-{Latex}] (cpu)--(flash);\draw[{Latex}-{Latex}] (cpu)--(ram);
+\draw[{Latex}-{Latex}] (cpu)--(gpio);\draw[{Latex}-{Latex}] (cpu)--(timer);
+\end{tikzpicture}\end{center}
+\small A Flash preserva o programa sem alimentação. A RAM mantém variáveis durante a execução e perde seu conteúdo quando a alimentação é removida.
+\end{frame}

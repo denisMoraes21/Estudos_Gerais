@@ -1,0 +1,13 @@
+\begin{frame}[t]{Montagem do projeto}
+\begin{center}\begin{tikzpicture}[every node/.style={font=\small},b/.style={draw=darkgreen,fill=darkgreen!8,minimum width=3cm,minimum height=3cm}]
+\node[b,align=center] (u) at (0,0) {Arduino Uno R3\\[0.8cm]LED integrado};
+\node[draw,align=center] (b1) at (4,1) {Botão 1\\solicitação};
+\node[draw,align=center] (b2) at (4,-1) {Botão 2\\permissão};
+\draw (1.5,1)--node[above]{D2}(b1.west);
+\draw (1.5,-1)--node[above]{D3}(b2.west);
+\draw (b1.east)--(6,1)--(6,-2.2)--(0,-2.2)--node[left]{GND}(0,-1.5);
+\draw (b2.east)--(6,-1);
+\fill (6,-1) circle (1.5pt);
+\end{tikzpicture}\end{center}
+\small Monte com a alimentação desconectada. Ambos os botões ligam seu pino ao GND ao fechar. O LED integrado já possui circuito na placa; não há LED externo nesta prática.
+\end{frame}

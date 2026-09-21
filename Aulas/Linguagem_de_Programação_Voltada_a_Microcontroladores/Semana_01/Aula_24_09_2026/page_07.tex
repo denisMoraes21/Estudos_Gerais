@@ -1,0 +1,11 @@
+\begin{frame}{Sinais, divisão por zero e limites}
+\begin{itemize}
+\item Em C11, a divisão inteira descarta a parte fracionária em direção a zero: \texttt{-7 / 3} resulta em $-2$.
+\item O resto acompanha o sinal do dividendo: \texttt{-7 \% 3} resulta em $-1$.
+\item A divisão inteira e o resto com divisor zero têm comportamento indefinido: valide o divisor.
+\item Um resultado fora da faixa de um inteiro com sinal também pode causar comportamento indefinido.
+\end{itemize}
+\begin{block}{Prática desta aula}
+Usaremos operandos pequenos e divisores conhecidos. Para ponto flutuante, também não devemos depender de uma divisão por zero.
+\end{block}
+\end{frame}

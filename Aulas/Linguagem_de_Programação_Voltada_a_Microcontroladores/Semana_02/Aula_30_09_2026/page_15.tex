@@ -1,0 +1,13 @@
+\begin{frame}[fragile]{Erro lógico: a igualdade foi esquecida}
+\begin{lstlisting}
+/* INCORRETO para a especificacao desta aula. */
+if (valores[i] > limite) ++total;
+
+/* CORRETO: atingir o limite tambem conta. */
+if (valores[i] >= limite) ++total;
+\end{lstlisting}
+\begin{block}{Escolha um teste que distinga as versões}
+Com leitura 32 e limite 30, ambas contam. Com leitura 30 e limite 30, apenas a versão correta conta.
+\end{block}
+\small O compilador não conhece o significado de ``atingir o limite''. Um caso de fronteira verifica essa regra.
+\end{frame}

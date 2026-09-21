@@ -1,0 +1,15 @@
+\begin{frame}[fragile,t]{As três operações básicas de GPIO}
+\begin{lstlisting}[language=C++]
+pinMode(LED_BUILTIN, OUTPUT);
+digitalWrite(LED_BUILTIN, HIGH);
+
+pinMode(2, INPUT_PULLUP);
+int nivel = digitalRead(2);
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{pinMode}: configura o modo do pino.
+\item \texttt{digitalWrite}: escreve \texttt{HIGH} ou \texttt{LOW} em uma saída.
+\item \texttt{digitalRead}: retorna o nível lógico lido.
+\end{itemize}
+\small Configure cada pino antes de usá-lo. Escrever em um pino configurado como entrada não equivale a acionar uma saída.
+\end{frame}

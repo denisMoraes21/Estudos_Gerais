@@ -1,0 +1,11 @@
+\begin{frame}[t]{Diagnóstico de problemas na bancada}
+\small
+\begin{tabularx}{\textwidth}{p{3cm}X}\toprule
+Sintoma & Verificação inicial\\\midrule
+Programa não compila & Primeira mensagem de erro; chaves, nomes e placa selecionada.\\[0.12cm]
+Compila, mas não envia & Cabo de dados, conexão, porta e seleção da placa.\\[0.12cm]
+Entrada varia sozinha & \texttt{INPUT\_PULLUP}, continuidade até GND e contatos do botão.\\[0.12cm]
+LED funciona invertido & Comparação \texttt{== LOW} e tabela de estados esperada.\\[0.12cm]
+Resposta demora & Chamadas de \texttt{delay} e trabalho excessivo por ciclo.\\\bottomrule
+\end{tabularx}
+\end{frame}

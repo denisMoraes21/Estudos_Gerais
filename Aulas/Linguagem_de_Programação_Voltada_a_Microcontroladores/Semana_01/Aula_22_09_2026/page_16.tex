@@ -1,0 +1,15 @@
+\begin{frame}[t]{Fluxograma do sinalizador}
+\begin{center}\begin{tikzpicture}[x=1cm,y=0.8cm,every node/.style={font=\scriptsize,align=center},p/.style={draw=darkgreen,fill=darkgreen!8,minimum height=0.5cm,minimum width=2.6cm}]
+\node[p,rounded corners] (i) at (0,3.2) {Início};
+\node[p,trapezium,trapezium left angle=70,trapezium right angle=110] (l) at (0,2.2) {Ler temperatura};
+\node[p,diamond,aspect=3,inner sep=0pt] (d) at (0,0.8) {Temperatura $\geq 30$?};
+\node[p] (on) at (-2.7,-0.8) {Sinalizador $\leftarrow$ ligado};
+\node[p] (off) at (2.7,-0.8) {Sinalizador $\leftarrow$ desligado};
+\node[p,rounded corners] (f) at (0,-2.2) {Fim do ciclo};
+\draw[-{Latex}] (i)--(l);\draw[-{Latex}] (l)--(d);
+\draw[-{Latex}] (d.west)-|node[above,pos=0.25]{Sim}(on.north);
+\draw[-{Latex}] (d.east)-|node[above,pos=0.25]{Não}(off.north);
+\draw[-{Latex}] (on.south)|-(f.west);\draw[-{Latex}] (off.south)|-(f.east);
+\end{tikzpicture}\end{center}
+\small Faça o percurso para 29 e para 30. Cada execução percorre apenas um dos ramos.
+\end{frame}

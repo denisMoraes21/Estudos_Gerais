@@ -1,0 +1,25 @@
+\begin{frame}[fragile]{Seleção simples e seleção com alternativa}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Apenas \texttt{if}:}
+\begin{lstlisting}
+if (temperatura >= 30) {
+    printf("Temperatura alta\n");
+}
+printf("Leitura concluida\n");
+\end{lstlisting}
+A mensagem de alerta pode ser omitida. A última mensagem sempre executa.
+\column{0.48\textwidth}
+\textbf{\texttt{if/else}:}
+\begin{lstlisting}
+if (temperatura >= 30) {
+    ventilador = 1;
+} else {
+    ventilador = 0;
+}
+\end{lstlisting}
+Exatamente um dos dois blocos executa. O valor de saída fica definido em ambos.
+\end{columns}
+\vspace{0.3cm}
+Use chaves mesmo com uma única instrução: elas tornam o bloco explícito.
+\end{frame}

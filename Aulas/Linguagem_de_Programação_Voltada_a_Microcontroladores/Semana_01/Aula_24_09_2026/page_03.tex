@@ -1,0 +1,17 @@
+\begin{frame}{Uma expressão produz um valor}
+\begin{block}{Situação: uma linha de embalagem}
+Foram produzidas 17 peças. Cada caixa comporta 5 peças. Quantas caixas completas e quantas peças restantes existem?
+\end{block}
+\begin{center}
+\begin{tikzpicture}[node distance=0.5cm]
+\node[draw,rounded corners,fill=darkgreen!10,minimum height=0.9cm] (d) {Dados: 17 e 5};
+\node[draw,rounded corners,right=of d,minimum height=0.9cm] (e) {Expressão};
+\node[draw,rounded corners,right=of e,minimum height=0.9cm] (r) {Resultado};
+\draw[-{Latex}] (d) -- (e);
+\draw[-{Latex}] (e) -- (r);
+\end{tikzpicture}
+\end{center}
+\textbf{Operando}: valor sobre o qual se opera.\\
+\textbf{Operador}: símbolo que especifica a operação.\\
+Em \texttt{17 / 5}, os operandos são 17 e 5; o operador é \texttt{/}.
+\end{frame}

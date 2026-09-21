@@ -43,11 +43,11 @@ static void tcp_client_task(void *argument)
     while (!netif_is_up(&gnetif) ||
            !netif_is_link_up(&gnetif))
     {
-        LOG_INFO("Aguardando interface Ethernet...");
+        LOG_INFO("Waiting for Ethernet interface...");
         osDelay(1000);
     }
 
-    LOG_INFO("Ethernet pronta");
+    LOG_INFO("Ethernet ready");
 
     for (;;)
     {
@@ -59,7 +59,7 @@ static void tcp_client_task(void *argument)
 
         if (socket_fd < 0)
         {
-            LOG_ERROR("Erro ao criar socket");
+            LOG_ERROR("Failed to create socket");
             osDelay(2000);
             continue;
         }
@@ -76,14 +76,14 @@ static void tcp_client_task(void *argument)
 
         if (result == 0)
         {
-            LOG_ERROR("IP do servidor invalido");
+            LOG_ERROR("Invalid server IP");
             lwip_close(socket_fd);
             osDelay(2000);
             continue;
         }
 
         LOG_INFO(
-            "Conectando em %s:%d...",
+            "Connecting to %s:%d...",
             SERVER_IP,
             SERVER_PORT
         );
@@ -97,7 +97,7 @@ static void tcp_client_task(void *argument)
         if (result < 0)
         {
             LOG_ERROR(
-                "Falha ao conectar. errno = %d",
+                "Connection failed. errno = %d",
                 errno
             );
 
@@ -106,7 +106,7 @@ static void tcp_client_task(void *argument)
             continue;
         }
 
-        LOG_INFO("Conectado ao servidor TCP");
+        LOG_INFO("Connected to TCP server");
 
         uint32_t counter = 0;
 
@@ -129,13 +129,13 @@ static void tcp_client_task(void *argument)
             if (result < 0)
             {
                 LOG_ERROR(
-                    "Erro no envio. errno = %d",
+                    "Send failed. errno = %d",
                     errno
                 );
                 break;
             }
 
-            LOG_INFO("Enviados %d bytes", result);
+            LOG_INFO("Sent %d bytes", result);
 
             received = lwip_recv(
                 socket_fd,
@@ -146,14 +146,14 @@ static void tcp_client_task(void *argument)
 
             if (received == 0)
             {
-                LOG_WARN("Servidor encerrou a conexao");
+                LOG_WARN("Server closed the connection");
                 break;
             }
 
             if (received < 0)
             {
                 LOG_ERROR(
-                    "Erro na recepcao. errno = %d",
+                    "Receive failed. errno = %d",
                     errno
                 );
                 break;
@@ -162,14 +162,14 @@ static void tcp_client_task(void *argument)
             rx_buffer[received] = '\0';
 
             LOG_INFO(
-                "Servidor respondeu: %s",
+                "Server response: %s",
                 rx_buffer
             );
 
             osDelay(1000);
         }
 
-        LOG_INFO("Fechando socket");
+        LOG_INFO("Closing socket");
 
         lwip_shutdown(socket_fd, SHUT_RDWR);
         lwip_close(socket_fd);
@@ -193,10 +193,10 @@ osStatus_t socket_init(void)
 
     if (tcp_client_task_handle == NULL)
     {
-        LOG_ERROR("Falha ao criar a thread do cliente TCP");
+        LOG_ERROR("Failed to create TCP client thread");
         return osError;
     }
 
-    LOG_INFO("Thread do cliente TCP criada");
+    LOG_INFO("TCP client thread created");
     return osOK;
 }

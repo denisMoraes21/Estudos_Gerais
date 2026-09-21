@@ -30,7 +30,7 @@ network_mode_t f_network_get_mode(void) { return e_network_mode; }
 #define PING_IP_ERROR "Invalid Ping address: %s"
 #define PING_ERROR_SOCKET_ICMP "Socket ICMP error during creation: errno=%d"
 #define PING_TIMEOUT_ICMP "ICMP timeout during configuration: errno=%d"
-#define PING_ERROR_SEND_ICMP "Falha ao enviar ping para %s: errno=%d"
+#define PING_ERROR_SEND_ICMP "Failed to send ping to %s: errno=%d"
 #define PING_CODE "Ping %s: %s"
 #define PING_SUCCESS "Response received"
 #define PING_FAIL "Timeout"

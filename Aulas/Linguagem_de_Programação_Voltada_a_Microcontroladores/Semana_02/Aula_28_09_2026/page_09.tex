@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Soma e média: um acumulador para a coleção}
+\begin{lstlisting}
+int leituras[5] = {26, 28, 30, 32, 34};
+int soma = 0;
+for (int i = 0; i < 5; i++) {
+    soma += leituras[i];
+}
+double media = (double)soma / 5;
+printf("Soma: %d; media: %.1f C\n", soma, media);
+\end{lstlisting}
+\begin{itemize}
+\item Soma: 150; média: 30,0~$^\circ$C.
+\item O acumulador começa em zero, antes do laço.
+\item A conversão para \texttt{double} evita divisão inteira.
+\item Na aplicação geral, verifique quantidade maior que zero e se a soma cabe no tipo escolhido.
+\end{itemize}
+\end{frame}

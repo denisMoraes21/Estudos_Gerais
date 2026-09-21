@@ -1,0 +1,14 @@
+\begin{frame}[fragile]{Primeira ferramenta: avisos do compilador}
+\begin{lstlisting}[language=bash]
+gcc -std=c11 -Wall -Wextra -Wpedantic \
+    -g -O0 exemplos/monitor.c exemplos/regras.c \
+    -o /tmp/aula30_monitor
+\end{lstlisting}
+\begin{itemize}
+\item \texttt{-std=c11}: seleciona a versão da linguagem.
+\item \texttt{-Wall -Wextra -Wpedantic}: habilitam grupos úteis de avisos; não detectam todos os erros.
+\item \texttt{-g}: inclui informações para o depurador.
+\item \texttt{-O0}: facilita relacionar as instruções ao código-fonte.
+\end{itemize}
+\small Leia o primeiro diagnóstico, confira arquivo e linha, corrija e recompile. Um erro pode gerar vários diagnósticos posteriores.
+\end{frame}

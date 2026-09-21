@@ -1,0 +1,16 @@
+\begin{frame}[fragile]{fgets: limitar a leitura à capacidade do vetor}
+\begin{lstlisting}
+char comando[16];
+if (fgets(comando, sizeof comando, stdin) == NULL) {
+    printf("Nenhuma linha recebida\n");
+    return 1;
+}
+printf("Recebido: %s", comando);
+\end{lstlisting}
+\begin{itemize}
+\item Lê no máximo 15 caracteres e acrescenta \texttt{'\textbackslash 0'} em caso de sucesso.
+\item A quebra de linha também é armazenada se houver espaço.
+\item \texttt{NULL} indica que não foi possível obter a linha; não use o vetor como se a leitura tivesse funcionado.
+\item Uma linha maior que a capacidade fica parcialmente na entrada.
+\end{itemize}
+\end{frame}

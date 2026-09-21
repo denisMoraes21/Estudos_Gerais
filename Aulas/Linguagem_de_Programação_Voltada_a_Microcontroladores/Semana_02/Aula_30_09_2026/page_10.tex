@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Mensagens temporárias com printf}
+\begin{lstlisting}
+for (size_t i = 0; i < quantidade; ++i) {
+    printf("i=%zu valor=%d limite=%d total_antes=%zu\n",
+           i, valores[i], limite, total);
+    if (valores[i] >= limite) ++total;
+    printf("total_depois=%zu\n", total);
+}
+\end{lstlisting}
+\begin{itemize}
+\item Registre valores que confirmem ou refutem uma hipótese.
+\item \texttt{\%zu} corresponde a \texttt{size\_t}; \texttt{\%d}, a \texttt{int}.
+\item Nomeie os campos para interpretar o registro depois.
+\item Remova ou desative mensagens temporárias ao concluir.
+\end{itemize}
+\small Em hardware, mensagens podem mudar a temporização; a observação também tem custo.
+\end{frame}

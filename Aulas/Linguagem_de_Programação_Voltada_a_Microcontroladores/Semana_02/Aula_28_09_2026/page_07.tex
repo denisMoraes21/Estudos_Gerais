@@ -1,0 +1,21 @@
+\begin{frame}[fragile]{Percorrer um vetor com for}
+\begin{lstlisting}
+int leituras[5] = {26, 28, 30, 32, 34};
+for (int i = 0; i < 5; i++) {
+    printf("Sensor[%d] = %d C\n", i, leituras[i]);
+}
+\end{lstlisting}
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+\texttt{i} & Condição \texttt{i < 5} & Elemento \\
+\midrule
+0 & verdadeira & 26 \\
+1 & verdadeira & 28 \\
+4 & verdadeira & 34 \\
+5 & falsa & nenhum acesso \\
+\bottomrule
+\end{tabular}
+\end{center}
+\small As posições 2 e 3 também são visitadas; a tabela destaca o início e o limite.
+\end{frame}

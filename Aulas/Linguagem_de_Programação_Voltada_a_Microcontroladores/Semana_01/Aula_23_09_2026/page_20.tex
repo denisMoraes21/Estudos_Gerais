@@ -1,0 +1,17 @@
+\begin{frame}[fragile]{Declare antes de usar e inicialize antes de ler}
+\begin{lstlisting}
+int main(void) {
+    int ciclos = 0;
+    ciclos = 8;
+    return 0;
+}
+\end{lstlisting}
+\begin{itemize}
+\item Neste curso, começamos com variáveis locais, declaradas dentro de \texttt{main}.
+\item O nome fica disponível a partir da declaração até o fim do bloco em que foi declarado.
+\item Uma variável local automática sem inicialização não contém um valor confiável para leitura.
+\end{itemize}
+\begin{alertblock}{Regra de trabalho}
+Estabeleça um valor antes de consultar ou exibir a variável.
+\end{alertblock}
+\end{frame}

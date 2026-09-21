@@ -1,0 +1,17 @@
+\begin{frame}{Contratos: o que uma função promete?}
+\small
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+Parte & Exemplo: \texttt{alarme\_ativo(t, limite)} \\
+\midrule
+Propósito & Indicar temperatura igual ou superior ao limite. \\
+Entradas & Temperatura e limite inteiros, ambos em graus Celsius. \\
+Pré-condição & Leituras já validadas pela camada de aquisição. \\
+Pós-condição & Retorna verdadeiro se, e somente se, \texttt{t >= limite}. \\
+Efeitos & Não altera os argumentos nem acessa GPIO. \\
+\bottomrule
+\end{tabularx}
+\begin{block}{Unidades fazem parte do contrato}
+Comparar Celsius com milivolts produz uma decisão sem significado, mesmo que ambos usem o tipo \texttt{int}.
+\end{block}
+\end{frame}

@@ -1,0 +1,15 @@
+\begin{frame}{Limites e erros de repetição}
+\begin{tabularx}{\textwidth}{XX}
+\toprule
+Erro & Consequência \\
+\midrule
+Esquecer atualização & Repetição infinita acidental. \\
+Usar \texttt{<=} quando deveria ser \texttt{<} & Uma execução extra. \\
+Reiniciar acumulador dentro do corpo & Perder os resultados anteriores. \\
+Alterar contador em vários lugares & Dificultar o rastreio e a parada. \\
+Incrementar sem limite representável & Estourar a capacidade do tipo. \\
+\bottomrule
+\end{tabularx}
+\vspace{0.35cm}
+\textbf{Prática de revisão:} simule mentalmente zero, uma e várias execuções. Registre o último valor aceito e o primeiro valor rejeitado pela condição.
+\end{frame}

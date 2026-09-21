@@ -1,0 +1,15 @@
+\begin{frame}[fragile]{Conferência dos exercícios}
+\begin{lstlisting}
+bool dentro_faixa(int v, int min, int max)
+{
+    return v >= min && v <= max;
+}
+\end{lstlisting}
+\begin{itemize}
+\item Contrato: \texttt{min <= max}; limites incluídos.
+\item Maior leitura: 31. A função recebe ponteiro e quantidade; o ponteiro não carrega o tamanho do vetor.
+\item $S(4)=4+3+2+1+0=10$: cinco chamadas.
+\item Um inteiro é copiado; um endereço copiado permite alterar o objeto apontado, se válido.
+\end{itemize}
+\small Prática com limite 31 e vetor \texttt{\{28,30,32,31\}}: normal, normal, ALARME, ALARME.
+\end{frame}
