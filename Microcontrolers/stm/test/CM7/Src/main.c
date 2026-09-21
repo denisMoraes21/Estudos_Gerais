@@ -755,7 +755,7 @@ void StartDefaultTask(void *argument) {
     static const app_mqtt_config_t mqtt_config = {
         .broker_hostname = "192.168.1.10",
         .broker_port = APP_MQTT_PLAIN_BROKER_PORT,
-        .client_id = APP_MQTT_DEVICE_ID,
+        .client_id = "1",
         .keep_alive_s = APP_MQTT_KEEP_ALIVE_S,
         .on_message = f_bms_message,
     };
