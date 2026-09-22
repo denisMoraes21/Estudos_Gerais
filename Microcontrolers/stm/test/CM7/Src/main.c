@@ -31,6 +31,7 @@
 #include "logger.h"
 #include "lwip.h"
 #include "mqtt_client.h"
+#include "mqtt_service.h"
 #include "mqtt_topics.h"
 #include "network.h"
 #include "physical.h"
@@ -634,44 +635,6 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
-static void f_bms_message(const char *topic, const void *payload, size_t length,
-                          void *argument) {
-    (void)argument;
-    LOG_INFO("MQTT RX: topic=%s bytes=%lu", topic, (unsigned long)length);
-    /* Small chunks avoid truncating long payloads in the serial logger. */
-    const unsigned char *data = payload;
-    for (size_t offset = 0; offset < length; offset += 96) {
-        char text[97];
-        size_t count = length - offset;
-        if (count > 96)
-            count = 96;
-        for (size_t i = 0; i < count; ++i) {
-            unsigned char c = data[offset + i];
-            text[i] = (c >= 32 && c <= 126) ? (char)c : '.';
-        }
-        text[count] = '\0';
-        LOG_INFO("MQTT RX: %s", text);
-    }
-}
-
-static void f_bms_subscribe_done(int result, void *argument) {
-    (void)argument;
-    if (result == APP_MQTT_OK) {
-        LOG_INFO("MQTT: subscribed to /bms/resposta; waiting for messages");
-    } else {
-        LOG_ERROR("MQTT: subscription to /bms/resposta failed (%d)", result);
-    }
-}
-
-static void f_bms_publish_done(int result, void *argument) {
-    (void)argument;
-    if (result == APP_MQTT_OK) {
-        LOG_INFO("MQTT: broker acknowledged JSON on /bms");
-    } else {
-        LOG_ERROR("MQTT: publish to /bms failed (%d)", result);
-    }
-}
-
 /* Preserve the failure location for inspection even if UART is unavailable. */
 const char *volatile error_file;
 const char *volatile error_function;
@@ -721,6 +684,7 @@ void StartDefaultTask(void *argument) {
     }
 #endif
 
+    // PHYSICAL
     if (!f_phy_init()) {
         LOG_ERROR("Invalid PHY ID; check ETH clocks, MDC/MDIO "
                   "and PHY reset");
@@ -729,6 +693,8 @@ void StartDefaultTask(void *argument) {
     }
     f_phy_wait_for_link();
     f_phy_show_speed();
+
+    // DATA
     f_data_init();
     f_data_show_mac();
 
@@ -737,6 +703,7 @@ void StartDefaultTask(void *argument) {
     f_data_set_mac(v_mac);
     f_data_show_mac();
 
+    // NETWORK
     network_config_t config = {
         .use_dhcp = false,
         .ip = "192.168.1.21",
@@ -752,6 +719,7 @@ void StartDefaultTask(void *argument) {
 
     f_network_checkout();
 
+    // MQTT
     static const app_mqtt_config_t mqtt_config = {
         .broker_hostname = "192.168.1.10",
         .broker_port = APP_MQTT_PLAIN_BROKER_PORT,
@@ -768,34 +736,139 @@ void StartDefaultTask(void *argument) {
         mqtt_result = f_mqtt_wait_connect();
     }
 
-    static const char payload[] = "{\"tensao\":12.6,\"corrente\":1.5}";
-    LOG_INFO("Publishing message: %s", payload);
-    if (mqtt_result == APP_MQTT_OK) {
-        mqtt_result =
-            f_mqtt_publish("/bms", payload, sizeof(payload) - 1U,
-                           APP_MQTT_QOS_1, false, f_bms_publish_done, NULL);
-    } else {
-        f_mqtt_disconnect();
+    f_add_publish_topics();
+
+    f_subscribe_topics(f_bms_subscribe_done);
+
+    /* bms/<bms_id>/cell/<cell_id>/telemetry */
+    for (size_t i = 0; i < CELL_COUNT && mqtt_result == APP_MQTT_OK; ++i) {
+        char *topic = v_publish_topics[MQTT_PUB_CELL_TELEMETRY_FIRST + i];
+        mqtt_result = f_mqtt_service_publishf(
+            topic, f_bms_publish_done, topic,
+            "{\"bms_id\":\"%s\",\"cell_id\":\"%s\","
+            "\"cell_name\":\"BYD_CELL_FIRST\",\"voltage_v\":4.19,"
+            "\"current_a\":-0.1,\"soh_percent\":52.69,"
+            "\"soc_percent\":100.0,\"status\":\"active\"}",
+            BMS_ID, v_cell_id_list[i]);
     }
 
-    if (mqtt_result != APP_MQTT_OK) {
-        LOG_ERROR("MQTT: /bms test failed (%d)", mqtt_result);
+    /* bms/<bms_id>/cell/<cell_id>/status */
+    for (size_t i = 0; i < CELL_COUNT && mqtt_result == APP_MQTT_OK; ++i) {
+        char *topic = v_publish_topics[MQTT_PUB_CELL_TELEMETRY_FIRST + CELL_COUNT + CELL_COUNT / 2U + i];
+        mqtt_result = f_mqtt_service_publishf(
+            topic, f_bms_publish_done, topic,
+            "{\"bms_id\":\"%s\",\"cell_id\":\"%s\","
+            "\"connected\":true,"
+            "\"charging\":true,"
+            "\"on_error\":false,"
+            "\"on_alarm\":true,"
+            "\"alarm\":\"warning: message\"}",
+            BMS_ID, v_cell_id_list[i]);
     }
 
-    if (f_mqtt_get_state() == APP_MQTT_STATE_CONNECTED) {
-        int subscribe_result = f_mqtt_subscribe("/bms/resposta", APP_MQTT_QOS_1,
-                                                f_bms_subscribe_done, NULL);
-        if (subscribe_result != APP_MQTT_OK) {
-            LOG_ERROR("MQTT: could not subscribe to /bms/resposta (%d)",
-                      subscribe_result);
-        }
+    /* bms/<bms_id>/cell/<cell_id>/event */
+    for (size_t i = 0; i < CELL_COUNT && mqtt_result == APP_MQTT_OK; ++i) {
+        char *topic = v_publish_topics[MQTT_PUB_CELL_TELEMETRY_FIRST + CELL_COUNT + CELL_COUNT / 2U + CELL_COUNT + i];
+        mqtt_result = f_mqtt_service_publishf(
+            topic, f_bms_publish_done, topic,
+            "{\"bms_id\":\"%s\",\"cell_id\":\"%s\","
+            "\"type\":\"critical_soh\","
+            "\"severity\":\"critical\","
+            "\"message\":\"SOH abaixo de 70%%. Bateria em estado crítico.\","
+            "\"cycle\":%zu,"
+            "\"date\":\"2026-08-26 20:04:24\"}",
+            BMS_ID, v_cell_id_list[i], i + 1);
     }
 
+    /* bms/<bms_id>/telemetry */
+    char *topic = v_publish_topics[MQTT_PUB_BMS_TELEMETRY_INDEX];
+    mqtt_result = f_mqtt_service_publishf(
+        topic, f_bms_publish_done, topic,
+        "{\"bms_id\":\"%s\","
+        "\"battery_specifications\":{\"chemistry\":\"lpf\","
+        "\"nominal_voltage_v\":5.0,"
+        "\"nominal_capacity_ah\":3.7625,"
+        "\"nominal_energy_wh\":1280,"
+        "\"max_charging_voltage_v\":5.0,"
+        "\"min_charging_voltage_v\":5.0,"
+        "\"max_charging_current_a\":5.0,"
+        "\"min_charging_current_a\":5.0,"
+        "\"countinuous_charging_current_a\":5.0,"
+        "\"peak_charging_current_a\":6.0,"
+        "\"peak_discharging_current_a\":6.0,"
+        "\"max_power_kw\":5.0,"
+        "\"internal_resistence_ohm\":6.0},"
+        "\"battery_configuration\":{\"number_of_cells\":%u,"
+        "\"cell_nominal_voltage_avg_v\":5.0,"
+        "\"cell_nominal_capacity_avg_ah\":5.0,"
+        "\"max_cell_voltage_avg_v\":5.0,"
+        "\"min_cell_voltage_avg_v\":5.0,"
+        "\"avg_cell_voltage_avg_v\":5.0,"
+        "\"cell_voltage_difference_avg_v\":5.0},"
+        "\"battery_status\":{\"soc\":57.567,"
+        "\"soh\":89.0}}",
+        BMS_ID, (unsigned int)CELL_COUNT);
+
+    /* bms/<bms_id> */
+    mqtt_result = f_mqtt_service_publishf(
+        topic, f_bms_publish_done, v_publish_topics[MQTT_PUB_BMS_INDEX],
+        "{\"bms_id\":\"%s\",\"cell_count\":%u,\"new_cell\":true}", BMS_ID,
+        (unsigned int)CELL_COUNT);
+
+    /* bms/<bms_id>/ota/status */
+    mqtt_result = f_mqtt_service_publishf(
+        v_publish_topics[MQTT_PUB_BMS_OTA_STATUS_INDEX], f_bms_publish_done,
+        v_publish_topics[MQTT_PUB_BMS_OTA_STATUS_INDEX],
+        "{\"target_fw_version\":\"1.0.5\","
+        "\"last_fw_version\":\"3.6.0\","
+        "\"success\":false,"
+        "\"message\":\"error during update\"}");
+
+    /* bms/<bms_id>/temp */
+    mqtt_result = f_mqtt_service_publishf(
+        v_publish_topics[MQTT_PUB_BMS_TEMP_INDEX], f_bms_publish_done,
+        v_publish_topics[MQTT_PUB_BMS_TEMP_INDEX],
+        "{\"bms_id\":\"%s\","
+        "\"cell_ids\":[\"Cell 001\",\"Cell 002\"],"
+        "\"temp_id\":\"%s\","
+        "\"current_avg_cells_c\":25.09,"
+        "\"avg_samples_cells_c\":26.09,"
+        "\"samples\":25}",
+        BMS_ID, v_temp_id_list[0]);
+
+    /* bms/<bms_id>/temp/<temp_id> */
+    for (size_t i = 0; i < (CELL_COUNT / 2U) && mqtt_result == APP_MQTT_OK; ++i) {
+        char temp_id_str[16];
+        snprintf(temp_id_str, sizeof(temp_id_str), "Temp %03zu", i + 1);
+        char *temp_topic = v_publish_topics[MQTT_PUB_CELL_TELEMETRY_FIRST + CELL_COUNT + i];
+        mqtt_result = f_mqtt_service_publishf(
+            temp_topic, f_bms_publish_done, temp_topic,
+            "{\"bms_id\":\"%s\","
+            "\"cell_ids\":[\"Cell %03zu\",\"Cell %03zu\"],"
+            "\"temp_id\":\"%s\","
+            "\"current_temp_c\":25.09,"
+            "\"min_temp_c\":20.0,"
+            "\"max_temp_c\":30.09,"
+            "\"avg_samples_c\":25.04,"
+            "\"samples\":25.00}",
+            BMS_ID, i * 2 + 1, i * 2 + 2, temp_id_str);
+    }
+
+    /* bms/<bms_id>/config */
+    mqtt_result = f_mqtt_service_publishf(
+        v_publish_topics[MQTT_PUB_BMS_CONFIG_INDEX], f_bms_publish_done,
+        v_publish_topics[MQTT_PUB_BMS_CONFIG_INDEX],
+        "{\"overvoltage_protection_v\":5.000,"
+        "\"undervoltage_protection_v\":5.000,"
+        "\"charge_overcurrent_protection_a\":5.000,"
+        "\"discharge_overcurrent_protection_a\":5.000,"
+        "\"overtemperature_protection_c\":5.000,"
+        "\"undertemperature_protection_c\":5.000}");
+
+    /* USER CODE END 5 */
     while (1) {
         osDelay(2000);
     }
-
-    /* USER CODE END 5 */
 }
 
 /* MPU Configuration */

@@ -130,6 +130,9 @@
 /*-----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 
+/* Fit a full BMS telemetry packet, including topic and MQTT headers. */
+#define MQTT_OUTPUT_RINGBUF_SIZE 2048
+
 /* One extra cyclic timer for the single MQTT client (keep-alive/timeouts). */
 #define MEMP_NUM_SYS_TIMEOUT (LWIP_NUM_SYS_TIMEOUT_INTERNAL + 1)
 /* Linker-reserved heap, outside the DMA RX pool and TX buffers. */

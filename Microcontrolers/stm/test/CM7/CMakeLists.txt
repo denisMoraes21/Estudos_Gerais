@@ -82,6 +82,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/socket.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_client.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_service.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_topic.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/mqtt/mqtt_tls.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/data.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../Common/Src/ethernet/network.c
