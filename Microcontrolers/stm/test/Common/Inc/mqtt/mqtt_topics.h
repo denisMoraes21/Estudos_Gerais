@@ -20,17 +20,19 @@
 #define MQTT_TOPIC_STATUS "status"
 #define MQTT_TOPIC_EVENT "event"
 #define MQTT_TOPIC_CONFIG "config"
+#define MQTT_TOPIC_CONFIG_BMS "config_bms"
 
 #define CELL_COUNT 16
-#define TOTAL_SUB_TOPICS 2
-#define TOTAL_PUB_TOPICS (3U * CELL_COUNT + CELL_COUNT / 2U + 7U)
+#define TOTAL_SUB_TOPICS 3
+#define TOTAL_PUB_TOPICS (3U * CELL_COUNT + CELL_COUNT / 2U + 8U)
 
 /* Publication order: cell telemetry, temperatures, cell status/events, BMS. */
 #define MQTT_PUB_CELL_TELEMETRY_FIRST 0U
 #define MQTT_PUB_BMS_INDEX (3U * CELL_COUNT + CELL_COUNT / 2U)
 #define MQTT_PUB_BMS_TELEMETRY_INDEX (MQTT_PUB_BMS_INDEX + 1U)
 #define MQTT_PUB_BMS_OTA_STATUS_INDEX (MQTT_PUB_BMS_TELEMETRY_INDEX + 1U)
-#define MQTT_PUB_BMS_TEMP_INDEX (MQTT_PUB_BMS_OTA_STATUS_INDEX + 1U)
+#define MQTT_PUB_BMS_OTA_NOTIFY_INDEX (MQTT_PUB_BMS_OTA_STATUS_INDEX + 1U)
+#define MQTT_PUB_BMS_TEMP_INDEX (MQTT_PUB_BMS_OTA_NOTIFY_INDEX + 1U)
 #define MQTT_PUB_BMS_CONFIG_INDEX (MQTT_PUB_BMS_TEMP_INDEX + 1U)
 
 /* Filled by f_add_publish_topics(); keep stable while requests are pending. */
@@ -45,12 +47,14 @@ void f_set_telemetry_topic(char *p_buffer_topic);
 void f_set_cell_telemetry_topic(char *p_buffer_topic, const char *p_cell);
 void f_set_temp_topic(char *p_buffer_topic, const char *p_temp);
 void f_get_ota_notify(char *p_buffer_topic);
+void f_set_ota_notify(char *p_buffer_topic);
 void f_set_ota_status(char *p_buffer_topic);
 void f_set_bms_temp_topic(char *p_buffer_topic);
 void f_set_cell_status(char *p_buffer_topic, const char *p_cell);
 void f_set_cell_event(char *p_buffer_topic, const char *p_cell);
 void f_set_bms_config(char *p_buffer_topic);
 void f_get_bms_config(char *p_buffer_topic);
+void f_get_bms_config_bms(char *p_buffer_topic);
 
 /* Topic registration functions */
 void f_add_publish_topics(void);

@@ -60,6 +60,16 @@ void f_get_ota_notify(char *p_buffer_topic) {
              MQTT_TOPIC_NOTIFY);
 }
 
+void f_set_ota_notify(char *p_buffer_topic) {
+    f_set_bms_topic(p_buffer_topic);
+
+    size_t v_current_size = strlen(p_buffer_topic);
+
+    snprintf(p_buffer_topic + v_current_size,
+             MQTT_TOPIC_SIZE_MAX - v_current_size, "/%s/%s", MQTT_TOPIC_OTA,
+             MQTT_TOPIC_NOTIFY);
+}
+
 void f_set_ota_status(char *p_buffer_topic) {
     f_set_bms_topic(p_buffer_topic);
 
@@ -113,6 +123,11 @@ void f_get_bms_config(char *p_buffer_topic) {
              MQTT_TOPIC_CONFIG);
 }
 
+void f_get_bms_config_bms(char *p_buffer_topic) {
+    snprintf(p_buffer_topic, MQTT_TOPIC_SIZE_MAX, "%s/%s", MQTT_TOPIC_BASE,
+             MQTT_TOPIC_CONFIG_BMS);
+}
+
 void f_add_publish_topics(void) {
     uint16_t v_topic_count = 0U;
 
@@ -136,6 +151,7 @@ void f_add_publish_topics(void) {
     f_set_bms_topic(v_publish_topics[v_topic_count++]);
     f_set_telemetry_topic(v_publish_topics[v_topic_count++]);
     f_set_ota_status(v_publish_topics[v_topic_count++]);
+    f_set_ota_notify(v_publish_topics[v_topic_count++]);
     f_set_bms_temp_topic(v_publish_topics[v_topic_count++]);
     f_set_bms_config(v_publish_topics[v_topic_count++]);
 }
@@ -145,6 +161,7 @@ void f_add_subscribe_topics(void) {
 
     f_get_ota_notify(v_subscribe_topics[v_topic_count++]);
     f_set_bms_config(v_subscribe_topics[v_topic_count++]);
+    f_get_bms_config_bms(v_subscribe_topics[v_topic_count++]);
 }
 
 int f_subscribe_topics(app_mqtt_request_cb_t callback) {

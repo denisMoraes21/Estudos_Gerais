@@ -824,6 +824,12 @@ void StartDefaultTask(void *argument) {
         "\"success\":false,"
         "\"message\":\"error during update\"}");
 
+    /* bms/<bms_id>/ota/notify */
+    mqtt_result = f_mqtt_service_publishf(
+        v_publish_topics[MQTT_PUB_BMS_OTA_NOTIFY_INDEX], f_bms_publish_done,
+        v_publish_topics[MQTT_PUB_BMS_OTA_NOTIFY_INDEX],
+        "{\"bms_id\":\"%s\",\"ota_notify\":\"ready for download\"}", "BMS_001");
+
     /* bms/<bms_id>/temp */
     mqtt_result = f_mqtt_service_publishf(
         v_publish_topics[MQTT_PUB_BMS_TEMP_INDEX], f_bms_publish_done,
